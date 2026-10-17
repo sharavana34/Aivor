@@ -1,0 +1,625 @@
+/* AIVOR homepage bunny — cartoon buddy + cloud bubble + state machine */
+
+.bunny-assistant {
+  --bunny-size: 88px;
+  --bunny-z: 40;
+  --cloud-fill: linear-gradient(165deg, #F7FBFF 0%, #E8F4FC 55%, #DCEEF8 100%);
+  --cloud-ink: #0B0F14;
+  --cloud-muted: #3A4A5C;
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: var(--bunny-z);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  max-width: min(300px, calc(100vw - 28px));
+  pointer-events: none;
+  font-family: var(--font);
+  /* Keep below sticky header / mobile nav drawer */
+  max-height: calc(100dvh - var(--header-h, 72px) - 24px);
+  overflow: visible;
+}
+/* Never cover the open mobile nav */
+body.nav-open .bunny-assistant {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bunny-assistant * { pointer-events: auto; }
+.bunny-assistant[hidden] { display: none !important; }
+
+/* ——— Cloud speech bubble ——— */
+.bunny-cloud {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4px;
+  transform-origin: bottom right;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bunny-cloud[data-phase="seed"],
+.bunny-cloud[data-phase="expand"],
+.bunny-cloud[data-phase="open"],
+.bunny-cloud[data-phase="contract"] {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.bunny-cloud[data-phase="seed"] {
+  opacity: 1;
+  animation: bunnyCloudSeed .28s ease both;
+}
+
+.bunny-cloud[data-phase="expand"],
+.bunny-cloud[data-phase="open"] {
+  opacity: 1;
+  animation: bunnyCloudExpand .34s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.bunny-cloud[data-phase="contract"] {
+  opacity: 1;
+  animation: bunnyCloudContract .28s ease both;
+}
+
+.bunny-cloud-shell {
+  position: relative;
+  padding: 18px 18px 16px;
+  border-radius: 48% 52% 50% 50% / 56% 54% 46% 44%;
+  background: var(--cloud-fill);
+  border: 1.5px solid rgba(0, 194, 255, .45);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, .28),
+    0 0 18px rgba(0, 194, 255, .18),
+    inset 0 1px 0 rgba(255, 255, 255, .85);
+  color: var(--cloud-ink);
+  overflow: visible;
+}
+
+/* Soft cloud lobes */
+.bunny-cloud-shell::before,
+.bunny-cloud-shell::after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border: 1.5px solid rgba(0, 194, 255, .35);
+  box-shadow: 0 0 12px rgba(0, 194, 255, .12);
+  z-index: -1;
+}
+.bunny-cloud-shell::before {
+  width: 42%;
+  height: 48%;
+  left: -6%;
+  top: 18%;
+  border-radius: 50%;
+}
+.bunny-cloud-shell::after {
+  width: 38%;
+  height: 44%;
+  right: -4%;
+  top: 22%;
+  border-radius: 50%;
+}
+
+.bunny-cloud-tail {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  padding: 2px 18px 0 0;
+  pointer-events: none;
+}
+
+.bunny-cloud-tail span {
+  display: block;
+  border-radius: 50%;
+  background: #E8F4FC;
+  border: 1.5px solid rgba(0, 194, 255, .4);
+  box-shadow: 0 0 8px rgba(0, 194, 255, .15);
+}
+.bunny-cloud-tail span:nth-child(1) {
+  width: 14px;
+  height: 14px;
+  opacity: .95;
+}
+.bunny-cloud-tail span:nth-child(2) {
+  width: 9px;
+  height: 9px;
+  margin-top: 4px;
+  opacity: .85;
+}
+.bunny-cloud-tail span:nth-child(3) {
+  width: 6px;
+  height: 6px;
+  margin-top: 8px;
+  opacity: .7;
+}
+
+.bunny-cloud[data-phase="seed"] .bunny-cloud-shell {
+  transform: scale(.42);
+  transform-origin: bottom right;
+  min-height: 36px;
+  padding: 10px;
+}
+.bunny-cloud[data-phase="seed"] .bunny-cloud-content {
+  opacity: 0;
+}
+
+.bunny-cloud-content {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .28s ease .08s;
+}
+
+.bunny-cloud[data-phase="open"] .bunny-cloud-content,
+.bunny-cloud[data-phase="expand"] .bunny-cloud-content {
+  opacity: 1;
+}
+
+.bunny-cloud[data-phase="seed"] .bunny-cloud-content,
+.bunny-cloud[data-phase="contract"] .bunny-cloud-content {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+.bunny-bubble-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.bunny-bubble-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.bunny-icon-btn {
+  appearance: none;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid rgba(30, 136, 229, .22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .75);
+  color: #3A4A5C;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  touch-action: manipulation;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .bunny-icon-btn:hover {
+    border-color: rgba(0, 194, 255, .55);
+    color: #0B6E94;
+    background: #fff;
+  }
+}
+.bunny-icon-btn:focus-visible {
+  outline: 2px solid var(--electric, #00C2FF);
+  outline-offset: 2px;
+}
+.bunny-icon-btn svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.bunny-msg {
+  margin: 0 0 12px;
+  font-size: clamp(0.8125rem, 0.4vw + 0.75rem, 0.875rem);
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--cloud-ink);
+  text-align: start;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.bunny-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  width: 100%;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  text-decoration: none !important;
+  color: #061018 !important;
+  background: linear-gradient(135deg, #4DD4FF 0%, #00C2FF 45%, #1E88E5 100%);
+  border: 1px solid rgba(0, 194, 255, .55);
+  box-shadow: 0 6px 16px rgba(0, 194, 255, .28);
+  touch-action: manipulation;
+  transition: filter .15s ease, transform .15s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .bunny-cta:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+  }
+}
+.bunny-cta:focus-visible {
+  outline: 2px solid #C9A227;
+  outline-offset: 2px;
+}
+.bunny-cta.is-disabled,
+.bunny-cta[aria-disabled="true"] {
+  opacity: .5;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+  pointer-events: none;
+}
+
+/* ——— Mascot button ——— */
+.bunny-mascot-btn {
+  appearance: none;
+  width: var(--bunny-size);
+  height: var(--bunny-size);
+  padding: 2px;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: visible;
+  transform-origin: 50% 85%;
+}
+
+.bunny-mascot-btn:focus-visible {
+  outline: 2px solid var(--electric, #00C2FF);
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+.bunny-figure {
+  width: 78px;
+  height: 88px;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.bunny-figure .bunny-lid {
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* Sleeping: head-only avatar */
+.bunny-assistant.is-minimized,
+.bunny-assistant[data-state="sleeping"] {
+  --bunny-size: 58px;
+}
+.bunny-assistant.is-minimized .bunny-figure,
+.bunny-assistant[data-state="sleeping"] .bunny-figure {
+  width: 52px;
+  height: 52px;
+}
+.bunny-assistant.is-minimized .bunny-body,
+.bunny-assistant.is-minimized .bunny-feet,
+.bunny-assistant.is-minimized .bunny-arms,
+.bunny-assistant[data-state="sleeping"] .bunny-body,
+.bunny-assistant[data-state="sleeping"] .bunny-feet,
+.bunny-assistant[data-state="sleeping"] .bunny-arms {
+  opacity: 0;
+}
+.bunny-assistant.is-minimized .bunny-head,
+.bunny-assistant[data-state="sleeping"] .bunny-head {
+  transform: translateY(28px) scale(1.05);
+  transform-origin: 80px 96px;
+}
+.bunny-assistant.is-minimized .bunny-mascot-btn,
+.bunny-assistant[data-state="sleeping"] .bunny-mascot-btn {
+  background:
+    radial-gradient(circle at 40% 35%, rgba(255, 255, 255, .2), transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(0, 194, 255, .16), transparent 55%),
+    #121821;
+  border: 1px solid rgba(0, 194, 255, .35);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .4), 0 0 14px rgba(0, 194, 255, .14);
+  border-radius: 50%;
+}
+
+.bunny-assistant.is-minimized .bunny-smile,
+.bunny-assistant[data-state="sleeping"] .bunny-smile {
+  d: path("M70 114 Q80 110 90 114");
+}
+.bunny-assistant.is-minimized .bunny-lid,
+.bunny-assistant[data-state="sleeping"] .bunny-lid {
+  opacity: 1 !important;
+  transform: translateY(10px) scaleY(1.2);
+}
+
+/* ——— State machine: sleeping → waking → reacting → talking → sleeping ——— */
+
+/* Sleeping: gentle breathe + soft glow; rare ear twitch via .is-ear-twitch */
+.bunny-assistant[data-state="sleeping"] .bunny-mascot-btn {
+  animation: bunnySleepBreathe 3.6s ease-in-out infinite;
+}
+.bunny-assistant[data-state="sleeping"] .bunny-head {
+  transform-origin: 80px 96px;
+  animation: bunnySleepHead 3.6s ease-in-out infinite;
+}
+.bunny-assistant[data-state="sleeping"].is-ear-twitch .bunny-ear-l {
+  animation: bunnyEarL .5s ease;
+}
+.bunny-assistant[data-state="sleeping"].is-ear-twitch .bunny-ear-r {
+  animation: bunnyEarR .5s ease;
+}
+.bunny-assistant[data-state="sleeping"].is-yawn .bunny-lid {
+  animation: bunnyYawn .45s ease;
+}
+
+/* Waking: eyes open, ears up, pop */
+.bunny-assistant[data-state="waking"] {
+  --bunny-size: 88px;
+}
+.bunny-assistant[data-state="waking"] .bunny-figure {
+  width: 78px;
+  height: 88px;
+}
+.bunny-assistant[data-state="waking"] .bunny-body,
+.bunny-assistant[data-state="waking"] .bunny-feet,
+.bunny-assistant[data-state="waking"] .bunny-arms {
+  opacity: 1;
+  transition: opacity .25s ease;
+}
+.bunny-assistant[data-state="waking"] .bunny-head {
+  transform: none;
+  transition: transform .35s ease;
+}
+.bunny-assistant[data-state="waking"] .bunny-lid {
+  opacity: 0 !important;
+  transform: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.bunny-assistant[data-state="waking"] .bunny-mascot-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  animation: bunnyWakePop .6s cubic-bezier(.22, 1.3, .36, 1) both;
+}
+.bunny-assistant[data-state="waking"] .bunny-ear-l {
+  animation: bunnyEarWakeL .6s ease both;
+}
+.bunny-assistant[data-state="waking"] .bunny-ear-r {
+  animation: bunnyEarWakeR .6s ease both;
+}
+
+/* Reacting: short cute bounce / tilt / wiggle */
+.bunny-assistant[data-state="reacting"] {
+  --bunny-size: 88px;
+}
+.bunny-assistant[data-state="reacting"] .bunny-figure {
+  width: 78px;
+  height: 88px;
+}
+.bunny-assistant[data-state="reacting"] .bunny-body,
+.bunny-assistant[data-state="reacting"] .bunny-feet,
+.bunny-assistant[data-state="reacting"] .bunny-arms {
+  opacity: 1;
+}
+.bunny-assistant[data-state="reacting"] .bunny-head {
+  transform: none;
+}
+.bunny-assistant[data-state="reacting"] .bunny-lid {
+  opacity: 0 !important;
+}
+.bunny-assistant[data-state="reacting"] .bunny-mascot-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  animation: bunnyReact .7s cubic-bezier(.22, 1.2, .36, 1) both;
+}
+
+/* Talking: subtle bob while cloud open */
+.bunny-assistant[data-state="talking"] {
+  --bunny-size: 88px;
+}
+.bunny-assistant[data-state="talking"] .bunny-figure {
+  width: 78px;
+  height: 88px;
+}
+.bunny-assistant[data-state="talking"] .bunny-body,
+.bunny-assistant[data-state="talking"] .bunny-feet,
+.bunny-assistant[data-state="talking"] .bunny-arms {
+  opacity: 1;
+}
+.bunny-assistant[data-state="talking"] .bunny-head {
+  transform: none;
+}
+.bunny-assistant[data-state="talking"] .bunny-lid {
+  opacity: 0 !important;
+}
+.bunny-assistant[data-state="talking"] .bunny-mascot-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  animation: bunnyTalk .9s ease-in-out infinite;
+}
+.bunny-assistant[data-state="talking"] .bunny-smile {
+  animation: bunnySmileTalk .9s ease-in-out infinite;
+}
+
+/* Fine-pointer hover curiosity while sleeping */
+@media (hover: hover) and (pointer: fine) {
+  .bunny-assistant.is-curious[data-state="sleeping"] .bunny-mascot-btn {
+    transform: rotate(-6deg) translateY(-2px);
+    transition: transform .22s ease;
+  }
+}
+
+.bunny-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes bunnySleepBreathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .4), 0 0 10px rgba(0, 194, 255, .1);
+  }
+  50% {
+    transform: scale(1.04, .97);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .4), 0 0 16px rgba(0, 194, 255, .22);
+  }
+}
+@keyframes bunnySleepHead {
+  0%, 100% { transform: translateY(28px) scale(1.05); }
+  50% { transform: translateY(26px) scale(1.07, 1.03); }
+}
+@keyframes bunnyEarL {
+  0%, 100% { transform: rotate(0); }
+  40% { transform: rotate(-12deg); }
+  70% { transform: rotate(6deg); }
+}
+@keyframes bunnyEarR {
+  0%, 100% { transform: rotate(0); }
+  40% { transform: rotate(10deg); }
+  70% { transform: rotate(-5deg); }
+}
+@keyframes bunnyEarWakeL {
+  0% { transform: rotate(18deg); }
+  60% { transform: rotate(-8deg); }
+  100% { transform: rotate(0); }
+}
+@keyframes bunnyEarWakeR {
+  0% { transform: rotate(-18deg); }
+  60% { transform: rotate(8deg); }
+  100% { transform: rotate(0); }
+}
+@keyframes bunnyWakePop {
+  0% { transform: scale(.86) translateY(8px); }
+  55% { transform: scale(1.08) translateY(-10px); }
+  75% { transform: scale(.97) translateY(2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+@keyframes bunnyReact {
+  0% { transform: rotate(0) translateY(0); }
+  25% { transform: rotate(-8deg) translateY(-10px); }
+  50% { transform: rotate(7deg) translateY(-4px); }
+  75% { transform: rotate(-3deg) translateY(-8px); }
+  100% { transform: rotate(0) translateY(0); }
+}
+@keyframes bunnyTalk {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-3px) rotate(1.5deg); }
+}
+@keyframes bunnySmileTalk {
+  0%, 100% { stroke-width: 2.2; }
+  50% { stroke-width: 2.6; }
+}
+@keyframes bunnyYawn {
+  0%, 100% { opacity: 1; transform: translateY(10px) scaleY(1.2); }
+  40% { opacity: 1; transform: translateY(6px) scaleY(.85); }
+  70% { opacity: 1; transform: translateY(12px) scaleY(1.35); }
+}
+@keyframes bunnyCloudSeed {
+  from { opacity: 0; transform: scale(.2) translate(8px, 10px); }
+  to { opacity: 1; transform: scale(1) translate(0, 0); }
+}
+@keyframes bunnyCloudExpand {
+  from { opacity: .85; transform: scale(.55); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes bunnyCloudContract {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(.35) translate(12px, 16px); }
+}
+
+@media (max-width: 560px) {
+  .bunny-assistant {
+    --bunny-size: 72px;
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    max-width: min(248px, calc(100vw - 20px));
+    max-height: calc(100dvh - var(--header-h, 64px) - 16px);
+  }
+  .bunny-figure { width: 64px; height: 72px; }
+  .bunny-msg { font-size: 13px; }
+  .bunny-cloud-shell {
+    padding: 14px 12px 12px;
+    border-radius: 42% 48% 46% 44% / 52% 50% 44% 42%;
+  }
+  .bunny-cloud-shell::before { left: -4%; width: 36%; }
+  .bunny-cloud-shell::after { right: -2%; width: 32%; }
+  .bunny-assistant.is-minimized,
+  .bunny-assistant[data-state="sleeping"] {
+    --bunny-size: 52px;
+  }
+}
+@media (max-width: 390px) {
+  .bunny-assistant {
+    --bunny-size: 64px;
+    max-width: min(220px, calc(100vw - 16px));
+  }
+  .bunny-figure { width: 56px; height: 64px; }
+  .bunny-msg { font-size: 12.5px; line-height: 1.4; }
+}
+
+@media (max-width: 560px) {
+  .bunny-assistant[data-state="waking"],
+  .bunny-assistant[data-state="reacting"],
+  .bunny-assistant[data-state="talking"] {
+    --bunny-size: 72px;
+  }
+  .bunny-assistant[data-state="waking"] .bunny-figure,
+  .bunny-assistant[data-state="reacting"] .bunny-figure,
+  .bunny-assistant[data-state="talking"] .bunny-figure {
+    width: 64px;
+    height: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bunny-assistant[data-state] .bunny-mascot-btn,
+  .bunny-assistant[data-state] .bunny-head,
+  .bunny-assistant[data-state] .bunny-smile,
+  .bunny-assistant[data-state] .bunny-ear-l,
+  .bunny-assistant[data-state] .bunny-ear-r,
+  .bunny-assistant.is-ear-twitch .bunny-ear-l,
+  .bunny-assistant.is-ear-twitch .bunny-ear-r,
+  .bunny-assistant.is-yawn .bunny-lid,
+  .bunny-cloud[data-phase] {
+    animation: none !important;
+  }
+  .bunny-cloud[data-phase="seed"],
+  .bunny-cloud[data-phase="expand"],
+  .bunny-cloud[data-phase="open"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .bunny-cloud[data-phase="open"] .bunny-cloud-content,
+  .bunny-cloud[data-phase="expand"] .bunny-cloud-content {
+    opacity: 1;
+    transition: none;
+  }
+  .bunny-assistant.is-curious[data-state="sleeping"] .bunny-mascot-btn,
+  .bunny-cta:hover {
+    transform: none;
+  }
+}

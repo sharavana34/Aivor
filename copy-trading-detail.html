@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copy Trading Details &middot; AIVOR by Vyuha Labs</title>
+<meta name="description" content="Setup details for an AIVOR copy-trading strategy: broker, account, instruments, verified metrics, and fees.">
+<meta name="theme-color" content="#0B0F14">
+<link rel="canonical" href="copy-trading-detail.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body class="page-copy page-copy-detail">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="logo" href="index.html" aria-label="AIVOR home">
+      <img src="assets/favicon.svg" alt="" class="logo-mark" width="32" height="32">
+      <span class="word">
+        <strong data-aivor-mark data-aivor-size="nav">AIVOR</strong>
+        <span>BY VYUHA LABS</span>
+      </span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <div class="nav-links">
+        <a href="index.html" data-nav="index.html">Home</a>
+        <a href="products.html" data-nav="products.html">Products</a>
+        <a href="copy-trading.html" data-nav="copy-trading.html" aria-current="page">Copy Trading</a>
+        <a href="performance.html" data-nav="performance.html">Performance</a>
+        <a href="how-it-works.html" data-nav="how-it-works.html">How It Works</a>
+        <a href="faq.html" data-nav="faq.html">FAQ</a>
+        <a href="contact.html" data-nav="contact.html">Contact</a>
+      </div>
+      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Your Report</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <header class="page-hero page-hero--copy page-hero--compact">
+    <div class="section-inner">
+      <p class="ctd-back"><a href="copy-trading.html">&larr; All copy trading strategies</a></p>
+      <div id="ctd-detail-missing" class="ctd-missing" hidden>
+        <h1>Setup not found</h1>
+        <p class="page-lead">No directory entry matches this setup id. Return to the directory and choose a listed strategy.</p>
+        <a class="btn btn-primary" href="copy-trading.html">Back to directory</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section section-ctd-detail" id="ctd-detail" aria-labelledby="ctd-d-title" hidden>
+    <div class="section-inner">
+      <div class="ctd-detail-hero reveal">
+        <div class="ctd-detail-hero-text">
+          <p class="eyebrow">Setup details</p>
+          <h1 id="ctd-d-title"></h1>
+          <p class="ctd-d-id" id="ctd-d-strategy-id"></p>
+          <span id="ctd-d-status" class="ctd-status"></span>
+        </div>
+        <div class="ctd-detail-cta">
+          <a class="btn btn-primary btn-lg" id="ctd-d-copy" href="#">Copy Strategy</a>
+          <a class="btn btn-ghost" href="copy-trading.html">Directory</a>
+        </div>
+      </div>
+
+      <p class="ctd-d-summary reveal" id="ctd-d-summary"></p>
+
+      <div class="ctd-detail-grid reveal">
+        <article class="ct-detail">
+          <h3>Broker</h3>
+          <p id="ctd-d-broker"></p>
+        </article>
+        <article class="ct-detail">
+          <h3>Platform</h3>
+          <p id="ctd-d-platform"></p>
+        </article>
+        <article class="ct-detail">
+          <h3>Account type</h3>
+          <p id="ctd-d-account"></p>
+        </article>
+        <article class="ct-detail">
+          <h3>Instruments</h3>
+          <p id="ctd-d-instruments"></p>
+        </article>
+        <article class="ct-detail">
+          <h3>Trading style</h3>
+          <p id="ctd-d-style"></p>
+        </article>
+        <article class="ct-detail">
+          <h3>Performance</h3>
+          <p id="ctd-d-perf"></p>
+        </article>
+        <article class="ct-detail">
+          <h3>Risk / drawdown</h3>
+          <p id="ctd-d-risk"></p>
+        </article>
+      </div>
+
+      <div class="ct-panel glass-panel reveal">
+        <p class="ct-kicker">Performance insight</p>
+        <h2>Verified metrics</h2>
+        <p id="ctd-d-insight"></p>
+        <p class="ctd-disclaimer">Past performance is not indicative of future results. Always confirm figures on the broker profile for the period shown there.</p>
+      </div>
+
+      <div class="ct-fees-grid reveal">
+        <article class="ct-fee-card">
+          <h3>Provider fee</h3>
+          <p id="ctd-d-fee-provider"></p>
+        </article>
+        <article class="ct-fee-card">
+          <h3>Broker costs</h3>
+          <p id="ctd-d-fee-broker"></p>
+        </article>
+      </div>
+      <p class="ct-fee-note ctd-fee-note reveal" id="ctd-d-fee-note"></p>
+
+      <div class="ctd-howto reveal">
+        <h2>How to copy</h2>
+        <ol id="ctd-d-howto"></ol>
+        <ul class="ctd-notes" id="ctd-d-notes" hidden></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
+      <span>by Vyuha Labs</span>
+      <p class="footer-tag">Smart Trading. Engineered.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="products.html">Products</a>
+      <a href="copy-trading.html">Copy Trading</a>
+      <a href="performance.html">Performance</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="faq.html">FAQ</a>
+      <a href="analyze.html">Analyze Your Own Report</a>
+      <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
+    </nav>
+    <p class="risk-disclosure">
+      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+    </p>
+    <p class="copyright">&copy; <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/copy-trading-data.js"></script>
+<script src="js/wordmark.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/site.js"></script>
+<script src="js/copy-trading.js"></script>
+</body>
+</html>

@@ -3,112 +3,167 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Copy trading · Aivor by Vyuha Labs</title>
+<title>AIVOR Copy Trading Strategies &middot; AIVOR by Vyuha Labs</title>
+<meta name="description" content="Compare AIVOR copy-trading strategies and broker setups. Filter by strategy, broker, instruments, and status. No invented performance figures.">
+<meta name="theme-color" content="#0B0F14">
+<link rel="canonical" href="copy-trading.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
 </head>
-<body>
+<body class="page-copy page-copy-directory">
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="inner">
-    <a class="logo" href="index.html">
-      <div class="mark">A</div>
-      <div class="word"><strong>Aivor</strong><span>by Vyuha Labs</span></div>
+    <a class="logo" href="index.html" aria-label="AIVOR home">
+      <img src="assets/favicon.svg" alt="" class="logo-mark" width="32" height="32">
+      <span class="word">
+        <strong data-aivor-mark data-aivor-size="nav">AIVOR</strong>
+        <span>BY VYUHA LABS</span>
+      </span>
     </a>
-    <nav class="nav">
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <div class="nav-links">
         <a href="index.html" data-nav="index.html">Home</a>
         <a href="products.html" data-nav="products.html">Products</a>
-        <a href="copy-trading.html" data-nav="copy-trading.html">Copy trading</a>
+        <a href="copy-trading.html" data-nav="copy-trading.html" aria-current="page">Copy Trading</a>
         <a href="performance.html" data-nav="performance.html">Performance</a>
-        <a class="cta" href="analyze.html" data-nav="analyze.html">Analyze a report</a>
-      </nav>
-  </div>
-  <div class="header-contact">
-    <div class="header-contact-inner">
-      <span class="contact-label">Contact</span>
-      <nav class="social social-header" aria-label="Social contacts">
-        <a class="social-tg" href="#" title="Telegram — URL TODO" aria-label="Telegram (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.1 2.9 11.3c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.5c.2.6.4.8 1 .8.6 0 .9-.3 1.2-.6l2.7-2.6 5.6 4.1c1 .6 1.8.3 2-.9L23 5.3c.3-1.3-.5-1.9-1.5-1.2zM9.7 14.5l9.1-5.7c.5-.3.9-.1.5.2l-7.4 6.7-.3 3.2-1.9-4.4z"/></svg>
-        </a>
-        <a class="social-fb" href="#" title="Facebook — URL TODO" aria-label="Facebook (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
-        </a>
-        <a class="social-ig" href="#" title="Instagram — URL TODO" aria-label="Instagram (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.8 6.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
-        </a>
-        <a class="social-wa" href="#" title="WhatsApp — URL TODO" aria-label="WhatsApp (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.3-1.4A9.9 9.9 0 1 0 12 2zm0 1.8a8.1 8.1 0 0 1 6.8 12.5l-.3.4.8 2.9-3-.8-.4.2A8.1 8.1 0 0 1 12 3.8zm4.6 11.5c-.2.6-1.2 1.1-1.7 1.2-.4.1-1 .2-2.9-.6-2.4-1-3.9-3.5-4-3.6-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5l-.3.5c-.1.2-.3.3-.1.6.1.2.6 1 1.3 1.6.9.8 1.6 1 1.8 1.1.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.7.8c.2.1.4.2.4.3.1.3 0 .9-.2 1.5z"/></svg>
-        </a>
-      </nav>
-    </div>
+        <a href="how-it-works.html" data-nav="how-it-works.html">How It Works</a>
+        <a href="faq.html" data-nav="faq.html">FAQ</a>
+        <a href="contact.html" data-nav="contact.html">Contact</a>
+      </div>
+      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Your Report</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
   </div>
 </header>
 
-<main class="wrap narrow">
-  <header class="page-head">
-    <h1>Copy trading</h1>
-    <p>Follow the live Aivor account instead of installing the Expert Advisor yourself. Your broker copies the provider’s trades into your account, in proportion to the capital you allocate.</p>
+<main id="main">
+  <header class="page-hero page-hero--copy page-hero--compact">
+    <div class="section-inner">
+      <p class="eyebrow">Copy trading directory</p>
+      <h1><span data-aivor-mark data-aivor-size="title">AIVOR</span> Copy Trading Strategies</h1>
+      <p class="page-lead">Compare trading strategies, broker setups, performance insights and fees before choosing where to copy.</p>
+    </div>
   </header>
 
-  <section class="section">
-    <h2>How it works</h2>
-    <p class="lead">You open an account with the listed broker, connect it to the copy service, and choose how much to allocate. When Aivor opens or closes a gold trade, the service mirrors that action on your side. You can stop copying at any time.</p>
-  </section>
+  <section class="section section-ctd" aria-labelledby="ctd-dir-title">
+    <div class="section-inner">
+      <div class="ctd-toolbar glass-panel reveal">
+        <div class="ctd-toolbar-top">
+          <h2 id="ctd-dir-title" class="ctd-toolbar-title">Strategy setups</h2>
+          <p class="ctd-count" id="ctd-count" aria-live="polite"></p>
+        </div>
+        <form class="filters ctd-filters" id="ctd-filters" onsubmit="return false;">
+          <div class="field">
+            <label for="ctd-filter-strategy">Strategy</label>
+            <select id="ctd-filter-strategy"></select>
+          </div>
+          <div class="field">
+            <label for="ctd-filter-broker">Broker</label>
+            <select id="ctd-filter-broker"></select>
+          </div>
+          <div class="field">
+            <label for="ctd-filter-account">Account type</label>
+            <select id="ctd-filter-account"></select>
+          </div>
+          <div class="field">
+            <label for="ctd-filter-instrument">Instrument</label>
+            <select id="ctd-filter-instrument"></select>
+          </div>
+          <div class="field">
+            <label for="ctd-filter-status">Status</label>
+            <select id="ctd-filter-status"></select>
+          </div>
+          <div class="field grow">
+            <label for="ctd-search">Search</label>
+            <input type="search" id="ctd-search" placeholder="Strategy, broker, ID?" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="ctd-sort">Sort</label>
+            <select id="ctd-sort">
+              <option value="status">Status</option>
+              <option value="strategy">Strategy</option>
+              <option value="broker">Broker</option>
+              <option value="name">Name</option>
+            </select>
+          </div>
+          <div class="field ctd-reset-field">
+            <label class="visually-hidden" for="ctd-reset">Reset</label>
+            <button type="button" class="reset" id="ctd-reset">Reset</button>
+          </div>
+        </form>
+      </div>
 
-  <section class="section">
-    <h2>Connection details</h2>
-    <p class="lead">Public copy-service details are not published on this site yet. Each field below is a placeholder.</p>
+      <div class="ctd-table-wrap reveal" role="region" aria-label="Copy trading setups table">
+        <table class="ctd-table">
+          <thead>
+            <tr>
+              <th scope="col">Strategy</th>
+              <th scope="col">Broker</th>
+              <th scope="col">Platform</th>
+              <th scope="col">Account</th>
+              <th scope="col">Instruments</th>
+              <th scope="col">Performance</th>
+              <th scope="col">Risk</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ctd-tbody"></tbody>
+        </table>
+      </div>
 
-    <div class="placeholder-block">
-      <h3>Copy-service link <span class="todo">TODO</span></h3>
-      <p>Paste the MQL5 Signals / third-party copy URL here when ready.</p>
-    </div>
-    <div class="placeholder-block">
-      <h3>Provider account number <span class="todo">TODO</span></h3>
-      <p>Account number followers should search for on the copy platform.</p>
-    </div>
-    <div class="placeholder-block">
-      <h3>Broker <span class="todo">TODO</span></h3>
-      <p>Confirm the broker name and server followers must use.</p>
-    </div>
-    <div class="placeholder-block">
-      <h3>Minimum capital <span class="todo">TODO</span></h3>
-      <p>State the minimum deposit or allocation once decided.</p>
-    </div>
-  </section>
+      <div class="ctd-cards" id="ctd-cards" aria-label="Copy trading setups cards"></div>
 
-  <section class="section">
-    <a class="btn btn-primary" href="performance.html">See published performance</a>
+      <aside class="ctd-trust reveal" aria-labelledby="ctd-trust-title">
+        <h2 id="ctd-trust-title">Trust notes</h2>
+        <ul>
+          <li>No invented returns, fees, or charts. Unverified figures show as <strong>Not published</strong> or <strong>Verify with broker</strong>.</li>
+          <li>When a return is shown, its period appears next to it.</li>
+          <li>Past performance is not indicative of future results.</li>
+          <li>Provider performance / profit-share fees are separate from broker spreads, swaps, and commissions.</li>
+          <li><strong>Copy Strategy</strong> opens an external broker page only when a URL is configured for that setup.</li>
+        </ul>
+      </aside>
+    </div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <div class="inner">
-    <div class="footer-top">
-      <div><strong>Aivor</strong> by Vyuha Labs</div>
-      <div>Copy-trading placeholders marked TODO until links are final</div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
+      <span>by Vyuha Labs</span>
+      <p class="footer-tag">Smart Trading. Engineered.</p>
     </div>
-    <div>
-      <div class="contact-label">Contact</div>
-      <nav class="social social-footer" aria-label="Contact channels">
-        <a class="social-tg" href="#" title="Telegram URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.1 2.9 11.3c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.5c.2.6.4.8 1 .8.6 0 .9-.3 1.2-.6l2.7-2.6 5.6 4.1c1 .6 1.8.3 2-.9L23 5.3c.3-1.3-.5-1.9-1.5-1.2zM9.7 14.5l9.1-5.7c.5-.3.9-.1.5.2l-7.4 6.7-.3 3.2-1.9-4.4z"/></svg>
-          Telegram <span class="todo">TODO</span>
-        </a>
-        <a class="social-fb" href="#" title="Facebook URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
-          Facebook <span class="todo">TODO</span>
-        </a>
-        <a class="social-ig" href="#" title="Instagram URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.8 6.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
-          Instagram <span class="todo">TODO</span>
-        </a>
-        <a class="social-wa" href="#" title="WhatsApp URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.3-1.4A9.9 9.9 0 1 0 12 2zm0 1.8a8.1 8.1 0 0 1 6.8 12.5l-.3.4.8 2.9-3-.8-.4.2A8.1 8.1 0 0 1 12 3.8zm4.6 11.5c-.2.6-1.2 1.1-1.7 1.2-.4.1-1 .2-2.9-.6-2.4-1-3.9-3.5-4-3.6-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5l-.3.5c-.1.2-.3.3-.1.6.1.2.6 1 1.3 1.6.9.8 1.6 1 1.8 1.1.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.7.8c.2.1.4.2.4.3.1.3 0 .9-.2 1.5z"/></svg>
-          WhatsApp <span class="todo">TODO</span>
-        </a>
-      </nav>
-    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="products.html">Products</a>
+      <a href="copy-trading.html">Copy Trading</a>
+      <a href="performance.html">Performance</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="faq.html">FAQ</a>
+      <a href="analyze.html">Analyze Your Own Report</a>
+      <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
+    </nav>
+    <p class="risk-disclosure">
+      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+    </p>
+    <p class="copyright">&copy; <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
   </div>
 </footer>
+
+<script src="js/config.js"></script>
+<script src="js/copy-trading-data.js"></script>
+<script src="js/wordmark.js"></script>
+<script src="js/nav.js"></script>
 <script src="js/site.js"></script>
+<script src="js/copy-trading.js"></script>
 </body>
 </html>

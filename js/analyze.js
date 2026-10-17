@@ -693,12 +693,14 @@
         return `<article class="wcard">
       <h3>${esc(r.label)}</h3>
       <div class="range">${esc(r.sub)}</div>
+      <div class="wcard-scroll">
       <table>
         <thead><tr><th>Date</th><th>P/L</th><th>Profit %</th><th>Total return</th></tr></thead>
         <tbody>${body}
           <tr class="total ${tone}"><td>Total</td><td>${money(r.pl, 2)}</td><td>${pct(r.pct)}</td><td>${pct(r.ret)}</td></tr>
         </tbody>
       </table>
+      </div>
     </article>`;
       })
       .join("");
@@ -742,17 +744,17 @@
       .map((t) => {
         const v = box.max - t * (box.max - box.min);
         const y = T + t * innerH;
-        return `<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="rgba(255,255,255,.08)" stroke-width="1"></line>
-      <text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="#9aa3ad">${Math.round(v).toLocaleString("en-US")}</text>`;
+        return `<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="rgba(148,163,184,.12)" stroke-width="1"></line>
+      <text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="#94a3b8">${Math.round(v).toLocaleString("en-US")}</text>`;
       })
       .join("");
     const xLabels = [0, Math.floor((days.length - 1) / 2), days.length - 1]
       .map((i) => {
         const x = L + i * step;
-        return `<text x="${x}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#9aa3ad">${pretty(days[i].d).slice(0, 5)}</text>`;
+        return `<text x="${x}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#94a3b8">${pretty(days[i].d).slice(0, 5)}</text>`;
       })
       .join("");
-    svg.innerHTML = `${grids}<defs><linearGradient id="balStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5ec8ff"/><stop offset="55%" stop-color="#6c63ff"/><stop offset="100%" stop-color="#8b83ff"/></linearGradient></defs><polygon points="${area}" fill="rgba(108,99,255,.14)"></polygon>
+    svg.innerHTML = `${grids}<defs><linearGradient id="balStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00C2FF"/><stop offset="55%" stop-color="#1E88E5"/><stop offset="100%" stop-color="#4DD4FF"/></linearGradient></defs><polygon points="${area}" fill="rgba(0,194,255,.14)"></polygon>
     <polyline points="${line}" fill="none" stroke="url(#balStroke)" stroke-width="2.4" stroke-linejoin="round"></polyline>${xLabels}`;
     $("balCaption").textContent = withCur(money(days[0].bal, 0) + " → " + money(days[days.length - 1].bal, 0));
     svg.onmousemove = (ev) => {
@@ -800,10 +802,10 @@
         const y0 = zero;
         const top = Math.min(y, y0),
           h = Math.max(1, Math.abs(y - y0));
-        const fill = m.pl >= 0 ? "#2ecc71" : "#e74c5a";
-        const on = state.month === m.key ? ' stroke="#6c63ff" stroke-width="1.5"' : "";
+        const fill = m.pl >= 0 ? "#10b981" : "#ef4444";
+        const on = state.month === m.key ? ' stroke="#00C2FF" stroke-width="1.5"' : "";
         return `<rect data-m="${m.key}" x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${fill}"${on} style="cursor:pointer"></rect>
-      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 10}" text-anchor="middle" font-size="10" fill="#9aa3ad">${m.label.slice(0, 3)}</text>`;
+      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 10}" text-anchor="middle" font-size="10" fill="#94a3b8">${m.label.slice(0, 3)}</text>`;
       })
       .join("");
     svg.innerHTML = `<line x1="${L}" y1="${zero}" x2="${W - R}" y2="${zero}" stroke="rgba(255,255,255,.2)"></line>` + bars;
@@ -1164,7 +1166,11 @@
       state.view = btn.dataset.view;
       state.sort = "d";
       state.dir = 1;
-      $("viewseg").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === btn));
+      $("viewseg").querySelectorAll("button").forEach((b) => {
+        const on = b === btn;
+        b.classList.toggle("on", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
       render();
     });
     $("month").addEventListener("change", (e) => {
@@ -1207,7 +1213,11 @@
       $("to").value = "";
       $("side").value = "all";
       $("q").value = "";
-      $("viewseg").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.view === "day"));
+      $("viewseg").querySelectorAll("button").forEach((b) => {
+        const on = b.dataset.view === "day";
+        b.classList.toggle("on", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
       render();
     });
     $("download").addEventListener("click", () => {

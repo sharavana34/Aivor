@@ -3,111 +3,140 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Performance · Aivor by Vyuha Labs</title>
+<title>Performance &middot; AIVOR by Vyuha Labs</title>
+<meta name="description" content="Verify AIVOR HF live performance on MyFXBook. No fabricated marketing numbers &mdash; transparent third-party tracking.">
+<meta name="theme-color" content="#0B0F14">
+<link rel="canonical" href="performance.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
 </head>
-<body>
+<body class="page-performance">
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="inner">
-    <a class="logo" href="index.html">
-      <div class="mark">A</div>
-      <div class="word"><strong>Aivor</strong><span>by Vyuha Labs</span></div>
+    <a class="logo" href="index.html" aria-label="AIVOR home">
+      <img src="assets/favicon.svg" alt="" class="logo-mark" width="32" height="32">
+      <span class="word">
+        <strong data-aivor-mark data-aivor-size="nav">AIVOR</strong>
+        <span>BY VYUHA LABS</span>
+      </span>
     </a>
-    <nav class="nav">
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <div class="nav-links">
         <a href="index.html" data-nav="index.html">Home</a>
         <a href="products.html" data-nav="products.html">Products</a>
-        <a href="copy-trading.html" data-nav="copy-trading.html">Copy trading</a>
+        <a href="copy-trading.html" data-nav="copy-trading.html">Copy Trading</a>
         <a href="performance.html" data-nav="performance.html">Performance</a>
-        <a class="cta" href="analyze.html" data-nav="analyze.html">Analyze a report</a>
-      </nav>
-  </div>
-  <div class="header-contact">
-    <div class="header-contact-inner">
-      <span class="contact-label">Contact</span>
-      <nav class="social social-header" aria-label="Social contacts">
-        <a class="social-tg" href="#" title="Telegram — URL TODO" aria-label="Telegram (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.1 2.9 11.3c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.5c.2.6.4.8 1 .8.6 0 .9-.3 1.2-.6l2.7-2.6 5.6 4.1c1 .6 1.8.3 2-.9L23 5.3c.3-1.3-.5-1.9-1.5-1.2zM9.7 14.5l9.1-5.7c.5-.3.9-.1.5.2l-7.4 6.7-.3 3.2-1.9-4.4z"/></svg>
-        </a>
-        <a class="social-fb" href="#" title="Facebook — URL TODO" aria-label="Facebook (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
-        </a>
-        <a class="social-ig" href="#" title="Instagram — URL TODO" aria-label="Instagram (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.8 6.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
-        </a>
-        <a class="social-wa" href="#" title="WhatsApp — URL TODO" aria-label="WhatsApp (TODO)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.3-1.4A9.9 9.9 0 1 0 12 2zm0 1.8a8.1 8.1 0 0 1 6.8 12.5l-.3.4.8 2.9-3-.8-.4.2A8.1 8.1 0 0 1 12 3.8zm4.6 11.5c-.2.6-1.2 1.1-1.7 1.2-.4.1-1 .2-2.9-.6-2.4-1-3.9-3.5-4-3.6-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5l-.3.5c-.1.2-.3.3-.1.6.1.2.6 1 1.3 1.6.9.8 1.6 1 1.8 1.1.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.7.8c.2.1.4.2.4.3.1.3 0 .9-.2 1.5z"/></svg>
-        </a>
-      </nav>
-    </div>
+        <a href="how-it-works.html" data-nav="how-it-works.html">How It Works</a>
+        <a href="faq.html" data-nav="faq.html">FAQ</a>
+        <a href="contact.html" data-nav="contact.html">Contact</a>
+      </div>
+      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Your Report</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
   </div>
 </header>
 
-<main class="wrap narrow">
-  <header class="page-head">
-    <h1>Performance</h1>
-    <p>Published track record for the live Aivor account. Figures below are verified from MetaTrader 5 trade history — not marketing estimates.</p>
+<main id="main">
+  <header class="page-hero page-hero--performance">
+    <div class="section-inner">
+      <p class="eyebrow">Performance</p>
+      <h1>Transparency over marketing numbers</h1>
+      <p class="page-lead">We do not invent win rates, returns, or testimonials on this page. Verify the live AIVOR HF track record on MyFXBook, or analyse your own MetaTrader 5 Excel reports in the browser.</p>
+    </div>
   </header>
 
-  <section class="panel">
-    <h2 style="margin:0 0 6px;font-size:20px;font-family:var(--display);">Live account · 26444548</h2>
-    <p style="margin:0 0 8px;color:var(--muted);font-size:14px;">Copy 1 · Vantage Markets · currency USC (100 USC = 1 USD)</p>
+  <section class="section section-performance" aria-labelledby="perf-title">
+    <div class="section-inner">
+      <figure class="visual-panel visual-panel--wide reveal decorative-panel">
+        <img
+          src="assets/visuals/analytics-dashboard.jpg"
+          alt=""
+          width="1400"
+          height="788"
+          loading="lazy"
+          decoding="async"
+        >
+        <figcaption class="decorative-caption">Illustrative atmosphere only &mdash; not live trading data or MyFXBook figures.</figcaption>
+      </figure>
 
-    <ul class="stats-list">
-      <li><span>Deposited</span><b>10,000 USC ($100)</b></li>
-      <li><span>Withdrawn</span><b>6,879 USC</b></li>
-      <li><span>Net trading profit</span><b class="goodnum">+10,485.15 USC ($104.85)</b></li>
-      <li><span>Total return</span><b class="goodnum">+104.85% of money deposited</b></li>
-      <li><span>Ending balance</span><b>13,606.15 USC ($136.06)</b></li>
-      <li><span>Trading days</span><b>143</b></li>
-      <li><span>Closes</span><b>15,601</b></li>
-    </ul>
+      <div class="reveal">
+        <header class="section-head">
+          <h2 id="perf-title"><span data-aivor-mark data-aivor-size="title">AIVOR</span> HF on MyFXBook</h2>
+          <p class="section-lead">Independent third-party portfolio tracker. Open the full system page, or use the embed below when the widget loads.</p>
+        </header>
 
-    <p class="source-note">
-      Source: from MT5 trade history, account 26444548, 9 Mar 2026 to 16 Oct 2026.
-      Transfers excluded from P/L: 9 Mar +5,000, 10 Mar +5,000, 24 Mar −5,010, 27 Mar −1,869.
-    </p>
-  </section>
+        <div class="perf-actions">
+          <a class="btn btn-primary btn-lg" data-config-url="MYFXBOOK_URL">Verify on MyFXBook</a>
+          <a class="btn btn-secondary" href="analyze.html">Analyze Your Own Report</a>
+        </div>
 
-  <section class="section">
-    <h2>Backtest summaries</h2>
-    <p class="lead">Strategy Tester summaries will appear here when published.</p>
-    <div class="empty-slot">Empty slot · <span class="todo">TODO</span> add verified backtest cards later</div>
-  </section>
+        <div class="mfb-panel glass-panel">
+          <div class="mfb-panel-head">
+            <div>
+              <span class="mfb-badge">Live portfolio</span>
+              <h3><span data-aivor-mark data-aivor-size="title">AIVOR</span> HF &middot; MyFXBook widget</h3>
+              <p>Official widget for portfolio id 11973715. If the embed is blocked by the browser, use Verify on MyFXBook.</p>
+            </div>
+            <a class="btn btn-ghost" data-config-url="MYFXBOOK_URL">Open portfolio</a>
+          </div>
+          <div class="mfb-frame-wrap">
+            <iframe
+              id="myfxbook-frame"
+              title="AIVOR HF MyFXBook strategy widget"
+              src="https://widgets.myfxbook.com/widgets/strategy.html?oid=11973715"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+            ></iframe>
+          </div>
+          <div class="mfb-fallback" id="myfxbook-fallback">
+            <span class="mfb-badge">Official source</span>
+            <h3>Verify on MyFXBook</h3>
+            <p>If the widget above does not load (some browsers block third-party embeds), open the live portfolio directly. We do not fabricate metrics on this page.</p>
+            <a class="btn btn-primary" data-config-url="MYFXBOOK_URL">Verify on MyFXBook</a>
+          </div>
+        </div>
 
-  <section class="section">
-    <a class="btn btn-primary" href="analyze.html">Analyze your own report</a>
+        <p class="perf-note" style="margin-top:20px">Past performance is not indicative of future results. MyFXBook figures can change as the live account updates. Trading involves substantial risk of loss.</p>
+      </div>
+    </div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <div class="inner">
-    <div class="footer-top">
-      <div><strong>Aivor</strong> by Vyuha Labs</div>
-      <div>No extra statistics invented beyond the verified live track record</div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
+      <span>by Vyuha Labs</span>
+      <p class="footer-tag">Smart Trading. Engineered.</p>
     </div>
-    <div>
-      <div class="contact-label">Contact</div>
-      <nav class="social social-footer" aria-label="Contact channels">
-        <a class="social-tg" href="#" title="Telegram URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.1 2.9 11.3c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.5c.2.6.4.8 1 .8.6 0 .9-.3 1.2-.6l2.7-2.6 5.6 4.1c1 .6 1.8.3 2-.9L23 5.3c.3-1.3-.5-1.9-1.5-1.2zM9.7 14.5l9.1-5.7c.5-.3.9-.1.5.2l-7.4 6.7-.3 3.2-1.9-4.4z"/></svg>
-          Telegram <span class="todo">TODO</span>
-        </a>
-        <a class="social-fb" href="#" title="Facebook URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
-          Facebook <span class="todo">TODO</span>
-        </a>
-        <a class="social-ig" href="#" title="Instagram URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.8 6.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
-          Instagram <span class="todo">TODO</span>
-        </a>
-        <a class="social-wa" href="#" title="WhatsApp URL TODO">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.3-1.4A9.9 9.9 0 1 0 12 2zm0 1.8a8.1 8.1 0 0 1 6.8 12.5l-.3.4.8 2.9-3-.8-.4.2A8.1 8.1 0 0 1 12 3.8zm4.6 11.5c-.2.6-1.2 1.1-1.7 1.2-.4.1-1 .2-2.9-.6-2.4-1-3.9-3.5-4-3.6-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.7.8 1.8.1.2.1.3 0 .5l-.3.5c-.1.2-.3.3-.1.6.1.2.6 1 1.3 1.6.9.8 1.6 1 1.8 1.1.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.7.8c.2.1.4.2.4.3.1.3 0 .9-.2 1.5z"/></svg>
-          WhatsApp <span class="todo">TODO</span>
-        </a>
-      </nav>
-    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="products.html">Products</a>
+      <a href="copy-trading.html">Copy Trading</a>
+      <a href="performance.html">Performance</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="faq.html">FAQ</a>
+      <a href="analyze.html">Analyze Your Own Report</a>
+      <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
+    </nav>
+    <p class="risk-disclosure">
+      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+    </p>
+    <p class="copyright">? <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
   </div>
 </footer>
+
+<script src="js/config.js"></script>
+<script src="js/wordmark.js"></script>
+<script src="js/nav.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>
