@@ -552,10 +552,10 @@ body.nav-open .bunny-assistant {
 
 @media (max-width: 560px) {
   .bunny-assistant {
-    --bunny-size: 72px;
-    right: max(10px, env(safe-area-inset-right));
-    bottom: max(10px, env(safe-area-inset-bottom));
-    max-width: min(248px, calc(100vw - 20px));
+    --bunny-size: 64px;
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(8px, env(safe-area-inset-bottom));
+    max-width: min(228px, calc(100vw - 16px));
     max-height: calc(100dvh - var(--header-h, 64px) - 16px);
   }
   .bunny-figure { width: 64px; height: 72px; }

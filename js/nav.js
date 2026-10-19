@@ -20,8 +20,9 @@
     "contact.html": ICON(
       '<path d="M21 15a3 3 0 0 1-3 3H8l-5 3V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3z"/>'
     ),
+    /* Lucide-like file + bar chart (document analysis) */
     "analyze.html": ICON(
-      '<path d="M4 19V5M4 19h16"/><rect x="7" y="11" width="2.5" height="5" rx=".4" fill="currentColor" stroke="none"/><rect x="11.25" y="8" width="2.5" height="8" rx=".4" fill="currentColor" stroke="none"/><rect x="15.5" y="5.5" width="2.5" height="10.5" rx=".4" fill="currentColor" stroke="none"/>'
+      '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 17v-3M12 17V9M16 17v-5"/>'
     )
   };
 
@@ -60,26 +61,52 @@
     if (!header) return;
 
     const inner = header.querySelector(".inner");
+    const actions = inner && inner.querySelector(".header-actions");
     const mobileMq = window.matchMedia("(max-width: 1100px)");
+    const cta = () => document.querySelector(".nav-cta");
 
     /*
-      Root-cause fix: .inner (and potentially .site-header stacking contexts)
-      use backdrop-filter / filters that create a containing block for
-      position:fixed descendants. A fixed .nav inside those nodes only covers
-      the capsule — or keeps left/transform stuck at 100% of that box.
-      On mobile, park .nav on document.body so fixed == viewport.
-      On desktop, put it back inside .inner so display:contents grid still works.
+      Structure (static HTML):
+        .inner > .logo | .nav > .nav-links | .header-actions > (.header-social + .nav-cta) | .nav-toggle
+
+      Mobile drawer: .inner (and .site-header) use filters/backdrop that create a
+      containing block for position:fixed. Park .nav on document.body so fixed
+      covers the viewport. Move .nav-cta into the drawer (single node — no clone).
+
+      Desktop: restore .nav inside .inner before .header-actions; restore CTA
+      inside .header-actions after .header-social. Do NOT reparent CTA onto
+      .inner as a loose sibling (that fought display:contents + grid columns).
     */
     const placeNav = () => {
       if (!nav || !inner) return;
+      const analyzeCta = cta();
+      const social = actions && actions.querySelector(".header-social");
+
       if (mobileMq.matches) {
         if (nav.parentElement !== document.body) {
           document.body.appendChild(nav);
         }
-      } else if (nav.parentElement !== inner) {
-        const anchor = toggle && toggle.parentElement === inner ? toggle : null;
-        if (anchor) inner.insertBefore(nav, anchor);
-        else inner.appendChild(nav);
+        if (analyzeCta && analyzeCta.parentElement !== nav) {
+          nav.appendChild(analyzeCta);
+        }
+      } else {
+        if (nav.parentElement !== inner) {
+          const anchor =
+            (actions && actions.parentElement === inner && actions) ||
+            (toggle && toggle.parentElement === inner && toggle) ||
+            null;
+          if (anchor) inner.insertBefore(nav, anchor);
+          else inner.appendChild(nav);
+        }
+        if (analyzeCta && actions) {
+          if (analyzeCta.parentElement !== actions) {
+            if (social && social.parentElement === actions) {
+              social.insertAdjacentElement("afterend", analyzeCta);
+            } else {
+              actions.appendChild(analyzeCta);
+            }
+          }
+        }
       }
     };
     placeNav();
@@ -88,6 +115,8 @@
     } else if (typeof mobileMq.addListener === "function") {
       mobileMq.addListener(placeNav);
     }
+    /* Catch late viewport / headless metric changes that skip matchMedia 'change' */
+    window.addEventListener("load", placeNav);
 
     const onScroll = () => {
       header.classList.toggle("is-scrolled", window.scrollY > 16);
@@ -154,8 +183,11 @@
       setOpen(!nav.classList.contains("is-open"));
     });
 
-    nav.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", () => setOpen(false, { restoreFocus: false }));
+    /* Delegation so Analyze Report still closes the drawer after reparenting */
+    nav.addEventListener("click", (e) => {
+      const link = e.target && e.target.closest ? e.target.closest("a") : null;
+      if (!link || !nav.contains(link)) return;
+      setOpen(false, { restoreFocus: false });
     });
 
     document.addEventListener("keydown", (e) => {

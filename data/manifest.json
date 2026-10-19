@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19T14:29:04.371Z",
+  "availability": {
+    "hf": {
+      "backtest": true,
+      "live": true
+    },
+    "scalper": {
+      "backtest": true,
+      "live": false
+    },
+    "swing": {
+      "backtest": true,
+      "live": false
+    }
+  },
+  "files": {
+    "hf-live": {
+      "path": "data/hf-live.json",
+      "product": "hf",
+      "reportType": "live",
+      "available": true,
+      "bytes": 623476,
+      "chartPointCounts": {
+        "equityBalance": 144,
+        "monthlyPl": 8,
+        "monthlyReturnPct": 8,
+        "drawdown": 144,
+        "closedTrades": 15623
+      },
+      "cardMetrics": {
+        "avgMonthlyNetProfit": 1307.27,
+        "avgMonthlyReturnPct": 21.8308,
+        "avgMonthlyMaxEquityDd": 2886.9,
+        "avgMonthlyMaxEquityDdPct": 22.481,
+        "periodLabel": "2026.03.09 – 2026.10.19",
+        "monthCount": 8
+      }
+    },
+    "hf-backtest": {
+      "path": "data/hf-backtest.json",
+      "product": "hf",
+      "reportType": "backtest",
+      "available": true,
+      "bytes": 610150,
+      "chartPointCounts": {
+        "equityBalance": 206,
+        "monthlyPl": 10,
+        "monthlyReturnPct": 10,
+        "drawdown": 206,
+        "closedTrades": 27024
+      },
+      "cardMetrics": {
+        "avgMonthlyNetProfit": 4847.53,
+        "avgMonthlyReturnPct": 22.8069,
+        "avgMonthlyMaxEquityDd": 2431.52,
+        "avgMonthlyMaxEquityDdPct": 4.9123,
+        "periodLabel": "2026.01.01 – 2026.10.16",
+        "monthCount": 10
+      }
+    },
+    "scalper-backtest": {
+      "path": "data/scalper-backtest.json",
+      "product": "scalper",
+      "reportType": "backtest",
+      "available": true,
+      "bytes": 441019,
+      "chartPointCounts": {
+        "equityBalance": 206,
+        "monthlyPl": 10,
+        "monthlyReturnPct": 10,
+        "drawdown": 206,
+        "closedTrades": 1796
+      },
+      "cardMetrics": {
+        "avgMonthlyNetProfit": 61.8,
+        "avgMonthlyReturnPct": 24.5383,
+        "avgMonthlyMaxEquityDd": 16.48,
+        "avgMonthlyMaxEquityDdPct": 4.05,
+        "periodLabel": "2026.01.01 – 2026.10.16",
+        "monthCount": 10
+      }
+    },
+    "swing-backtest": {
+      "path": "data/swing-backtest.json",
+      "product": "swing",
+      "reportType": "backtest",
+      "available": true,
+      "bytes": 202099,
+      "chartPointCounts": {
+        "equityBalance": 184,
+        "monthlyPl": 10,
+        "monthlyReturnPct": 10,
+        "drawdown": 184,
+        "closedTrades": 753
+      },
+      "cardMetrics": {
+        "avgMonthlyNetProfit": 1016.32,
+        "avgMonthlyReturnPct": 108.355,
+        "avgMonthlyMaxEquityDd": 668.45,
+        "avgMonthlyMaxEquityDdPct": 13.4195,
+        "periodLabel": "2026.01.01 – 2026.10.16",
+        "monthCount": 10
+      }
+    },
+    "scalper-live": {
+      "path": "data/scalper-live.json",
+      "product": "scalper",
+      "reportType": "live",
+      "available": false,
+      "reason": "Live performance data not available yet"
+    },
+    "swing-live": {
+      "path": "data/swing-live.json",
+      "product": "swing",
+      "reportType": "live",
+      "available": false,
+      "reason": "Live performance data not available yet"
+    }
+  },
+  "discrepanciesVsOldCards": [
+    {
+      "product": "hf",
+      "reportType": "live",
+      "old": {
+        "avgMonthlyNetProfit": 4562,
+        "avgMonthlyReturnPct": 41,
+        "avgMonthlyMaxEquityDd": 2156,
+        "avgMonthlyMaxEquityDdPct": 21
+      },
+      "excelBacked": {
+        "avgMonthlyNetProfit": 1307.27,
+        "avgMonthlyReturnPct": 21.8308,
+        "avgMonthlyMaxEquityDd": 2886.9,
+        "avgMonthlyMaxEquityDdPct": 22.481,
+        "periodLabel": "2026.03.09 – 2026.10.19"
+      }
+    },
+    {
+      "product": "scalper",
+      "reportType": "backtest",
+      "old": {
+        "avgMonthlyNetProfit": 40,
+        "avgMonthlyReturnPct": 40,
+        "avgMonthlyMaxEquityDd": 12,
+        "avgMonthlyMaxEquityDdPct": 12
+      },
+      "excelBacked": {
+        "avgMonthlyNetProfit": 61.8,
+        "avgMonthlyReturnPct": 24.5383,
+        "avgMonthlyMaxEquityDd": 16.48,
+        "avgMonthlyMaxEquityDdPct": 4.05,
+        "periodLabel": "2026.01.01 – 2026.10.16"
+      }
+    },
+    {
+      "product": "swing",
+      "reportType": "backtest",
+      "old": {
+        "avgMonthlyNetProfit": 500,
+        "avgMonthlyReturnPct": 50,
+        "avgMonthlyMaxEquityDd": 300,
+        "avgMonthlyMaxEquityDdPct": 30
+      },
+      "excelBacked": {
+        "avgMonthlyNetProfit": 1016.32,
+        "avgMonthlyReturnPct": 108.355,
+        "avgMonthlyMaxEquityDd": 668.45,
+        "avgMonthlyMaxEquityDdPct": 13.4195,
+        "periodLabel": "2026.01.01 – 2026.10.16"
+      }
+    }
+  ]
+}

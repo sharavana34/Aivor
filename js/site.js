@@ -13,13 +13,23 @@
         }
         el.classList.remove("is-disabled", "is-coming-soon");
         el.removeAttribute("aria-disabled");
+        if (el.classList.contains("header-social__link")) {
+          el.removeAttribute("title");
+        }
       } else {
         el.setAttribute("href", "#");
         el.classList.add("is-coming-soon");
         el.setAttribute("aria-disabled", "true");
+        el.removeAttribute("target");
+        el.removeAttribute("rel");
         el.addEventListener("click", (e) => e.preventDefault());
         const label = el.querySelector("[data-coming-soon-label]");
         if (label) label.textContent = "Coming soon";
+        /* Header icons stay visible when URL is null; no invented href */
+        if (el.classList.contains("header-social__link")) {
+          const name = el.getAttribute("aria-label") || "Social";
+          el.setAttribute("title", `${name} — coming soon`);
+        }
       }
     });
   }

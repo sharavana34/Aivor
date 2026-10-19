@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FAQ &middot; AIVOR by Vyuha Labs</title>
-<meta name="description" content="Frequently asked questions about AIVOR trading systems, live performance, access, and the Analyze report tool.">
+<meta name="description" content="Frequently asked questions about AIVOR systems, MetaTrader 5 setup, copy trading, performance reports, and trading risk.">
 <meta name="theme-color" content="#0B0F14">
 <link rel="canonical" href="faq.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/faq.css">
 </head>
 <body class="page-faq">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -35,8 +36,24 @@
         <a href="faq.html" data-nav="faq.html">FAQ</a>
         <a href="contact.html" data-nav="contact.html">Contact</a>
       </div>
-      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Your Report</a>
     </nav>
+    <div class="header-actions">
+      <div class="header-social" aria-label="Social media">
+      <a class="header-social__link" data-config-url="TELEGRAM_CONTACT_URL" aria-label="Telegram" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-2.82 2.35z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="WHATSAPP_URL" aria-label="WhatsApp" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="INSTAGRAM_URL" aria-label="Instagram" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="FACEBOOK_URL" aria-label="Facebook" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Report</a>
+    </div>
     <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
       <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
     </button>
@@ -44,80 +61,291 @@
 </header>
 
 <main id="main">
-  <header class="page-hero page-hero--faq">
-    <div class="section-inner">
-      <p class="eyebrow">FAQ</p>
-      <h1>Answers before you allocate</h1>
-      <p class="page-lead">Straight answers on what AIVOR is, where to verify performance, and how access works.</p>
-    </div>
-  </header>
+  <div class="faq-wrap">
+    <header class="page-hero faq-hero" id="top">
+      <p class="faq-eyebrow">Help centre</p>
+      <h1>Frequently Asked <span>Questions.</span></h1>
+      <p class="faq-hero-lead">Clear answers about AIVOR systems, MetaTrader 5 setup, copy trading, performance reports, and trading risk.</p>
+      <div class="faq-search" role="search">
+        <span class="faq-search-icon" aria-hidden="true">&#8981;</span>
+        <input id="faq-search" type="search" placeholder="Search questions, e.g. MT5 setup, demo, drawdown..." aria-label="Search frequently asked questions" autocomplete="off">
+        <button class="faq-search-clear" id="faq-clear" type="button">Clear</button>
+      </div>
+    </header>
 
-  <section class="section section-faq" aria-labelledby="faq-title">
-    <div class="section-inner">
-      <h2 id="faq-title" class="visually-hidden">Frequently asked questions</h2>
-      <div class="faq-list glass-panel reveal">
-        <div class="faq-item">
-          <button class="faq-q" type="button" aria-expanded="false" id="faq-q1" aria-controls="faq-a1">What is <span data-aivor-mark data-aivor-size="inline">AIVOR</span>?</button>
-          <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
-            <p>AIVOR is a suite of MetaTrader 5 expert advisors by Vyuha Labs — Artificial Intelligence for Vision, Optimisation &amp; Research. The live flagship is AIVOR HF; Scalper and Swing are planned variants.</p>
-          </div>
+    <div class="faq-content">
+      <aside class="faq-sidebar" aria-label="FAQ categories">
+        <h2>Browse topics</h2>
+        <button class="faq-cat is-active" type="button" data-category="all" aria-pressed="true"><span class="faq-cat-ico" aria-hidden="true">&#9638;</span>All questions<span class="faq-cat-count">16</span></button>
+        <button class="faq-cat" type="button" data-category="general" aria-pressed="false"><span class="faq-cat-ico" aria-hidden="true">&#9678;</span>General<span class="faq-cat-count">3</span></button>
+        <button class="faq-cat" type="button" data-category="products" aria-pressed="false"><span class="faq-cat-ico" aria-hidden="true">&#9671;</span>Products &amp; EAs<span class="faq-cat-count">3</span></button>
+        <button class="faq-cat" type="button" data-category="setup" aria-pressed="false"><span class="faq-cat-ico" aria-hidden="true">&#9881;</span>MT5 Setup<span class="faq-cat-count">3</span></button>
+        <button class="faq-cat" type="button" data-category="copy" aria-pressed="false"><span class="faq-cat-ico" aria-hidden="true">&#8644;</span>Copy Trading<span class="faq-cat-count">2</span></button>
+        <button class="faq-cat" type="button" data-category="performance" aria-pressed="false"><span class="faq-cat-ico" aria-hidden="true">&#9636;</span>Performance<span class="faq-cat-count">2</span></button>
+        <button class="faq-cat" type="button" data-category="risk" aria-pressed="false"><span class="faq-cat-ico" aria-hidden="true">&#9670;</span>Risk &amp; Safety<span class="faq-cat-count">3</span></button>
+      </aside>
+
+      <div class="faq-main">
+        <div class="faq-result-line">
+          <span id="faq-result-text">Showing <strong>16</strong> questions</span>
+          <span>Click a question to expand</span>
         </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button" aria-expanded="false" id="faq-q2" aria-controls="faq-a2">Where can I see live performance?</button>
-          <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
-            <p>AIVOR HF is tracked on MyFXBook. We link to that portfolio instead of publishing unverified marketing statistics on this site.</p>
-          </div>
+
+        <div id="faq-container">
+          <section class="faq-group" data-group="general" aria-labelledby="faq-group-general">
+            <h2 class="faq-group-title" id="faq-group-general">General</h2>
+            <div class="faq-acc-list">
+              <div class="faq-acc-item" data-category="general">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q1" aria-controls="faq-a1">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  What is <span data-aivor-mark data-aivor-size="inline">AIVOR</span>?
+                </button>
+                <div class="faq-acc-a" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
+                  <p><span data-aivor-mark data-aivor-size="inline">AIVOR</span> is a suite of MetaTrader 5 expert advisors and related tools by Vyuha Labs (Artificial Intelligence for Vision, Optimisation &amp; Research). Each product can have different rules, settings, and report availability. Review the <a href="products.html">Products</a> page and the product documentation before use.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="general">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q2" aria-controls="faq-a2">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Do I need trading experience to use an EA?
+                </button>
+                <div class="faq-acc-a" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+                  <p>You should understand basics such as lot size, leverage, spread, equity, and drawdown before running an EA. Start on a demo account and learn how the strategy behaves before risking real money. See <a href="how-it-works.html">How It Works</a> for the recommended workflow.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="general">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q3" aria-controls="faq-a3">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  What is the Analyze report tool?
+                </button>
+                <div class="faq-acc-a" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+                  <p>A browser-only utility on the <a href="analyze.html">Analyze</a> page that reads MetaTrader 5 Trade History or Strategy Tester Excel exports on your device. Files stay on your computer; nothing is uploaded to a server.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="faq-group" data-group="products" aria-labelledby="faq-group-products">
+            <h2 class="faq-group-title" id="faq-group-products">Products &amp; EAs</h2>
+            <div class="faq-acc-list">
+              <div class="faq-acc-item" data-category="products">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q4" aria-controls="faq-a4">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  What is the difference between HF, Scalper, and Swing?
+                </button>
+                <div class="faq-acc-a" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
+                  <p>They are different trading styles on MetaTrader 5 (primarily XAUUSD). <strong>HF</strong> targets more frequent opportunities and currently has both live and backtest reports. <strong>Scalper</strong> targets shorter-term setups and <strong>Swing</strong> longer-hold trades; available reports for Scalper and Swing are backtests only. Names alone do not guarantee a holding time or outcome. Compare details on <a href="products.html">Products</a> and report types on <a href="performance.html">Performance</a>.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="products">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q5" aria-controls="faq-a5">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Which instruments do AIVOR products support?
+                </button>
+                <div class="faq-acc-a" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden>
+                  <p>Check each product&rsquo;s supported symbols and your broker&rsquo;s symbol naming (suffixes can differ). Verify compatibility before attaching an EA to a chart. Current product specs are listed on <a href="products.html">Products</a>.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="products">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q6" aria-controls="faq-a6">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Can I change lot size and settings?
+                </button>
+                <div class="faq-acc-a" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden>
+                  <p>Only change parameters the specific EA exposes and that you understand. Review the product manual and test changes on demo first. Increasing lot size can increase losses as well as potential gains.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="faq-group" data-group="setup" aria-labelledby="faq-group-setup">
+            <h2 class="faq-group-title" id="faq-group-setup">MT5 Setup</h2>
+            <div class="faq-acc-list">
+              <div class="faq-acc-item" data-category="setup">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q7" aria-controls="faq-a7">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  How do I install an EA in MetaTrader 5?
+                </button>
+                <div class="faq-acc-a" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden>
+                  <p>Follow the installation steps supplied with the product. Typically you open MT5&rsquo;s data folder, place the EA in the Experts folder, refresh or restart MT5, then attach it to a compatible chart. If the product instructions differ, follow those. Overview of the workflow: <a href="how-it-works.html">How It Works</a>.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="setup">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q8" aria-controls="faq-a8">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Can I test an EA on a demo account?
+                </button>
+                <div class="faq-acc-a" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden>
+                  <p>Yes. Demo testing is recommended to check installation, inputs, symbol compatibility, and trade behavior. Demo fills and costs may differ from live-market conditions.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="setup">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q9" aria-controls="faq-a9">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Do I need a VPS?
+                </button>
+                <div class="faq-acc-a" id="faq-a9" role="region" aria-labelledby="faq-q9" hidden>
+                  <p>A VPS can keep MT5 running when your personal computer is off. It is useful for strategies that need continuous terminal uptime, but it does not guarantee uptime, execution quality, or profit.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="faq-group" data-group="copy" aria-labelledby="faq-group-copy">
+            <h2 class="faq-group-title" id="faq-group-copy">Copy Trading</h2>
+            <div class="faq-acc-list">
+              <div class="faq-acc-item" data-category="copy">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q10" aria-controls="faq-a10">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Is copy trading the same as running an EA?
+                </button>
+                <div class="faq-acc-a" id="faq-a10" role="region" aria-labelledby="faq-q10" hidden>
+                  <p>No. With an EA, the software runs on your MT5 terminal or VPS. Copy trading generally mirrors trades through a broker or provider&rsquo;s copy-trading service. Requirements, fees, controls, and risks can differ. See the <a href="copy-trading.html">Copy Trading</a> directory for current setups.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="copy">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q11" aria-controls="faq-a11">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Which brokers are currently supported?
+                </button>
+                <div class="faq-acc-a" id="faq-a11" role="region" aria-labelledby="faq-q11" hidden>
+                  <p>Check the <a href="copy-trading.html">Copy Trading</a> page for the latest verified broker-specific setups and destination links. A broker name appearing elsewhere does not by itself mean a strategy is configured or available on that broker.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="faq-group" data-group="performance" aria-labelledby="faq-group-performance">
+            <h2 class="faq-group-title" id="faq-group-performance">Performance &amp; Reports</h2>
+            <div class="faq-acc-list">
+              <div class="faq-acc-item" data-category="performance">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q12" aria-controls="faq-a12">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  What is the difference between live and backtest results?
+                </button>
+                <div class="faq-acc-a" id="faq-a12" role="region" aria-labelledby="faq-q12" hidden>
+                  <p>Live results come from actual trading activity; backtests simulate a strategy against historical data and assumptions. Backtests may not reflect real spreads, slippage, liquidity, or future conditions. On this site, HF currently has live and backtest reports; Scalper and Swing have backtest reports only. Always check which type you are viewing on <a href="performance.html">Performance</a>. Do not treat backtests as live results.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="performance">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q13" aria-controls="faq-a13">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Why might a performance report be unavailable?
+                </button>
+                <div class="faq-acc-a" id="faq-a13" role="region" aria-labelledby="faq-q13" hidden>
+                  <p>A report may not yet be supplied, imported, or mapped to the selected product and report type. The site shows an unavailable status rather than inventing metrics. Check <a href="performance.html">Performance</a> again when the relevant report has been published.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="faq-group" data-group="risk" aria-labelledby="faq-group-risk">
+            <h2 class="faq-group-title" id="faq-group-risk">Risk &amp; Safety</h2>
+            <div class="faq-acc-list">
+              <div class="faq-acc-item" data-category="risk">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q14" aria-controls="faq-a14">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  Are profits guaranteed?
+                </button>
+                <div class="faq-acc-a" id="faq-a14" role="region" aria-labelledby="faq-q14" hidden>
+                  <p>No. Trading involves substantial risk of loss, and you can lose some or all of your capital. Past performance and backtest results do not guarantee future outcomes. AIVOR systems are tools&mdash;not financial advice.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="risk">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q15" aria-controls="faq-a15">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  What does drawdown mean?
+                </button>
+                <div class="faq-acc-a" id="faq-a15" role="region" aria-labelledby="faq-q15" hidden>
+                  <p>Drawdown measures a decline from an account&rsquo;s equity or balance peak to a later low, depending on how the metric is defined. Always check whether a report uses balance-based or equity-based drawdown and whether the figure is absolute or percentage-based.</p>
+                </div>
+              </div>
+              <div class="faq-acc-item" data-category="risk">
+                <button class="faq-acc-q" type="button" aria-expanded="false" id="faq-q16" aria-controls="faq-a16">
+                  <span class="faq-qmark" aria-hidden="true">Q.</span>
+                  What should I check before trading live?
+                </button>
+                <div class="faq-acc-a" id="faq-a16" role="region" aria-labelledby="faq-q16" hidden>
+                  <p>Verify product and broker compatibility, test on demo, understand the drawdown you could tolerate, use conservative position sizing, check spreads and commissions, and monitor the account. Never trade money you cannot afford to lose. More context: <a href="how-it-works.html">How It Works</a>.</p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button" aria-expanded="false" id="faq-q3" aria-controls="faq-a3">Is performance guaranteed?</button>
-          <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
-            <p>No. Trading involves substantial risk of loss. Past results — including any live track record — do not guarantee future results.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button" aria-expanded="false" id="faq-q4" aria-controls="faq-a4">How do I get access?</button>
-          <div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
-            <p>Contact AIVOR on Telegram for trial and access details. Open Copy Trading in the nav to compare strategy setups in the directory, open View Details for a setup, then use Copy Strategy when an external broker URL is configured.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button" aria-expanded="false" id="faq-q5" aria-controls="faq-a5">What is the Analyze report tool?</button>
-          <div class="faq-a" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden>
-            <p>A browser-only utility that reads MetaTrader 5 Trade History or Strategy Tester Excel exports on your device. Nothing is uploaded to a server.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button" aria-expanded="false" id="faq-q6" aria-controls="faq-a6">Which platforms are supported?</button>
-          <div class="faq-a" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden>
-            <p>AIVOR systems target MetaTrader 5. Broker and account prerequisites are confirmed during access onboarding.</p>
-          </div>
+
+        <div class="faq-empty" id="faq-empty" aria-live="polite" aria-hidden="true">
+          <strong>No matching questions found</strong>
+          Try a different search term or choose another category.
         </div>
       </div>
     </div>
-  </section>
+
+    <section class="faq-support" id="support" aria-labelledby="faq-support-title">
+      <div>
+        <h2 id="faq-support-title">Still need a hand?</h2>
+        <p>Visit the relevant product page or contact AIVOR support for help with documentation, setup, or report availability.</p>
+      </div>
+      <div class="faq-support-actions">
+        <a class="faq-btn faq-btn--primary" href="products.html">Explore Products &#8599;</a>
+        <a class="faq-btn faq-btn--secondary" data-config-url="TELEGRAM_CONTACT_URL" href="contact.html">Telegram Support &#8599;</a>
+        <a class="faq-btn faq-btn--secondary" href="contact.html">Contact</a>
+      </div>
+    </section>
+
+    <p class="faq-inline-risk">
+      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+    </p>
+  </div>
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-brand">
-      <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
-      <span>by Vyuha Labs</span>
-      <p class="footer-tag">Smart Trading. Engineered.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
+        <span>by Vyuha Labs</span>
+        <p class="footer-tag">Smart Trading. Engineered.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Explore</p>
+          <a href="products.html">Products</a>
+          <a href="copy-trading.html">Copy Trading</a>
+          <a href="performance.html">Performance</a>
+          <a href="how-it-works.html">How It Works</a>
+        </div>
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Tools</p>
+          <a href="analyze.html">Analyze Report</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Connect</p>
+          <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
+          <div class="footer-social" aria-label="Social media">
+            <a class="footer-social__link" data-config-url="TELEGRAM_CONTACT_URL" aria-label="Telegram" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-2.82 2.35z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="WHATSAPP_URL" aria-label="WhatsApp" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="INSTAGRAM_URL" aria-label="Instagram" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="FACEBOOK_URL" aria-label="Facebook" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+      </nav>
     </div>
-    <nav class="footer-nav" aria-label="Footer">
-      <a href="products.html">Products</a>
-      <a href="copy-trading.html">Copy Trading</a>
-      <a href="performance.html">Performance</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="faq.html">FAQ</a>
-      <a href="analyze.html">Analyze Your Own Report</a>
-      <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
-    </nav>
-    <p class="risk-disclosure">
-      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools — not financial advice. Verify all claims independently before allocating capital.
-    </p>
-    <p class="copyright">© <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+    <div class="footer-meta">
+      <p class="risk-disclosure">
+        Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+      </p>
+      <p class="copyright">&copy; <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 
@@ -125,5 +353,6 @@
 <script src="js/wordmark.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/site.js"></script>
+<script src="js/faq.js"></script>
 </body>
 </html>

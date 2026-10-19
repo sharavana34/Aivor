@@ -1,11 +1,18 @@
-/* Aivor report analyzer — P/L math matches the shipped reference dashboard. */
+/* Aivor report analyzer — UI layer (math in analyze-core.js). */
 (function () {
+  const Core = window.AivorAnalyzeCore;
+  if (!Core) {
+    console.error("AivorAnalyzeCore missing — load js/analyze-core.js first.");
+    return;
+  }
+
   const $ = (id) => document.getElementById(id);
 
   let DATA = null;
   let DAYS = [];
   let BASE = 0;
   let state = { view: "day", month: "all", week: "all", from: "", to: "", side: "all", q: "", sort: "d", dir: 1 };
+  let dateRangeError = "";
 
   function parseISO(s) {
     const [y, m, d] = s.split("-").map(Number);
@@ -28,7 +35,7 @@
     return d + "-" + m + "-" + y;
   }
   function round2(n) {
-    return Math.round(n * 100) / 100;
+    return Core.round2(n);
   }
   function money(n, digits) {
     const v = Number(n) || 0;
@@ -50,24 +57,8 @@
   function esc(s) {
     return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
   }
-
-  function parseNum(v) {
-    if (v == null || v === "") return 0;
-    if (typeof v === "number") return v;
-    let s = String(v).trim().replace(/\u00a0/g, " ");
-    s = s.replace(/\s+/g, "").replace(/^\+/, "");
-    const n = Number(s);
-    return Number.isFinite(n) ? n : 0;
-  }
-
-  function parseDealDate(t) {
-    const m = String(t).match(/^(\d{4})\.(\d{2})\.(\d{2})/);
-    return m ? m[1] + "-" + m[2] + "-" + m[3] : null;
-  }
-
-  function isClosedDirection(dir) {
-    // Match reference dashboard: count Direction "out" only (not "out by").
-    return String(dir || "").toLowerCase() === "out";
+  function na(label) {
+    return label || "Not available from this report";
   }
 
   function showError(msg) {
@@ -118,131 +109,6 @@
     loading = false;
   }
 
-  function extractHeaderMeta(rows) {
-    const meta = {
-      kind: "unknown",
-      name: "",
-      account: "",
-      company: "",
-      currency: "",
-      depositHeader: null,
-      expert: "",
-      symbol: "",
-      period: "",
-      server: "",
-    };
-    const title = String(rows[0] && rows[0][0] || "");
-    if (/Trade History/i.test(title)) meta.kind = "live";
-    else if (/Strategy Tester/i.test(title)) meta.kind = "tester";
-
-    if (rows[1] && rows[1][0] && !/^(Settings|Name:)/i.test(String(rows[1][0]))) {
-      meta.server = String(rows[1][0]).trim();
-    }
-
-    for (let i = 0; i < Math.min(120, rows.length); i++) {
-      const a = String(rows[i][0] || "").trim();
-      const v = rows[i][3];
-      if (a.startsWith("Name:")) meta.name = String(v || "").trim();
-      if (a.startsWith("Account:")) {
-        const s = String(v || "");
-        meta.account = (s.match(/^(\d+)/) || [])[1] || s.split("(")[0].trim();
-        const cur = s.match(/\(([A-Z]{3})\b/);
-        if (cur) meta.currency = cur[1];
-        if (/Vantage/i.test(s) && !meta.company) meta.company = "Vantage Markets";
-      }
-      if (a.startsWith("Company:")) {
-        meta.company = String(v || "").replace(/\s*\(Pty\)\s*Ltd\.?/i, "").trim();
-      }
-      if (a.startsWith("Currency:")) {
-        const cur = String(v || "").trim();
-        if (/^[A-Z]{3}$/.test(cur)) meta.currency = cur;
-      }
-      if (a.startsWith("Initial Deposit:") || a === "Initial Deposit") {
-        meta.depositHeader = parseNum(v);
-      }
-      if (a.startsWith("Expert:")) meta.expert = String(v || "").trim();
-      if (a.startsWith("Symbol:")) meta.symbol = String(v || "").trim();
-      if (a.startsWith("Period:")) meta.period = String(v || "").trim();
-    }
-    return meta;
-  }
-
-  function findDealsSection(rows) {
-    for (let i = 0; i < rows.length; i++) {
-      if (String(rows[i][0] || "").trim() === "Deals") {
-        const header = (rows[i + 1] || []).map((x) => String(x == null ? "" : x).trim());
-        if (header[0] === "Time" && header.indexOf("Deal") >= 0 && header.indexOf("Balance") >= 0) {
-          return { start: i, header };
-        }
-      }
-    }
-    return null;
-  }
-
-  function buildDaysFromDeals(deals) {
-    const byDate = new Map();
-    deals.forEach((d) => {
-      if (!byDate.has(d.date)) byDate.set(d.date, []);
-      byDate.get(d.date).push(d);
-    });
-
-    let deposited = 0;
-    let withdrawn = 0;
-    let grossAll = 0;
-    const days = [];
-    let prevBal = 0;
-
-    for (const [date, list] of byDate) {
-      let dep = 0;
-      let wd = 0;
-      let dayGross = 0;
-      let dayComm = 0;
-      let wins = 0;
-      let losses = 0;
-      let out = 0;
-
-      list.forEach((d) => {
-        if (d.type === "balance") {
-          if (d.profit > 0) {
-            dep += d.profit;
-            deposited += d.profit;
-          } else if (d.profit < 0) {
-            wd += d.profit; // negative
-            withdrawn += Math.abs(d.profit);
-          }
-        } else {
-          dayGross += d.profit;
-          dayComm += d.commission + d.fee + d.swap;
-          if (isClosedDirection(d.direction)) {
-            out += 1;
-            if (d.profit > 0) wins += 1;
-            else if (d.profit < 0) losses += 1;
-          }
-        }
-      });
-
-      const endBal = list[list.length - 1].balance;
-      // Daily trading P/L = end balance − previous end − deposits − withdrawals (wd signed negative)
-      const pl = round2(endBal - prevBal - dep - wd);
-      days.push({
-        d: date,
-        pl,
-        bal: endBal,
-        gross: round2(dayGross),
-        comm: round2(dayComm),
-        wins,
-        losses,
-        out,
-        dep: round2(dep),
-        wd: round2(wd),
-      });
-      grossAll += dayGross;
-      prevBal = endBal;
-    }
-
-    return { days, deposited: round2(deposited), withdrawn: round2(withdrawn), gross: round2(grossAll) };
-  }
-
   function enrichDays(rawDays, base) {
     const days = rawDays.map((d, i) => {
       const dt = parseISO(d.d);
@@ -272,88 +138,12 @@
     return days;
   }
 
-  function parseWorkbook(arrayBuffer, fileName) {
-    if (typeof XLSX === "undefined") throw new Error("SheetJS failed to load.");
-    const wb = XLSX.read(arrayBuffer, { type: "array", cellDates: false });
-    const sheet = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "", raw: false });
-    if (!rows.length) throw new Error("This workbook is empty.");
-
-    const meta = extractHeaderMeta(rows);
-    const dealsSec = findDealsSection(rows);
-    if (!dealsSec) {
-      throw new Error("Could not find a Deals table in this file. Export Trade History or Strategy Tester with the Deals section included.");
-    }
-
-    const col = {};
-    dealsSec.header.forEach((h, i) => {
-      if (h) col[h] = i;
-    });
-    const need = ["Time", "Type", "Profit", "Balance"];
-    for (const n of need) {
-      if (col[n] == null) throw new Error("Deals table is missing the “" + n + "” column.");
-    }
-
-    const deals = [];
-    for (let i = dealsSec.start + 2; i < rows.length; i++) {
-      const r = rows[i];
-      const time = String(r[col.Time] || "");
-      if (!/^\d{4}\.\d{2}\.\d{2}/.test(time)) break;
-      const date = parseDealDate(time);
-      if (!date) continue;
-      deals.push({
-        time,
-        date,
-        type: String(r[col.Type] || "").toLowerCase(),
-        direction: String(r[col.Direction] || "").toLowerCase(),
-        profit: parseNum(r[col.Profit]),
-        balance: parseNum(r[col.Balance]),
-        commission: parseNum(r[col.Commission]),
-        fee: col.Fee != null ? parseNum(r[col.Fee]) : 0,
-        swap: parseNum(r[col.Swap]),
-        symbol: String(r[col.Symbol] || ""),
-        comment: String(r[col.Comment] || ""),
-      });
-    }
-    if (!deals.length) throw new Error("The Deals table has no deal rows.");
-
-    const built = buildDaysFromDeals(deals);
-    let deposited = built.deposited;
-    let base = deposited;
-    if (base === 0 && meta.depositHeader) {
-      deposited = meta.depositHeader;
-      base = meta.depositHeader;
-    }
-    if (base <= 0) throw new Error("Could not determine the capital base (deposits / initial deposit).");
-
-    if (!meta.currency && /USC/i.test(fileName || "")) meta.currency = "USC";
-    if (!meta.account) {
-      const m = String(fileName || "").match(/(\d{5,})/);
-      if (m) meta.account = m[1];
-    }
-
-    return {
-      account: meta.account || "—",
-      name: meta.name || (meta.kind === "tester" ? meta.expert || "Strategy Tester" : "Account"),
-      company: meta.company || meta.server || "—",
-      currency: meta.currency || "",
-      kind: meta.kind,
-      symbol: meta.symbol,
-      period: meta.period,
-      base,
-      deposited,
-      withdrawn: built.withdrawn,
-      gross: built.gross,
-      days: built.days,
-      fileName: fileName || "report.xlsx",
-    };
-  }
-
   function loadData(data) {
     DATA = data;
     BASE = data.base;
     DAYS = enrichDays(data.days, BASE);
     state = { view: "day", month: "all", week: "all", from: "", to: "", side: "all", q: "", sort: "d", dir: 1 };
+    dateRangeError = "";
     $("workspace").style.display = "block";
     $("download").disabled = false;
     $("month").value = "all";
@@ -389,7 +179,28 @@
     });
   }
 
+  function validateDateRange() {
+    dateRangeError = "";
+    if (state.from && state.to && state.from > state.to) {
+      dateRangeError = "“From” date must be on or before “To” date.";
+    }
+    const err = $("filterError");
+    if (err) {
+      if (dateRangeError) {
+        err.hidden = false;
+        err.textContent = dateRangeError;
+      } else {
+        err.hidden = true;
+        err.textContent = "";
+      }
+    }
+    if ($("from")) $("from").classList.toggle("is-invalid", !!dateRangeError);
+    if ($("to")) $("to").classList.toggle("is-invalid", !!dateRangeError);
+    return !dateRangeError;
+  }
+
   function filteredDays() {
+    if (!validateDateRange()) return [];
     const q = state.q.trim().toLowerCase();
     return DAYS.filter((d) => {
       if (state.month !== "all" && d.monthKey !== state.month) return false;
@@ -404,6 +215,24 @@
       }
       return true;
     });
+  }
+
+  function activeFilterLabels() {
+    const bits = [];
+    if (state.month !== "all") {
+      const opt = $("month").selectedOptions[0];
+      bits.push(opt ? opt.textContent : state.month);
+    }
+    if (state.week !== "all") {
+      const opt = $("week").selectedOptions[0];
+      bits.push(opt ? opt.textContent : state.week);
+    }
+    if (state.from) bits.push("From " + pretty(state.from));
+    if (state.to) bits.push("To " + pretty(state.to));
+    if (state.side === "win") bits.push("Profit days only");
+    if (state.side === "loss") bits.push("Loss days only");
+    if (state.q.trim()) bits.push("Search “" + state.q.trim() + "”");
+    return bits;
   }
 
   function groupOf(days, mode) {
@@ -423,6 +252,7 @@
         trades: d.out,
         wins: d.wins,
         losses: d.losses,
+        breakeven: d.breakeven || 0,
         gross: d.gross,
         comm: d.comm,
         from: d.d,
@@ -444,6 +274,7 @@
       const trades = list.reduce((s, x) => s + x.out, 0);
       const wins = list.reduce((s, x) => s + x.wins, 0);
       const losses = list.reduce((s, x) => s + x.losses, 0);
+      const breakeven = list.reduce((s, x) => s + (x.breakeven || 0), 0);
       const gross = round2(list.reduce((s, x) => s + x.gross, 0));
       const comm = round2(list.reduce((s, x) => s + x.comm, 0));
       const winDays = list.filter((x) => x.pl > 0).length;
@@ -465,6 +296,7 @@
         trades,
         wins,
         losses,
+        breakeven,
         gross,
         comm,
         from: first.d,
@@ -474,42 +306,6 @@
       });
     });
     return rows;
-  }
-
-  function stats(days) {
-    const pl = round2(days.reduce((s, d) => s + d.pl, 0));
-    const wins = days.filter((d) => d.pl > 0);
-    const losses = days.filter((d) => d.pl < 0);
-    const gain = wins.reduce((s, d) => s + d.pl, 0);
-    const loss = losses.reduce((s, d) => s + d.pl, 0);
-    let peak = days.length ? days[0].bal - days[0].pl : 0;
-    let maxDd = 0;
-    let maxDdPct = 0;
-    days.forEach((d) => {
-      if (d.bal > peak) peak = d.bal;
-      const dd = peak - d.bal;
-      if (dd > maxDd) {
-        maxDd = dd;
-        maxDdPct = peak > 0 ? (dd / peak) * 100 : 0;
-      }
-    });
-    const best = days.reduce((a, d) => (d.pl > a.pl ? d : a), days[0] || { pl: 0, d: "" });
-    const worst = days.reduce((a, d) => (d.pl < a.pl ? d : a), days[0] || { pl: 0, d: "" });
-    const pf = loss < 0 ? gain / Math.abs(loss) : null;
-    return {
-      pl,
-      ret: (pl / BASE) * 100,
-      days: days.length,
-      winDays: wins.length,
-      lossDays: losses.length,
-      pf,
-      maxDd,
-      maxDdPct,
-      best,
-      worst,
-      bal: days.length ? days[days.length - 1].bal : 0,
-      startBal: days.length ? round2(days[0].bal - days[0].pl) : 0,
-    };
   }
 
   function curLabel() {
@@ -536,7 +332,6 @@
     bits.push(pretty(first.d) + " to " + pretty(last.d));
     $("subtitle").textContent = bits.join(" · ");
 
-    const cur = curLabel();
     const net = last.cum;
     $("pills").innerHTML = [
       ["Deposited", withCur(money(DATA.deposited, 2))],
@@ -550,9 +345,9 @@
 
     const baseLabel = withCur(money(BASE, 0)) || money(BASE, 0);
     let note =
-      "P/L is the realized change in balance each day, after commission, fees and swap. Deposits and withdrawals are excluded from P/L. Profit % and Total Return use the <b>" +
+      "P/L is the realized change in <b>balance</b> each day, after commission, fees and swap. Deposits, withdrawals and transfers are excluded from P/L. Profit % and Total Return use the <b>" +
       esc(baseLabel) +
-      "</b> capital base";
+      "</b> capital base (sum of deposit deals, or Initial Deposit when none)";
     if (isUsc()) {
       note +=
         " (100 USC = 1 USD, so the deposit is " +
@@ -561,7 +356,21 @@
         usd(net) +
         ")";
     }
-    note += ". Gross profit in the terminal, before commission, was " + withCur(money(DATA.gross, 2)) + ".";
+    note += ". Gross profit in the Profit column, before commission, was " + withCur(money(DATA.gross, 2)) + ".";
+    note +=
+      " Closed trades: " +
+      esc(DATA.tradeGroupingNote || "") +
+      " Max drawdown on this page is <b>balance-based</b> (end-of-day peaks); floating equity drawdown is " +
+      (DATA.equityDrawdown
+        ? withCur(money(DATA.equityDrawdown.amount, 2)) +
+          " (" +
+          DATA.equityDrawdown.pct.toFixed(2) +
+          "%) from Strategy Tester Results"
+        : "not available from Deals alone") +
+      ".";
+    if (DATA.currencyNote) {
+      note += " Currency note from report: " + esc(DATA.currencyNote) + ".";
+    }
     $("footnote").innerHTML = note;
   }
 
@@ -570,32 +379,72 @@
     const usdHint = isUsc() ? "  ·  " + usd(s.pl) : "";
     const usdBal = isUsc() ? "  ·  " + usd(s.bal) : "";
     const curBit = cur ? cur : "account currency";
+    const t = s.trades || {};
+    const equityDd =
+      DATA.equityDrawdown != null
+        ? money(DATA.equityDrawdown.amount, 2) + " (" + DATA.equityDrawdown.pct.toFixed(2) + "%)"
+        : na();
+    const equityHint = DATA.equityDrawdown
+      ? "from Strategy Tester Results (full report, not filter-scoped)"
+      : "floating equity path not in Deals";
+
     const cards = [
-      ["Net P/L", (s.pl > 0 ? "+" : "") + money(s.pl, 2), curBit + usdHint, s.pl >= 0 ? "good" : "bad"],
+      ["Net P/L", (s.pl > 0 ? "+" : "") + money(s.pl, 2), curBit + usdHint + " · balance-based", s.pl >= 0 ? "good" : "bad"],
       ["Window return", pct(s.ret), "of " + withCur(money(BASE, 0)) + " deposited", s.ret >= 0 ? "good" : "bad"],
       ["Ending balance", money(s.bal, 2), curBit + usdBal + "  ·  started window " + money(s.startBal, 2), "gold"],
-      ["Profit days", s.winDays + " / " + s.days, s.lossDays + " loss days  ·  profit factor " + (s.pf == null ? "—" : s.pf.toFixed(2)), "blue"],
+      [
+        "Profit days",
+        s.winDays + " / " + s.days,
+        s.lossDays + " loss days  ·  day P/F " + (s.dayProfitFactor == null ? "—" : s.dayProfitFactor.toFixed(2)),
+        "blue",
+      ],
       ["Best day", s.best && s.best.d ? (s.best.pl > 0 ? "+" : "") + money(s.best.pl, 2) : "—", s.best && s.best.d ? pretty(s.best.d) : "", "good"],
       ["Worst day", s.worst && s.worst.d ? money(s.worst.pl, 2) : "—", s.worst && s.worst.d ? pretty(s.worst.d) : "", "bad"],
-      ["Max drawdown", money(s.maxDd, 2), s.maxDdPct.toFixed(2) + "% from a balance peak in this view", "bad"],
       [
-        "Trades closed",
-        money(
-          filteredDays().reduce((a, d) => a + d.out, 0),
-          0
-        ),
-        "wins " +
-          money(
-            filteredDays().reduce((a, d) => a + d.wins, 0),
-            0
-          ) +
-          " · losses " +
-          money(
-            filteredDays().reduce((a, d) => a + d.losses, 0),
-            0
-          ),
+        "Max balance DD",
+        money(s.maxDd, 2),
+        s.maxDdPct.toFixed(2) + "% from a balance peak in this view",
+        "bad",
+      ],
+      [
+        "Recovery factor",
+        s.recoveryFactor == null ? na("—") : s.recoveryFactor.toFixed(2),
+        s.recoveryFactor == null ? "needs net P/L and balance DD > 0" : "net P/L ÷ max balance DD",
         "purple",
       ],
+      [
+        "Win rate",
+        t.winRatePct == null ? "—" : t.winRatePct.toFixed(2) + "%",
+        t.wins + " wins · " + t.losses + " losses · " + (t.breakeven || 0) + " BE",
+        "good",
+      ],
+      [
+        "Profit factor",
+        t.profitFactor == null ? "—" : t.profitFactor.toFixed(2),
+        "Σ winning trade P/L ÷ |Σ losing trade P/L|",
+        "blue",
+      ],
+      [
+        "Avg win / loss",
+        (t.avgWin == null ? "—" : money(t.avgWin, 2)) + " / " + (t.avgLoss == null ? "—" : money(t.avgLoss, 2)),
+        "per closed trade in this view",
+        "gold",
+      ],
+      [
+        "Largest win / loss",
+        (t.largestWin == null ? "—" : "+" + money(t.largestWin, 2)) +
+          " / " +
+          (t.largestLoss == null ? "—" : money(t.largestLoss, 2)),
+        "closed trades · " + (DATA.tradeGrouping === "position" ? "by position" : "by close deal"),
+        "purple",
+      ],
+      [
+        "Trades closed",
+        money(t.closed || 0, 0),
+        DATA.tradeGrouping === "position" ? "grouped by Position ID" : "close deals (out + out by)",
+        "blue",
+      ],
+      ["Equity max DD", equityDd, equityHint, "bad"],
     ];
     $("kpis").innerHTML = cards
       .map(
@@ -603,6 +452,21 @@
           `<article class="kpi ${k}"><div class="label">${esc(l)}</div><div class="value ${k === "good" ? "goodnum" : k === "bad" ? "badnum" : ""}">${esc(v)}</div><div class="hint">${esc(h)}</div></article>`
       )
       .join("");
+  }
+
+  function renderFilterStatus(days) {
+    const el = $("filterStatus");
+    if (!el) return;
+    const labels = activeFilterLabels();
+    if (!labels.length) {
+      el.innerHTML =
+        `<span class="filter-status-count">${days.length} day${days.length === 1 ? "" : "s"} in view</span>` +
+        `<span class="filter-status-note">No filters · charts, KPIs, table and export stay in sync</span>`;
+      return;
+    }
+    el.innerHTML =
+      `<span class="filter-status-count">${days.length} day${days.length === 1 ? "" : "s"} match</span>` +
+      `<span class="filter-status-chips">${labels.map((l) => `<span class="filter-chip">${esc(l)}</span>`).join("")}</span>`;
   }
 
   function renderTable(rows) {
@@ -624,7 +488,7 @@
             ["Wins", "wins"],
             ["Losses", "losses"],
             ["Gross", "gross"],
-            ["Commission", "comm"],
+            ["Costs", "comm"],
           ]
         : [
             ["Period", "label"],
@@ -638,22 +502,28 @@
             ["Loss days", "lossDays"],
             ["Trades", "trades"],
             ["Gross", "gross"],
-            ["Commission", "comm"],
+            ["Costs", "comm"],
           ];
     const head = "<thead><tr>" + cols.map(([name, key]) => `<th data-k="${key}">${esc(name)}</th>`).join("") + "</tr></thead>";
     if (!rows.length) {
-      $("grid").innerHTML = head + '<tbody><tr><td class="empty" colspan="' + cols.length + '">Nothing matches these filters.</td></tr></tbody>';
+      const emptyMsg = dateRangeError
+        ? "Fix the date range to see results."
+        : "Nothing matches these filters.";
+      $("grid").innerHTML =
+        head + '<tbody><tr><td class="empty" colspan="' + cols.length + '">' + esc(emptyMsg) + "</td></tr></tbody>";
       return;
     }
     const body = rows
       .map((r) => {
         const tone = r.pl > 0 ? "win" : r.pl < 0 ? "loss" : "";
         const tds = cols
-          .map(([name, key]) => {
+          .map(([, key]) => {
             let val = r[key];
-            if (key === "pl" || key === "bal" || key === "gross" || key === "comm") val = `<span class="${cls(r[key])}">${money(r[key], 2)}</span>`;
-            else if (key === "pct" || key === "ret") val = `<span class="${cls(r[key])}">${pct(r[key])}</span>`;
-            else val = esc(val);
+            if (key === "pl" || key === "bal" || key === "gross" || key === "comm") {
+              val = `<span class="${cls(r[key])}">${money(r[key], 2)}</span>`;
+            } else if (key === "pct" || key === "ret") {
+              val = `<span class="${cls(r[key])}">${pct(r[key])}</span>`;
+            } else val = esc(val);
             return `<td>${val}</td>`;
           })
           .join("");
@@ -678,6 +548,10 @@
     const host = $("cards");
     if (state.view === "day") {
       host.innerHTML = "";
+      return;
+    }
+    if (!rows.length) {
+      host.innerHTML = '<p class="chart-empty">No periods match these filters.</p>';
       return;
     }
     host.innerHTML = rows
@@ -720,6 +594,31 @@
     return top + ((box.max - v) / (box.max - box.min)) * height;
   }
 
+  function chartEmpty(svg, captionEl, message) {
+    svg.innerHTML = "";
+    svg.onmousemove = null;
+    svg.onmouseleave = null;
+    svg.onclick = null;
+    if (captionEl) captionEl.textContent = "";
+    const parent = svg.parentElement;
+    let empty = parent && parent.querySelector(".chart-empty");
+    if (parent) {
+      if (!empty) {
+        empty = document.createElement("p");
+        empty.className = "chart-empty";
+        parent.appendChild(empty);
+      }
+      empty.hidden = false;
+      empty.textContent = message;
+    }
+  }
+
+  function clearChartEmpty(svg) {
+    const parent = svg.parentElement;
+    const empty = parent && parent.querySelector(".chart-empty");
+    if (empty) empty.hidden = true;
+  }
+
   function renderBalance(days) {
     const svg = $("balChart");
     const W = 760,
@@ -729,17 +628,27 @@
       T = 16,
       B = 28;
     if (days.length < 2) {
-      svg.innerHTML = "";
-      $("balCaption").textContent = "";
+      chartEmpty(
+        svg,
+        $("balCaption"),
+        days.length === 0
+          ? dateRangeError
+            ? "Fix the date range to plot balance."
+            : "No days in view — clear filters to see the balance chart."
+          : "Need at least two days in view to plot a balance line."
+      );
       return;
     }
+    clearChartEmpty(svg);
     const box = chartBox(days.map((d) => d.bal));
     const innerW = W - L - R,
       innerH = H - T - B;
     const step = innerW / (days.length - 1);
     const pts = days.map((d, i) => [L + i * step, yOf(d.bal, box, T, innerH)]);
     const line = pts.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
-    const area = line + ` ${pts[pts.length - 1][0].toFixed(1)},${(T + innerH).toFixed(1)} ${pts[0][0].toFixed(1)},${(T + innerH).toFixed(1)}`;
+    const area =
+      line +
+      ` ${pts[pts.length - 1][0].toFixed(1)},${(T + innerH).toFixed(1)} ${pts[0][0].toFixed(1)},${(T + innerH).toFixed(1)}`;
     const grids = [0, 0.25, 0.5, 0.75, 1]
       .map((t) => {
         const v = box.max - t * (box.max - box.min);
@@ -756,7 +665,8 @@
       .join("");
     svg.innerHTML = `${grids}<defs><linearGradient id="balStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00C2FF"/><stop offset="55%" stop-color="#1E88E5"/><stop offset="100%" stop-color="#4DD4FF"/></linearGradient></defs><polygon points="${area}" fill="rgba(0,194,255,.14)"></polygon>
     <polyline points="${line}" fill="none" stroke="url(#balStroke)" stroke-width="2.4" stroke-linejoin="round"></polyline>${xLabels}`;
-    $("balCaption").textContent = withCur(money(days[0].bal, 0) + " → " + money(days[days.length - 1].bal, 0));
+    $("balCaption").textContent =
+      withCur(money(days[0].bal, 0) + " → " + money(days[days.length - 1].bal, 0)) + " · end-of-day balance";
     svg.onmousemove = (ev) => {
       const rect = svg.getBoundingClientRect();
       const x = ((ev.clientX - rect.left) / rect.width) * W;
@@ -765,9 +675,9 @@
       const d = days[idx];
       const tip = $("tip");
       tip.style.display = "block";
-      tip.style.left = ev.clientX + 14 + "px";
+      tip.style.left = Math.min(ev.clientX + 14, window.innerWidth - 180) + "px";
       tip.style.top = ev.clientY + 14 + "px";
-      tip.innerHTML = `<b>${pretty(d.d)}</b><br>Balance ${withCur(money(d.bal, 2))}<br>Day ${money(d.pl, 2)} · ${pct(d.ret)} total`;
+      tip.innerHTML = `<b>${pretty(d.d)}</b><br>Balance ${withCur(money(d.bal, 2))}<br>Day P/L ${money(d.pl, 2)} · ${pct(d.ret)} cumulative<br><span class="tip-sub">Balance series (not floating equity)</span>`;
     };
     svg.onmouseleave = () => {
       $("tip").style.display = "none";
@@ -777,6 +687,11 @@
   function renderBars() {
     const svg = $("barChart");
     const months = groupOf(DAYS, "month");
+    if (!months.length) {
+      chartEmpty(svg, null, "No monthly P/L to chart yet.");
+      return;
+    }
+    clearChartEmpty(svg);
     const W = 420,
       H = 250,
       L = 36,
@@ -825,10 +740,11 @@
       }
       const m = months.find((x) => x.key === el.dataset.m);
       tip.style.display = "block";
-      tip.style.left = ev.clientX + 14 + "px";
+      tip.style.left = Math.min(ev.clientX + 14, window.innerWidth - 180) + "px";
       tip.style.top = ev.clientY + 14 + "px";
-    tip.innerHTML = `<b>${esc(m.label)}</b><br>${withCur(money(m.pl, 2))} · ${pct(m.pct)}`;
-  };
+      const filtered = state.month === m.key;
+      tip.innerHTML = `<b>${esc(m.label)}</b><br>${withCur(money(m.pl, 2))} · ${pct(m.pct)}<br><span class="tip-sub">${filtered ? "Click to clear month filter" : "Click to filter this month"}</span>`;
+    };
     svg.onmouseleave = () => {
       $("tip").style.display = "none";
     };
@@ -857,7 +773,8 @@
   function render() {
     if (!DAYS.length) return;
     const days = filteredDays();
-    const s = stats(days);
+    const s = Core.statsFromDays(days, BASE);
+    renderFilterStatus(days);
     renderKpis(s);
     let rows = groupOf(days, state.view);
     rows = sortRows(rows);
@@ -900,7 +817,179 @@
       });
     }
 
-    // Week Cards — 3 columns, weeks stacked down a column then next
+    const filtered = filteredDays();
+    const s = Core.statsFromDays(filtered, BASE);
+    const filterLabels = activeFilterLabels();
+    const cur = curLabel() || DATA.currencyNote || "";
+
+    const summary = wb.addWorksheet("Summary");
+    summary.columns = [
+      { width: 32 },
+      { width: 28 },
+      { width: 56 },
+    ];
+    summary.addRow(["Aivor analyze export"]);
+    summary.getRow(1).font = { bold: true, size: 14 };
+    summary.addRow(["Source file", DATA.fileName]);
+    summary.addRow(["Account", DATA.account]);
+    summary.addRow(["Name", DATA.name]);
+    summary.addRow(["Company", DATA.company]);
+    summary.addRow(["Currency", cur || "(not stated)"]);
+    summary.addRow(["Report kind", DATA.kind]);
+    summary.addRow(["Filters", filterLabels.length ? filterLabels.join(" · ") : "None (full report)"]);
+    summary.addRow(["Days in view", filtered.length]);
+    summary.addRow([]);
+    summary.addRow(["Metric", "Value", "Basis"]);
+    styleHeader(summary.getRow(summary.rowCount));
+    const t = s.trades || {};
+    const metricRows = [
+      ["Net P/L", s.pl, DATA.calculationBasis.dailyPl],
+      ["Window return %", s.ret / 100, "Net P/L ÷ capital base"],
+      ["Capital base", BASE, DATA.calculationBasis.capitalBase],
+      ["Ending balance", s.bal, "Last end-of-day balance in view"],
+      ["Deposited (full report)", DATA.deposited, "Sum of positive balance deals"],
+      ["Withdrawn (full report)", DATA.withdrawn, "Sum of |negative| balance deals / transfers out"],
+      ["Gross profit column (full)", DATA.gross, "Sum of non-balance Profit (commissions not subtracted here)"],
+      ["Max balance drawdown", s.maxDd, DATA.calculationBasis.maxDrawdown],
+      ["Max balance drawdown %", s.maxDdPct / 100, "Drawdown ÷ balance peak in view"],
+      ["Recovery factor", s.recoveryFactor, DATA.calculationBasis.recoveryFactor],
+      ["Trades closed", t.closed, DATA.tradeGroupingNote],
+      ["Winning trades", t.wins, "Closed trade P/L > 0"],
+      ["Losing trades", t.losses, "Closed trade P/L < 0"],
+      ["Breakeven trades", t.breakeven || 0, "Closed trade P/L = 0"],
+      ["Win rate", t.winRatePct == null ? null : t.winRatePct / 100, "Wins ÷ closed trades"],
+      ["Profit factor (trades)", t.profitFactor, "Σ winning trade P/L ÷ |Σ losing trade P/L|"],
+      ["Average win", t.avgWin, "Mean P/L of winning closed trades"],
+      ["Average loss", t.avgLoss, "Mean P/L of losing closed trades"],
+      ["Largest win", t.largestWin, "Max closed-trade P/L"],
+      ["Largest loss", t.largestLoss, "Min closed-trade P/L"],
+      [
+        "Equity max DD",
+        DATA.equityDrawdown ? DATA.equityDrawdown.amount : "Not available from this report",
+        DATA.calculationBasis.equityDrawdown,
+      ],
+      [
+        "Equity max DD %",
+        DATA.equityDrawdown ? DATA.equityDrawdown.pct / 100 : "Not available from this report",
+        "Strategy Tester Results when present",
+      ],
+      ["Day profit factor", s.dayProfitFactor, "Σ profit days ÷ |Σ loss days| (day P/L, not trades)"],
+    ];
+    metricRows.forEach((row) => {
+      const r = summary.addRow(row);
+      if (typeof row[1] === "number") {
+        if (String(row[0]).indexOf("%") >= 0 || row[0] === "Win rate" || row[0] === "Window return %" || row[0] === "Max balance drawdown %" || row[0] === "Equity max DD %") {
+          r.getCell(2).numFmt = "0.00%";
+        } else if (row[0] === "Trades closed" || row[0] === "Winning trades" || row[0] === "Losing trades" || row[0] === "Breakeven trades" || row[0] === "Days in view") {
+          r.getCell(2).numFmt = "0";
+        } else {
+          r.getCell(2).numFmt = "#,##0.00";
+        }
+      }
+    });
+    summary.addRow([]);
+    summary.addRow(["Notes"]);
+    summary.addRow(["Browser-only processing — file was not uploaded to a server."]);
+    summary.addRow(["Costs column = Commission + Fee + Swap for the period (not double-counted in Net P/L)."]);
+    summary.addRow(["Filtered Detail sheet matches the on-screen " + state.view + " view."]);
+    summary.addRow(["Full Daily / Weekly / Monthly sheets are the unfiltered report."]);
+
+    function addDetailSheet(name, mode, daySource) {
+      const ws = wb.addWorksheet(name);
+      const rows = groupOf(daySource, mode);
+      if (mode === "day") {
+        ws.columns = [
+          { header: "Date", key: "d", width: 14 },
+          { header: "Day", key: "dow", width: 8 },
+          { header: "Week", key: "week", width: 8 },
+          { header: "Net P/L", key: "pl", width: 12 },
+          { header: "Profit %", key: "pct", width: 12 },
+          { header: "Total return", key: "ret", width: 12 },
+          { header: "Balance", key: "bal", width: 12 },
+          { header: "Trades", key: "out", width: 10 },
+          { header: "Wins", key: "wins", width: 8 },
+          { header: "Losses", key: "losses", width: 8 },
+          { header: "Gross", key: "gross", width: 12 },
+          { header: "Costs", key: "comm", width: 12 },
+          { header: "Deposits", key: "dep", width: 12 },
+          { header: "Withdrawals", key: "wd", width: 12 },
+        ];
+        styleHeader(ws.getRow(1));
+        daySource.forEach((d) => {
+          const row = ws.addRow({
+            d: d.d,
+            dow: d.dow,
+            week: "W" + d.weekNo,
+            pl: d.pl,
+            pct: d.pct / 100,
+            ret: d.ret / 100,
+            bal: d.bal,
+            out: d.out,
+            wins: d.wins,
+            losses: d.losses,
+            gross: d.gross,
+            comm: d.comm,
+            dep: d.dep,
+            wd: d.wd,
+          });
+          ["pl", "bal", "gross", "comm", "dep", "wd"].forEach((k) => {
+            row.getCell(k).numFmt = "#,##0.00";
+          });
+          row.getCell("pct").numFmt = "0.00%";
+          row.getCell("ret").numFmt = "0.00%";
+          toneRow(row, d.pl, 4);
+        });
+      } else {
+        ws.columns = [
+          { header: "Period", key: "label", width: 18 },
+          { header: "From", key: "from", width: 12 },
+          { header: "To", key: "to", width: 12 },
+          { header: "Days", key: "days", width: 8 },
+          { header: "Net P/L", key: "pl", width: 12 },
+          { header: "Profit %", key: "pct", width: 12 },
+          { header: "Total return", key: "ret", width: 12 },
+          { header: "End balance", key: "bal", width: 12 },
+          { header: "Profit days", key: "winDays", width: 12 },
+          { header: "Loss days", key: "lossDays", width: 12 },
+          { header: "Trades", key: "trades", width: 10 },
+          { header: "Gross", key: "gross", width: 12 },
+          { header: "Costs", key: "comm", width: 12 },
+        ];
+        styleHeader(ws.getRow(1));
+        rows.forEach((r) => {
+          const row = ws.addRow({
+            label: r.label,
+            from: r.from,
+            to: r.to,
+            days: r.days,
+            pl: r.pl,
+            pct: r.pct / 100,
+            ret: r.ret / 100,
+            bal: r.bal,
+            winDays: r.winDays,
+            lossDays: r.lossDays,
+            trades: r.trades,
+            gross: r.gross,
+            comm: r.comm,
+          });
+          ["pl", "bal", "gross", "comm"].forEach((k) => {
+            row.getCell(k).numFmt = "#,##0.00";
+          });
+          row.getCell("pct").numFmt = "0.00%";
+          row.getCell("ret").numFmt = "0.00%";
+          toneRow(row, r.pl, 5);
+        });
+      }
+      ws.autoFilter = {
+        from: { row: 1, column: 1 },
+        to: { row: 1, column: ws.columnCount },
+      };
+      return ws;
+    }
+
+    addDetailSheet("Filtered Detail", state.view === "day" ? "day" : state.view, filtered);
+
+    // Week Cards — full report (unfiltered), same layout as before
     const weeks = groupOf(DAYS, "week");
     const cardsSheet = wb.addWorksheet("Week Cards", {
       views: [{ showGridLines: false }],
@@ -925,12 +1014,12 @@
     const n = weeks.length;
     const perCol = Math.ceil(n / 3) || 1;
     function cardOrigin(idx) {
-      const col = Math.floor(idx / perCol); // 0..2 column-major
+      const col = Math.floor(idx / perCol);
       const rowInCol = idx % perCol;
       let r = 1;
       for (let i = 0; i < rowInCol; i++) {
         const w = weeks[col * perCol + i];
-        r += 3 + (w.list ? w.list.length : 0) + 1 + 1; // title, range, header, days, total, gap
+        r += 3 + (w.list ? w.list.length : 0) + 1 + 1;
       }
       const c = 1 + col * 5;
       return { r, c };
@@ -939,9 +1028,6 @@
       const { r, c } = cardOrigin(idx);
       const title = cardsSheet.getRow(r);
       title.getCell(c).value = w.label;
-      title.getCell(c + 1).value = "";
-      title.getCell(c + 2).value = "";
-      title.getCell(c + 3).value = "";
       cardsSheet.mergeCells(r, c, r, c + 3);
       for (let k = 0; k < 4; k++) {
         const cell = title.getCell(c + k);
@@ -998,102 +1084,9 @@
       }
     });
 
-    function addSummarySheet(name, mode) {
-      const ws = wb.addWorksheet(name);
-      const rows = groupOf(DAYS, mode);
-      if (mode === "day") {
-        ws.columns = [
-          { header: "Date", key: "d", width: 14 },
-          { header: "Day", key: "dow", width: 8 },
-          { header: "Week", key: "week", width: 8 },
-          { header: "Net P/L", key: "pl", width: 12 },
-          { header: "Profit %", key: "pct", width: 12 },
-          { header: "Total return", key: "ret", width: 12 },
-          { header: "Balance", key: "bal", width: 12 },
-          { header: "Trades", key: "out", width: 10 },
-          { header: "Wins", key: "wins", width: 8 },
-          { header: "Losses", key: "losses", width: 8 },
-          { header: "Gross", key: "gross", width: 12 },
-          { header: "Commission", key: "comm", width: 12 },
-          { header: "Deposits", key: "dep", width: 12 },
-          { header: "Withdrawals", key: "wd", width: 12 },
-        ];
-        styleHeader(ws.getRow(1));
-        DAYS.forEach((d) => {
-          const row = ws.addRow({
-            d: d.d,
-            dow: d.dow,
-            week: "W" + d.weekNo,
-            pl: d.pl,
-            pct: d.pct / 100,
-            ret: d.ret / 100,
-            bal: d.bal,
-            out: d.out,
-            wins: d.wins,
-            losses: d.losses,
-            gross: d.gross,
-            comm: d.comm,
-            dep: d.dep,
-            wd: d.wd,
-          });
-          ["pl", "bal", "gross", "comm", "dep", "wd"].forEach((k) => {
-            row.getCell(k).numFmt = "#,##0.00";
-          });
-          row.getCell("pct").numFmt = "0.00%";
-          row.getCell("ret").numFmt = "0.00%";
-          toneRow(row, d.pl, 4);
-        });
-      } else {
-        ws.columns = [
-          { header: "Period", key: "label", width: 18 },
-          { header: "From", key: "from", width: 12 },
-          { header: "To", key: "to", width: 12 },
-          { header: "Days", key: "days", width: 8 },
-          { header: "Net P/L", key: "pl", width: 12 },
-          { header: "Profit %", key: "pct", width: 12 },
-          { header: "Total return", key: "ret", width: 12 },
-          { header: "End balance", key: "bal", width: 12 },
-          { header: "Profit days", key: "winDays", width: 12 },
-          { header: "Loss days", key: "lossDays", width: 12 },
-          { header: "Trades", key: "trades", width: 10 },
-          { header: "Gross", key: "gross", width: 12 },
-          { header: "Commission", key: "comm", width: 12 },
-        ];
-        styleHeader(ws.getRow(1));
-        rows.forEach((r) => {
-          const row = ws.addRow({
-            label: r.label,
-            from: r.from,
-            to: r.to,
-            days: r.days,
-            pl: r.pl,
-            pct: r.pct / 100,
-            ret: r.ret / 100,
-            bal: r.bal,
-            winDays: r.winDays,
-            lossDays: r.lossDays,
-            trades: r.trades,
-            gross: r.gross,
-            comm: r.comm,
-          });
-          ["pl", "bal", "gross", "comm"].forEach((k) => {
-            row.getCell(k).numFmt = "#,##0.00";
-          });
-          row.getCell("pct").numFmt = "0.00%";
-          row.getCell("ret").numFmt = "0.00%";
-          toneRow(row, r.pl, 5);
-        });
-      }
-      ws.autoFilter = {
-        from: { row: 1, column: 1 },
-        to: { row: 1, column: ws.columnCount },
-      };
-      return ws;
-    }
-
-    addSummarySheet("Daily", "day");
-    addSummarySheet("Weekly", "week");
-    addSummarySheet("Monthly", "month");
+    addDetailSheet("Daily (full)", "day", DAYS);
+    addDetailSheet("Weekly (full)", "week", DAYS);
+    addDetailSheet("Monthly (full)", "month", DAYS);
 
     const buf = await wb.xlsx.writeBuffer();
     const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
@@ -1113,23 +1106,39 @@
       showError("Please choose an .xlsx MetaTrader report.");
       return;
     }
-    showLoader("Reading workbook…");
+    const sizeMb = file.size / (1024 * 1024);
+    if (sizeMb > 12) {
+      showError(
+        "This file is " +
+          sizeMb.toFixed(1) +
+          " MB. Very large reports may run out of browser memory. Try exporting a shorter date range from MetaTrader, then reload."
+      );
+    }
+    showLoader(sizeMb > 4 ? "Reading large workbook (" + sizeMb.toFixed(1) + " MB)…" : "Reading workbook…");
     try {
       await yieldToUI();
       const buf = await file.arrayBuffer();
       setLoaderStatus("Parsing deals…");
       await yieldToUI();
-      const data = parseWorkbook(buf, file.name);
+      const data = Core.parseWorkbook(buf, file.name);
       setLoaderStatus("Building dashboard…");
       await yieldToUI();
       loadData(data);
       hideLoader();
+      if (sizeMb > 4) {
+        clearError();
+      }
     } catch (err) {
       console.error(err);
       hideLoader();
       $("workspace").style.display = "none";
       $("download").disabled = true;
-      showError(err && err.message ? err.message : "Could not parse this file.");
+      let msg = err && err.message ? err.message : "Could not parse this file.";
+      if (/Invalid array length|out of memory|allocation/i.test(String(err && err.message))) {
+        msg =
+          "The browser ran out of memory reading this workbook. Export a shorter period from MetaTrader (Trade History / Strategy Tester with Deals) and try again. Nothing was uploaded.";
+      }
+      showError(msg);
     }
   }
 
@@ -1207,6 +1216,7 @@
       state.view = "day";
       state.sort = "d";
       state.dir = 1;
+      dateRangeError = "";
       $("month").value = "all";
       $("week").value = "all";
       $("from").value = "";
@@ -1228,12 +1238,14 @@
     });
   }
 
-  // Expose for automated verification in the browser console
   window.AivorAnalyze = {
-    parseWorkbook,
+    parseWorkbook: (buf, name) => Core.parseWorkbook(buf, name),
     getData: () => DATA,
     getDays: () => DAYS,
+    getState: () => Object.assign({}, state),
+    statsFromDays: (days) => Core.statsFromDays(days, BASE),
     weekPl: (from, to) => round2(DAYS.filter((d) => d.d >= from && d.d <= to).reduce((s, d) => s + d.pl, 0)),
+    core: Core,
   };
 
   wire();

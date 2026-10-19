@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Performance &middot; AIVOR by Vyuha Labs</title>
-<meta name="description" content="Verify AIVOR HF live performance on MyFXBook. No fabricated marketing numbers &mdash; transparent third-party tracking.">
+<meta name="description" content="AIVOR product performance reports for HF, Scalper, and Swing. Live and backtest details appear only when a verified report is supplied.">
 <meta name="theme-color" content="#0B0F14">
 <link rel="canonical" href="performance.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/performance.css">
 </head>
 <body class="page-performance">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -35,8 +36,24 @@
         <a href="faq.html" data-nav="faq.html">FAQ</a>
         <a href="contact.html" data-nav="contact.html">Contact</a>
       </div>
-      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Your Report</a>
     </nav>
+    <div class="header-actions">
+      <div class="header-social" aria-label="Social media">
+      <a class="header-social__link" data-config-url="TELEGRAM_CONTACT_URL" aria-label="Telegram" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-2.82 2.35z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="WHATSAPP_URL" aria-label="WhatsApp" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="INSTAGRAM_URL" aria-label="Instagram" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="FACEBOOK_URL" aria-label="Facebook" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Report</a>
+    </div>
     <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
       <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
     </button>
@@ -44,99 +61,230 @@
 </header>
 
 <main id="main">
-  <header class="page-hero page-hero--performance">
-    <div class="section-inner">
-      <p class="eyebrow">Performance</p>
-      <h1>Transparency over marketing numbers</h1>
-      <p class="page-lead">We do not invent win rates, returns, or testimonials on this page. Verify the live AIVOR HF track record on MyFXBook, or analyse your own MetaTrader 5 Excel reports in the browser.</p>
+  <div class="perf-breadcrumb">
+    <a href="index.html">Home</a> / <a href="performance.html">Performance</a> / <span id="crumb-product">HF</span>
+  </div>
+
+  <div class="perf-topbar">
+    <div>
+      <h1 id="page-title">HF Performance</h1>
+      <p class="perf-intro" id="perf-intro">Verified report metrics from MetaTrader Excel exports.</p>
     </div>
-  </header>
+    <span class="perf-status" id="status" role="status" aria-live="polite">Loading</span>
+  </div>
 
-  <section class="section section-performance" aria-labelledby="perf-title">
-    <div class="section-inner">
-      <figure class="visual-panel visual-panel--wide reveal decorative-panel">
-        <img
-          src="assets/visuals/analytics-dashboard.jpg"
-          alt=""
-          width="1400"
-          height="788"
-          loading="lazy"
-          decoding="async"
-        >
-        <figcaption class="decorative-caption">Illustrative atmosphere only &mdash; not live trading data or MyFXBook figures.</figcaption>
-      </figure>
+  <div class="perf-topbar">
+    <div class="perf-product-tabs" aria-label="Choose product">
+      <button type="button" class="perf-tab" data-product="hf">HF</button>
+      <button type="button" class="perf-tab" data-product="scalper">Scalper</button>
+      <button type="button" class="perf-tab" data-product="swing">Swing</button>
+    </div>
+    <div class="perf-result-tabs" aria-label="Choose report type">
+      <button type="button" class="perf-tab" data-type="backtest">Backtest Results</button>
+      <button type="button" class="perf-tab" data-type="live">Live Results</button>
+    </div>
+  </div>
 
-      <div class="reveal">
-        <header class="section-head">
-          <h2 id="perf-title"><span data-aivor-mark data-aivor-size="title">AIVOR</span> HF on MyFXBook</h2>
-          <p class="section-lead">Independent third-party portfolio tracker. Open the full system page, or use the embed below when the widget loads.</p>
-        </header>
+  <div class="perf-empty" id="perf-empty" hidden>
+    <h2 id="empty-title">Select a product</h2>
+    <p id="empty-body">Valid products are HF, Scalper, and Swing. Use the tabs above, or open a link from the Products page.</p>
+  </div>
 
-        <div class="perf-actions">
-          <a class="btn btn-primary btn-lg" data-config-url="MYFXBOOK_URL">Verify on MyFXBook</a>
-          <a class="btn btn-secondary" href="analyze.html">Analyze Your Own Report</a>
-        </div>
+  <div id="perf-report" hidden>
+    <div class="perf-filters" aria-label="Report filters">
+      <label class="perf-filter">
+        <span>Month</span>
+        <select id="filter-month">
+          <option value="all">All months</option>
+        </select>
+      </label>
+      <p class="perf-filter-note" id="filter-note">Charts and tables use end-of-day balance points from the Deals section.</p>
+    </div>
 
-        <div class="mfb-panel glass-panel">
-          <div class="mfb-panel-head">
+    <section class="perf-summary-grid" id="summary-grid" aria-label="Performance summary"></section>
+
+    <div class="perf-two-col">
+      <div>
+        <section class="perf-panel">
+          <div class="perf-panel-head">
             <div>
-              <span class="mfb-badge">Live portfolio</span>
-              <h3><span data-aivor-mark data-aivor-size="title">AIVOR</span> HF &middot; MyFXBook widget</h3>
-              <p>Official widget for portfolio id 11973715. If the embed is blocked by the browser, use Verify on MyFXBook.</p>
+              <h2 id="chart-title">Balance</h2>
+              <div class="perf-panel-sub" id="chart-sub">Daily end-of-day balance from Deals</div>
             </div>
-            <a class="btn btn-ghost" data-config-url="MYFXBOOK_URL">Open portfolio</a>
+            <div class="perf-chart-tabs" role="tablist" aria-label="Chart series">
+              <button type="button" class="perf-chart-tab active" data-chart="balance">Balance</button>
+              <button type="button" class="perf-chart-tab" data-chart="monthlyPl">Monthly P/L</button>
+              <button type="button" class="perf-chart-tab" data-chart="monthlyRet">Monthly return %</button>
+              <button type="button" class="perf-chart-tab" data-chart="dd">Drawdown</button>
+            </div>
           </div>
-          <div class="mfb-frame-wrap">
-            <iframe
-              id="myfxbook-frame"
-              title="AIVOR HF MyFXBook strategy widget"
-              src="https://widgets.myfxbook.com/widgets/strategy.html?oid=11973715"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-            ></iframe>
+          <div class="perf-chart-wrap">
+            <svg id="perf-chart" class="perf-chart" viewBox="0 0 720 260" role="img" aria-label="Performance chart"></svg>
           </div>
-          <div class="mfb-fallback" id="myfxbook-fallback">
-            <span class="mfb-badge">Official source</span>
-            <h3>Verify on MyFXBook</h3>
-            <p>If the widget above does not load (some browsers block third-party embeds), open the live portfolio directly. We do not fabricate metrics on this page.</p>
-            <a class="btn btn-primary" data-config-url="MYFXBOOK_URL">Verify on MyFXBook</a>
-          </div>
-        </div>
+          <p class="perf-chart-caption" id="chart-caption"></p>
+        </section>
 
-        <p class="perf-note" style="margin-top:20px">Past performance is not indicative of future results. MyFXBook figures can change as the live account updates. Trading involves substantial risk of loss.</p>
+        <section class="perf-panel">
+          <div class="perf-panel-head">
+            <div>
+              <h2>Monthly breakdown</h2>
+              <div class="perf-panel-sub">Trading net P/L by month (deposits/withdrawals excluded)</div>
+            </div>
+          </div>
+          <div class="perf-table-wrap">
+            <table class="perf-table" id="monthly-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Net P/L</th>
+                  <th>Return %</th>
+                  <th>Max DD</th>
+                  <th>DD %</th>
+                  <th>Trades</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="perf-panel perf-panel--trades" id="trades-panel">
+          <div class="perf-panel-head perf-panel-head--collapse">
+            <button
+              type="button"
+              class="perf-collapse-toggle"
+              id="trades-toggle"
+              aria-expanded="false"
+              aria-controls="trades-panel-body"
+            >
+              <span class="perf-collapse-toggle__label" id="trades-toggle-label">Show Trade History</span>
+              <span class="perf-collapse-toggle__hint" id="trades-toggle-hint">Closed deals load when expanded</span>
+            </button>
+          </div>
+          <div class="perf-collapse-body" id="trades-panel-body" hidden>
+            <p class="perf-panel-sub" id="trades-sub">Closed deals (direction = out)</p>
+            <div class="ui-loading-row" id="trades-loading" hidden role="status" aria-live="polite">
+              <span class="ui-spinner" aria-hidden="true"></span>
+              <span>Building trade table…</span>
+            </div>
+            <div class="perf-trades-error" id="trades-error" hidden role="alert"></div>
+            <div class="perf-table-wrap" id="trades-table-wrap">
+              <table class="perf-table" id="trades-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Symbol</th>
+                    <th>Type</th>
+                    <th>Volume</th>
+                    <th>Price</th>
+                    <th>Profit</th>
+                    <th>Balance</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
       </div>
+
+      <aside>
+        <section class="perf-panel">
+          <div class="perf-panel-head">
+            <div>
+              <h2>Selected Product</h2>
+              <div class="perf-panel-sub">Report configuration</div>
+            </div>
+          </div>
+          <div class="perf-details-list" id="detail-list"></div>
+          <div class="perf-notice" id="perf-notice">Metrics are taken from the MetaTrader Excel export. Floating equity is unavailable in Deals; drawdown charts use end-of-day balance unless the tester Results section supplies equity drawdown.</div>
+          <div class="perf-actions">
+            <a class="btn" href="products.html">&larr; Back to Products</a>
+            <a class="btn btn-primary" href="analyze.html">Analyze Report</a>
+          </div>
+        </section>
+
+        <section class="perf-panel">
+          <h2>Report Availability</h2>
+          <p class="perf-panel-sub">Live and backtest are separate sources.</p>
+          <div class="perf-detail"><span>HF</span><span>Backtest + Live</span></div>
+          <div class="perf-detail"><span>Scalper</span><span>Backtest only</span></div>
+          <div class="perf-detail"><span>Swing</span><span>Backtest only</span></div>
+        </section>
+
+        <section class="perf-panel">
+          <h2>Report metrics</h2>
+          <div class="perf-table-wrap">
+            <table class="perf-table" id="metrics-table">
+              <thead>
+                <tr><th>Metric</th><th>Value</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </aside>
     </div>
-  </section>
+  </div>
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-brand">
-      <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
-      <span>by Vyuha Labs</span>
-      <p class="footer-tag">Smart Trading. Engineered.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
+        <span>by Vyuha Labs</span>
+        <p class="footer-tag">Smart Trading. Engineered.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Explore</p>
+          <a href="products.html">Products</a>
+          <a href="copy-trading.html">Copy Trading</a>
+          <a href="performance.html">Performance</a>
+          <a href="how-it-works.html">How It Works</a>
+        </div>
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Tools</p>
+          <a href="analyze.html">Analyze Report</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Connect</p>
+          <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
+          <div class="footer-social" aria-label="Social media">
+            <a class="footer-social__link" data-config-url="TELEGRAM_CONTACT_URL" aria-label="Telegram" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-2.82 2.35z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="WHATSAPP_URL" aria-label="WhatsApp" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="INSTAGRAM_URL" aria-label="Instagram" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="FACEBOOK_URL" aria-label="Facebook" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+      </nav>
     </div>
-    <nav class="footer-nav" aria-label="Footer">
-      <a href="products.html">Products</a>
-      <a href="copy-trading.html">Copy Trading</a>
-      <a href="performance.html">Performance</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="faq.html">FAQ</a>
-      <a href="analyze.html">Analyze Your Own Report</a>
-      <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
-    </nav>
-    <p class="risk-disclosure">
-      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
-    </p>
-    <p class="copyright">? <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+    <div class="footer-meta">
+      <p class="risk-disclosure">
+        Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+      </p>
+      <p class="copyright">&copy; <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 
 <script src="js/config.js"></script>
+<script src="js/product-brand.js"></script>
 <script src="js/wordmark.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/site.js"></script>
+<script src="js/performance-data/manifest.js"></script>
+<script src="js/performance.js"></script>
 </body>
 </html>

@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How It Works &middot; AIVOR by Vyuha Labs</title>
-<meta name="description" content="From interest to live execution — choose an AIVOR system, connect on MetaTrader 5, monitor with proof.">
+<meta name="description" content="From strategy to automated trading — choose an AIVOR system, prepare MetaTrader 5, configure and test, then monitor with risk controls.">
 <meta name="theme-color" content="#0B0F14">
 <link rel="canonical" href="how-it-works.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/how-it-works.css">
 </head>
 <body class="page-how">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -35,8 +36,24 @@
         <a href="faq.html" data-nav="faq.html">FAQ</a>
         <a href="contact.html" data-nav="contact.html">Contact</a>
       </div>
-      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Your Report</a>
     </nav>
+    <div class="header-actions">
+      <div class="header-social" aria-label="Social media">
+      <a class="header-social__link" data-config-url="TELEGRAM_CONTACT_URL" aria-label="Telegram" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-2.82 2.35z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="WHATSAPP_URL" aria-label="WhatsApp" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="INSTAGRAM_URL" aria-label="Instagram" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a class="header-social__link" data-config-url="FACEBOOK_URL" aria-label="Facebook" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+      <a class="nav-cta" href="analyze.html" data-nav="analyze.html">Analyze Report</a>
+    </div>
     <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
       <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
     </button>
@@ -44,76 +61,252 @@
 </header>
 
 <main id="main">
-  <header class="page-hero page-hero--how">
-    <div class="section-inner">
-      <p class="eyebrow">How it works</p>
-      <h1>From interest to live execution</h1>
-      <p class="page-lead">A clear path — no hype funnel, no invented guarantees.</p>
-    </div>
-  </header>
+  <div class="hiw-wrap">
+    <header class="page-hero hiw-hero" id="top">
+      <p class="hiw-eyebrow">AIVOR SYSTEM GUIDE</p>
+      <h1>From Strategy to <span>Automated Trading.</span></h1>
+      <p class="hiw-hero-lead">A clear, practical guide to choosing an AIVOR system, setting it up on MetaTrader 5, and monitoring your trading. You stay in control of your account and risk settings.</p>
+      <div class="hiw-hero-actions">
+        <a class="btn btn-hiw-gold" href="#steps">See How It Works &#8600;</a>
+        <a class="btn btn-secondary" href="products.html">Explore Strategies</a>
+      </div>
+      <div class="hiw-hero-meta">
+        <span>MetaTrader 5 workflow</span>
+        <span>Risk-first approach</span>
+        <span>No guaranteed returns</span>
+      </div>
+      <div class="hiw-visual reveal" aria-label="Automated trading workflow">
+        <div class="hiw-visual-left">
+          <div class="hiw-visual-label">The AIVOR workflow</div>
+          <div class="hiw-visual-title">Your account. Your controls.</div>
+          <p class="hiw-visual-copy">A trading system follows its configured rules. Review the strategy, test it, and understand the risk before using a live account.</p>
+          <div class="hiw-flow" aria-hidden="true">
+            <span class="hiw-flow-node">Choose EA</span>
+            <span class="hiw-flow-arrow">&#8594;</span>
+            <span class="hiw-flow-node">Configure</span>
+            <span class="hiw-flow-arrow">&#8594;</span>
+            <span class="hiw-flow-node">Test</span>
+            <span class="hiw-flow-arrow">&#8594;</span>
+            <span class="hiw-flow-node">Monitor</span>
+          </div>
+        </div>
+        <div class="hiw-terminal">
+          <div class="hiw-terminal-top">
+            <span>MT5 &middot; Strategy monitor</span>
+            <span class="hiw-live-dot">&#9679; SYSTEM FLOW</span>
+          </div>
+          <div class="hiw-chart">
+            <svg viewBox="0 0 420 125" preserveAspectRatio="none" role="img" aria-label="Illustrative market chart">
+              <defs>
+                <linearGradient id="hiw-chart-fill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#00C2FF" stop-opacity=".23"/>
+                  <stop offset="100%" stop-color="#00C2FF" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g stroke="#1b2b37" stroke-width="1">
+                <path d="M0 20H420M0 50H420M0 80H420M0 110H420"/>
+              </g>
+              <path d="M0 100 L22 91 L42 98 L62 70 L82 77 L102 60 L122 67 L142 47 L162 57 L182 39 L202 49 L222 31 L242 42 L262 28 L282 45 L302 35 L322 48 L342 24 L362 32 L382 16 L420 22 L420 125 L0 125Z" fill="url(#hiw-chart-fill)"/>
+              <path d="M0 100 L22 91 L42 98 L62 70 L82 77 L102 60 L122 67 L142 47 L162 57 L182 39 L202 49 L222 31 L242 42 L262 28 L282 45 L302 35 L322 48 L342 24 L362 32 L382 16 L420 22" fill="none" stroke="#00C2FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="hiw-terminal-bottom">
+            <span>Illustrative visual only &middot; not live data</span>
+            <strong>Test before live use</strong>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <section class="section section-how" aria-labelledby="how-title">
-    <div class="section-inner">
-      <figure class="visual-panel visual-panel--wide reveal">
-        <img
-          src="assets/visuals/automated-trading-robot.jpg"
-          alt="Stylized automation visual for AIVOR MetaTrader 5 workflow"
-          width="1200"
-          height="687"
-          loading="lazy"
-          decoding="async"
-        >
-      </figure>
-
-      <h2 id="how-title" class="visually-hidden">Three steps</h2>
-      <ol class="steps">
-        <li class="step reveal">
-          <span class="step-num" aria-hidden="true">01</span>
-          <h3>Choose your system</h3>
-          <p>Start with live AIVOR HF, or wait for Scalper and Swing when those links go live.</p>
+    <section class="hiw-section" id="steps" aria-labelledby="hiw-steps-title">
+      <div class="hiw-section-head">
+        <div class="hiw-kicker">The process</div>
+        <h2 id="hiw-steps-title">Four steps. One clear workflow.</h2>
+        <p>Start with understanding and testing&mdash;not with rushing into a live account.</p>
+      </div>
+      <ol class="hiw-steps">
+        <li class="hiw-step reveal">
+          <div class="hiw-step-num" aria-hidden="true">01</div>
+          <h3>Choose a strategy</h3>
+          <p>Compare HF, Scalper, and Swing by their trading style, available reports, and the level of risk you are comfortable with.</p>
+          <span class="hiw-step-tag">Explore the products</span>
         </li>
-        <li class="step reveal">
-          <span class="step-num" aria-hidden="true">02</span>
-          <h3>Connect on MetaTrader 5</h3>
-          <p>Install and configure the expert advisor on your MT5 terminal with the parameters provided at access.</p>
+        <li class="hiw-step reveal">
+          <div class="hiw-step-num" aria-hidden="true">02</div>
+          <h3>Prepare MT5</h3>
+          <p>Use a compatible MetaTrader 5 account and confirm your broker, symbol name, trading conditions, and platform connectivity.</p>
+          <span class="hiw-step-tag">Broker compatibility matters</span>
         </li>
-        <li class="step reveal">
-          <span class="step-num" aria-hidden="true">03</span>
-          <h3>Monitor with proof</h3>
-          <p>Follow the public MyFXBook portfolio and use the local Analyze tool on your own exported reports.</p>
+        <li class="hiw-step reveal">
+          <div class="hiw-step-num" aria-hidden="true">03</div>
+          <h3>Configure and test</h3>
+          <p>Review inputs such as lot size and risk controls. Run a demo or strategy test and confirm the EA behaves as expected.</p>
+          <span class="hiw-step-tag">Test before going live</span>
+        </li>
+        <li class="hiw-step reveal">
+          <div class="hiw-step-num" aria-hidden="true">04</div>
+          <h3>Monitor continuously</h3>
+          <p>Keep MT5 running, check execution and account exposure, and review performance regularly. A VPS may help with uptime.</p>
+          <span class="hiw-step-tag">You remain responsible</span>
         </li>
       </ol>
+    </section>
 
-      <div class="home-cta-strip reveal" style="margin-top:48px">
-        <a class="btn btn-primary" data-config-url="TELEGRAM_TRIAL_URL">Request trial access</a>
-        <a class="btn btn-secondary" href="performance.html">View performance</a>
-        <a class="btn btn-ghost" href="analyze.html">Analyze Your Own Report</a>
+    <section class="hiw-section" id="products" aria-labelledby="hiw-products-title">
+      <div class="hiw-section-head">
+        <div class="hiw-kicker">Strategy selection</div>
+        <h2 id="hiw-products-title">Choose the system that fits your approach.</h2>
+        <p>These are strategy descriptions&mdash;not promises of results. Check each product&rsquo;s current documentation and reports before deciding.</p>
       </div>
-    </div>
-  </section>
+      <div class="hiw-strategy-grid">
+        <article class="hiw-strategy hiw-strategy--hf reveal">
+          <div class="hiw-strategy-top">
+            <span class="hiw-strategy-logo" aria-hidden="true">HF</span>
+            <div>
+              <h3><span data-aivor-mark data-aivor-size="title">AIVOR</span> HF</h3>
+              <small>High-frequency style &middot; Live</small>
+            </div>
+          </div>
+          <p>High-frequency execution for active XAUUSD sessions on MetaTrader 5 (H4, ECN). Execution costs, spreads, and broker conditions can materially affect outcomes.</p>
+          <div class="hiw-tags">
+            <span class="hiw-tag">MT5</span>
+            <span class="hiw-tag">XAUUSD</span>
+            <span class="hiw-tag">H4</span>
+            <span class="hiw-tag">Live &amp; backtest reports</span>
+          </div>
+        </article>
+        <article class="hiw-strategy hiw-strategy--scalper reveal">
+          <div class="hiw-strategy-top">
+            <span class="hiw-strategy-logo" aria-hidden="true">SC</span>
+            <div>
+              <h3><span data-aivor-mark data-aivor-size="title">AIVOR</span> Scalper</h3>
+              <small>Short-term trading style &middot; Ready for Purchase</small>
+            </div>
+          </div>
+          <p>Automated XAUUSD scalping on the M10 timeframe (ECN). Test spread sensitivity, slippage, and trade frequency on your intended broker before using real funds.</p>
+          <div class="hiw-tags">
+            <span class="hiw-tag">MT5</span>
+            <span class="hiw-tag">XAUUSD</span>
+            <span class="hiw-tag">M10</span>
+            <span class="hiw-tag">Backtest reports only</span>
+          </div>
+        </article>
+        <article class="hiw-strategy hiw-strategy--swing reveal">
+          <div class="hiw-strategy-top">
+            <span class="hiw-strategy-logo" aria-hidden="true">SW</span>
+            <div>
+              <h3><span data-aivor-mark data-aivor-size="title">AIVOR</span> Swing</h3>
+              <small>Longer-hold trading style &middot; Ready for Purchase</small>
+            </div>
+          </div>
+          <p>Automated XAUUSD swing trading on the H4 timeframe. Understand overnight exposure, drawdown, and the strategy&rsquo;s stop-loss behavior before going live.</p>
+          <div class="hiw-tags">
+            <span class="hiw-tag">MT5</span>
+            <span class="hiw-tag">XAUUSD</span>
+            <span class="hiw-tag">H4</span>
+            <span class="hiw-tag">Backtest reports only</span>
+          </div>
+        </article>
+      </div>
+      <div class="hiw-strategy-actions">
+        <a class="btn btn-secondary" href="products.html">Compare Products &#8599;</a>
+        <a class="btn btn-secondary" href="performance.html">View Performance &#8599;</a>
+      </div>
+    </section>
+
+    <section class="hiw-section" id="risk" aria-labelledby="hiw-risk-title">
+      <div class="hiw-section-head">
+        <div class="hiw-kicker">Risk &amp; readiness</div>
+        <h2 id="hiw-risk-title">Know the risks before you start.</h2>
+        <p>Automated trading does not remove market risk. Use these checks before connecting a system to a live account.</p>
+      </div>
+      <div class="hiw-risk-grid">
+        <article class="hiw-risk-card reveal">
+          <div class="hiw-icon" aria-hidden="true">&#9670;</div>
+          <h3>Understand your exposure</h3>
+          <p>Profitability is not guaranteed. Market gaps, volatility, spread widening, slippage, execution delays, and technical failures can affect results.</p>
+          <ul class="hiw-risk-list">
+            <li>Start on demo and validate the settings.</li>
+            <li>Use a lot size you can afford to risk.</li>
+            <li>Know the maximum drawdown and stop conditions.</li>
+          </ul>
+        </article>
+        <article class="hiw-risk-card reveal">
+          <div class="hiw-icon" aria-hidden="true">&#8961;</div>
+          <h3>Check the setup</h3>
+          <p>Broker symbols and execution conditions can differ. A setup that works in one environment may behave differently elsewhere.</p>
+          <ul class="hiw-risk-list">
+            <li>Confirm symbol suffixes and trading hours.</li>
+            <li>Review commission, spread, and leverage.</li>
+            <li>Monitor the terminal and VPS connection.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="hiw-section" id="cta" aria-labelledby="hiw-cta-title">
+      <div class="hiw-cta reveal">
+        <div>
+          <h2 id="hiw-cta-title">Ready to explore AIVOR?</h2>
+          <p>Compare the available systems, review the supporting performance information, and test your setup before committing capital.</p>
+        </div>
+        <div class="hiw-cta-actions">
+          <a class="btn btn-hiw-gold" href="products.html">Explore Products &#8599;</a>
+          <a class="btn btn-secondary" href="performance.html">View Performance &#8599;</a>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-brand">
-      <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
-      <span>by Vyuha Labs</span>
-      <p class="footer-tag">Smart Trading. Engineered.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong data-aivor-mark data-aivor-size="footer">AIVOR</strong>
+        <span>by Vyuha Labs</span>
+        <p class="footer-tag">Smart Trading. Engineered.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Explore</p>
+          <a href="products.html">Products</a>
+          <a href="copy-trading.html">Copy Trading</a>
+          <a href="performance.html">Performance</a>
+          <a href="how-it-works.html">How It Works</a>
+        </div>
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Tools</p>
+          <a href="analyze.html">Analyze Report</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-nav__col">
+          <p class="footer-nav__heading">Connect</p>
+          <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
+          <div class="footer-social" aria-label="Social media">
+            <a class="footer-social__link" data-config-url="TELEGRAM_CONTACT_URL" aria-label="Telegram" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-2.82 2.35z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="WHATSAPP_URL" aria-label="WhatsApp" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="INSTAGRAM_URL" aria-label="Instagram" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a class="footer-social__link" data-config-url="FACEBOOK_URL" aria-label="Facebook" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+      </nav>
     </div>
-    <nav class="footer-nav" aria-label="Footer">
-      <a href="products.html">Products</a>
-      <a href="copy-trading.html">Copy Trading</a>
-      <a href="performance.html">Performance</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="faq.html">FAQ</a>
-      <a href="analyze.html">Analyze Your Own Report</a>
-      <a data-config-url="TELEGRAM_CONTACT_URL">Telegram</a>
-    </nav>
-    <p class="risk-disclosure">
-      Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools — not financial advice. Verify all claims independently before allocating capital.
-    </p>
-    <p class="copyright">© <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+    <div class="footer-meta">
+      <p class="risk-disclosure">
+        Risk disclosure: Trading foreign exchange and CFDs carries a high level of risk and may not be suitable for all investors. You can lose some or all of your invested capital. Past performance is not indicative of future results. AIVOR systems are tools &mdash; not financial advice. Verify all claims independently before allocating capital.
+      </p>
+      <p class="copyright">&copy; <span data-year>2026</span> Vyuha Labs. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 

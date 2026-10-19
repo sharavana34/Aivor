@@ -1,12 +1,20 @@
 /**
  * AIVOR homepage bunny — auto sleep→wake→react→talk→sleep loop.
- * Mounts only on body.page-home (index.html). No click required for cycle.
+ * Mounts only on body.page-home (index.html). Auto cycle must run without click.
  */
 (function () {
-  if (!document.body || !document.body.classList.contains("page-home")) return;
+  function boot() {
+    if (!document.body || !document.body.classList.contains("page-home")) return;
+    initBunny();
+  }
 
+  /* Guard: body may be missing if script ever moves to <head> */
+  if (document.body) boot();
+  else document.addEventListener("DOMContentLoaded", boot);
+
+  function initBunny() {
   const cfg = window.AIVOR_CONFIG || {};
-  const STORAGE_KEY = "aivor_bunny_session_v3";
+  const STORAGE_KEY = "aivor_bunny_session_v4";
   const MAX_AUTO_SHOWS = 8;
   const FIRST_IDLE_MIN = 8000;
   const FIRST_IDLE_MAX = 15000;
@@ -22,6 +30,7 @@
   const EXPAND_MS = 320;
   const CONTRACT_MS = 280;
   const YAWN_MS = 450;
+  const RETRY_MS = 5000;
 
   const ICON_MIN =
     '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>';
@@ -127,6 +136,28 @@
   }
 
   let session = loadState();
+
+  /*
+   * Root-cause fix (auto never ran, click still worked):
+   * 1) sessionStorage v3 closedForSession / autoShows>=MAX survived reloads in the same tab,
+   *    so scheduleWake never started — but click cleared close / used manual:true.
+   * 2) document.hidden blocked canStartAutoCycle while click bypassed it (previews/background).
+   * 3) cancelled wait() left runningCycle===true, permanently blocking auto.
+   *
+   * First visit in a storage epoch (autoShows===0) always clears close and schedules wake.
+   * Storage key bumped to v4 so stuck v3 sessions recover immediately.
+   */
+  if (session.autoShows === 0) {
+    session.closedForSession = false;
+    session.lastDismissAt = 0;
+    saveState();
+  } else if (session.autoShows >= MAX_AUTO_SHOWS) {
+    /* Soft reset so a long session cannot permanently kill auto forever */
+    session.autoShows = 0;
+    session.closedForSession = false;
+    saveState();
+  }
+
   let root;
   let cloud;
   let msgEl;
@@ -143,17 +174,18 @@
   let earTimer = null;
   let runningCycle = false;
   let pendingResume = false;
+  let firstAutoPending = session.autoShows === 0;
 
   function clearSchedule() {
     if (scheduleTimer) {
-      clearTimeout(scheduleTimer);
+      window.clearTimeout(scheduleTimer);
       scheduleTimer = null;
     }
   }
 
   function clearStep() {
     if (stepTimer) {
-      clearTimeout(stepTimer);
+      window.clearTimeout(stepTimer);
       stepTimer = null;
     }
   }
@@ -162,7 +194,7 @@
     clearSchedule();
     clearStep();
     if (earTimer) {
-      clearTimeout(earTimer);
+      window.clearTimeout(earTimer);
       earTimer = null;
     }
   }
@@ -180,6 +212,12 @@
         resolve(token === cycleToken);
       }, ms);
     });
+  }
+
+  function abortCycle() {
+    bumpToken();
+    clearStep();
+    runningCycle = false;
   }
 
   function setAnimState(next) {
@@ -245,7 +283,7 @@
 
   function stopSleepTicks() {
     if (earTimer) {
-      clearTimeout(earTimer);
+      window.clearTimeout(earTimer);
       earTimer = null;
     }
     if (root) root.classList.remove("is-ear-twitch", "is-yawn");
@@ -277,11 +315,19 @@
     }
   }
 
+  function pageIsVisible() {
+    if (typeof document.hidden === "boolean" && document.hidden) return false;
+    if (typeof document.visibilityState === "string" && document.visibilityState === "hidden") {
+      return false;
+    }
+    return true;
+  }
+
   function canStartAutoCycle() {
     if (session.closedForSession) return false;
     if (session.autoShows >= MAX_AUTO_SHOWS) return false;
     if (interactionPaused) return false;
-    if (document.hidden) return false;
+    if (!pageIsVisible()) return false;
     if (runningCycle || bubbleOpen) return false;
     if (animState !== "sleeping") return false;
     return true;
@@ -295,22 +341,31 @@
     let waitMs =
       typeof delayMs === "number" ? delayMs : randBetween(BETWEEN_MIN, BETWEEN_MAX);
 
-    if (session.lastDismissAt) {
+    /* Dismiss cooldown — never delay the guaranteed first auto wake */
+    if (session.lastDismissAt && !firstAutoPending) {
       const remain = AFTER_DISMISS_MIN - (Date.now() - session.lastDismissAt);
       if (remain > waitMs) waitMs = remain;
+    }
+
+    if (!pageIsVisible()) {
+      pendingResume = true;
+      return;
     }
 
     scheduleTimer = window.setTimeout(() => {
       scheduleTimer = null;
       if (!canStartAutoCycle()) {
-        if (!session.closedForSession && session.autoShows < MAX_AUTO_SHOWS) {
-          pendingResume = true;
-          scheduleWake(8000);
+        pendingResume = true;
+        /* Retry only when still visible; if hidden, visibilitychange resumes */
+        if (pageIsVisible() && !session.closedForSession && session.autoShows < MAX_AUTO_SHOWS) {
+          if (interactionPaused || runningCycle || bubbleOpen || animState !== "sleeping") {
+            scheduleWake(RETRY_MS);
+          }
         }
         return;
       }
       runCycle({ manual: false });
-    }, waitMs);
+    }, Math.max(0, waitMs));
   }
 
   async function closeCloud(token) {
@@ -347,20 +402,18 @@
     return token === cycleToken;
   }
 
-  /**
-   * Full cycle: sleeping → waking → reacting → talking → sleeping
-   */
   async function runCycle(opts) {
     const options = opts || {};
     if (runningCycle && !options.force) return;
     if (session.closedForSession && !options.manual) return;
     if (interactionPaused && !options.manual) {
       pendingResume = true;
-      scheduleWake(8000);
+      scheduleWake(RETRY_MS);
       return;
     }
 
     clearSchedule();
+    if (options.force) abortCycle();
     const token = bumpToken();
     clearStep();
     runningCycle = true;
@@ -369,41 +422,58 @@
     const msg = nextMessage();
     if (!options.manual) {
       session.autoShows += 1;
+      firstAutoPending = false;
     }
     saveState();
 
-    /* waking */
     setAnimState("waking");
-    if (!(await wait(reduceMotion ? 80 : WAKING_MS, token))) return;
-
-    if (interactionPaused && !options.manual) {
+    if (!(await wait(reduceMotion ? 80 : WAKING_MS, token))) {
       runningCycle = false;
-      enterSleeping({ scheduleNext: true, delayMs: 8000 });
       return;
     }
 
-    /* reacting */
-    setAnimState("reacting");
-    if (!(await wait(reduceMotion ? 80 : REACTING_MS, token))) return;
+    if (interactionPaused && !options.manual) {
+      enterSleeping({ scheduleNext: true, delayMs: RETRY_MS });
+      return;
+    }
 
-    /* talking */
+    setAnimState("reacting");
+    if (!(await wait(reduceMotion ? 80 : REACTING_MS, token))) {
+      runningCycle = false;
+      return;
+    }
+
     setAnimState("talking");
-    if (!(await openCloud(msg, token))) return;
+    if (!(await openCloud(msg, token))) {
+      runningCycle = false;
+      return;
+    }
 
     const talkMs = reduceMotion ? 8000 : randBetween(TALK_MIN, TALK_MAX);
-    if (!(await wait(talkMs, token))) return;
+    if (!(await wait(talkMs, token))) {
+      runningCycle = false;
+      return;
+    }
 
-    /* close cloud + yawn into sleep */
-    if (!(await closeCloud(token))) return;
+    if (!(await closeCloud(token))) {
+      runningCycle = false;
+      return;
+    }
 
     if (!reduceMotion) {
       setAnimState("sleeping");
       root.classList.add("is-yawn");
-      await wait(YAWN_MS, token);
+      if (!(await wait(YAWN_MS, token))) {
+        runningCycle = false;
+        return;
+      }
       if (root) root.classList.remove("is-yawn");
     }
 
-    if (token !== cycleToken) return;
+    if (token !== cycleToken) {
+      runningCycle = false;
+      return;
+    }
 
     enterSleeping({
       scheduleNext: !session.closedForSession && session.autoShows < MAX_AUTO_SHOWS,
@@ -413,14 +483,18 @@
 
   async function dismissToSleep(opts) {
     const options = opts || {};
-    const token = bumpToken();
-    clearAllTimers();
+    abortCycle();
+    clearSchedule();
+    if (earTimer) {
+      window.clearTimeout(earTimer);
+      earTimer = null;
+    }
     runningCycle = false;
     session.lastDismissAt = Date.now();
     if (options.closeSession) session.closedForSession = true;
     saveState();
 
-    await closeCloud(token);
+    await closeCloud(cycleToken);
     enterSleeping({
       scheduleNext: !session.closedForSession && session.autoShows < MAX_AUTO_SHOWS,
       delayMs: randBetween(AFTER_DISMISS_MIN, AFTER_DISMISS_MAX)
@@ -445,13 +519,12 @@
       return;
     }
 
-    /* Immediate wake + open from sleeping */
     clearAllTimers();
     await runCycle({ manual: true, force: true });
   }
 
   function isInteractiveTarget(el) {
-    if (!el || el === document.body) return false;
+    if (!el || el === document.body || el === document.documentElement) return false;
     const tag = el.tagName;
     if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
     if (el.isContentEditable) return true;
@@ -467,6 +540,9 @@
   }
 
   function setPaused(paused) {
+    /* Never pause-away the guaranteed first auto wake */
+    if (paused && firstAutoPending) return;
+
     interactionPaused = paused;
     if (paused) {
       clearSchedule();
@@ -478,11 +554,21 @@
       !session.closedForSession &&
       session.autoShows < MAX_AUTO_SHOWS &&
       animState === "sleeping" &&
-      !document.hidden
+      pageIsVisible()
     ) {
       pendingResume = false;
-      scheduleWake(randBetween(BETWEEN_MIN, BETWEEN_MAX));
+      scheduleWake(firstAutoPending ? randBetween(FIRST_IDLE_MIN, FIRST_IDLE_MAX) : randBetween(BETWEEN_MIN, BETWEEN_MAX));
     }
+  }
+
+  function resumeAfterVisible() {
+    if (session.closedForSession || session.autoShows >= MAX_AUTO_SHOWS) return;
+    if (runningCycle || bubbleOpen) return;
+    pendingResume = false;
+    const delay = firstAutoPending
+      ? randBetween(FIRST_IDLE_MIN, FIRST_IDLE_MAX)
+      : randBetween(BETWEEN_MIN, BETWEEN_MAX);
+    scheduleWake(delay);
   }
 
   function mount() {
@@ -605,7 +691,6 @@
       true
     );
 
-    /* Also postpone while typing/uploading even if focus left briefly */
     document.addEventListener(
       "input",
       (e) => {
@@ -615,40 +700,46 @@
     );
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        bumpToken();
-        clearAllTimers();
-        runningCycle = false;
+      if (!pageIsVisible()) {
+        abortCycle();
+        clearSchedule();
+        stopSleepTicks();
         setCloudPhase("hidden");
         bubbleOpen = false;
         setAnimState("sleeping");
+        runningCycle = false;
         pendingResume = true;
       } else {
         if (animState === "sleeping") scheduleSleepEarTwitch();
-        if (
-          pendingResume &&
-          !session.closedForSession &&
-          session.autoShows < MAX_AUTO_SHOWS
-        ) {
-          pendingResume = false;
-          scheduleWake(randBetween(BETWEEN_MIN, BETWEEN_MAX));
-        }
+        if (pendingResume || firstAutoPending) resumeAfterVisible();
       }
     });
 
-    /* Start sleeping — no message on load; first wake after 8–15s */
+    /* Start sleeping — schedule first auto wake (8–15s). No click required. */
     if (!session.closedForSession && session.autoShows < MAX_AUTO_SHOWS) {
-      const first = randBetween(FIRST_IDLE_MIN, FIRST_IDLE_MAX);
-      const cool = session.lastDismissAt
-        ? Math.max(0, AFTER_DISMISS_MIN - (Date.now() - session.lastDismissAt))
-        : 0;
-      scheduleWake(Math.max(first, cool));
+      if (!pageIsVisible()) {
+        pendingResume = true;
+      } else {
+        scheduleWake(randBetween(FIRST_IDLE_MIN, FIRST_IDLE_MAX));
+      }
     }
+
+    /* Backup: if something cleared the first schedule, re-arm once shortly after mount */
+    window.setTimeout(() => {
+      if (
+        firstAutoPending &&
+        !session.closedForSession &&
+        !scheduleTimer &&
+        !runningCycle &&
+        !bubbleOpen &&
+        animState === "sleeping" &&
+        pageIsVisible()
+      ) {
+        scheduleWake(randBetween(FIRST_IDLE_MIN, FIRST_IDLE_MAX));
+      }
+    }, 1200);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mount);
-  } else {
-    mount();
-  }
+  mount();
+  } /* end initBunny */
 })();

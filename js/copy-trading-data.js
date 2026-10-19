@@ -1,167 +1,210 @@
 /**
- * AIVOR Copy Trading directory — one entry per broker setup (unique id).
- * Do not invent returns, fees, URLs, or charts. Use "Not published" /
- * "Verify with broker" when unverified. Wire live URLs via config keys.
+ * AIVOR Copy Trading directory — 12 setups (3 products × 4 brokers).
+ * Commission and default copy URL come from AIVOR_COPY_TRADING_META /
+ * AIVOR_CONFIG. Do not invent returns, DD, win rates, or broker URLs.
  */
-window.AIVOR_COPY_TRADING = [
-  {
-    id: "vantage-aivor-hf-1067466",
-    strategyId: "1067466",
-    strategyName: "AIVOR HF",
-    broker: "Vantage Markets",
-    platform: "Vantage Copy Trading",
-    accountType: "Verify with broker",
-    instruments: ["XAUUSD"],
-    tradingStyle: "High-frequency systematic",
-    performance: {
-      value: null,
-      period: null,
-      label: "Not published"
+(function () {
+  /** Single configurable source for commission display (all 12 rows). */
+  const META = {
+    commissionPct: 5,
+    commissionLabel: "5%",
+    commissionNote:
+      "Displayed provider commission for this directory sample. Not verified against each broker’s live terms — confirm on the destination before copying.",
+    /**
+     * Default copy destination (sample). All rows currently resolve here.
+     * Per-broker overrides: set brokerCopyUrls[brokerId] when available.
+     */
+    defaultCopyUrlKey: "COPY_TRADING_URL",
+    brokerCopyUrls: {
+      vantage: null /* use default / COPY_TRADING_URL until broker-specific IDs exist */,
+      "ic-markets": null,
+      exness: null,
+      octafx: null
     },
-    riskDrawdown: {
-      value: null,
-      label: "Verify with broker"
+    urlDisclosure:
+      "Copy Strategy currently opens the same configured destination for every row. Broker-specific URLs will be updated when available."
+  };
+
+  const PRODUCTS = {
+    hf: {
+      id: "hf",
+      name: "AIVOR HF",
+      short: "HF",
+      monogram: "HF",
+      tradingStyle: "High-frequency",
+      instrument: "XAUUSD",
+      icon: "hf"
     },
-    performanceInsight:
-      "No return, drawdown, or equity figures are published on this site for Strategy ID 1067466. Open the live Vantage profile to review provider-published metrics for the periods shown there.",
-    fees: {
-      provider: "Provider performance / profit-share fee may apply on Vantage. Exact percentage not verified from a public profile snapshot — check on the live page before copying.",
-      broker:
-        "Separately, your Vantage trading account pays normal broker costs (spreads, commissions, overnight financing where applicable). Those are broker charges, not the strategy provider fee.",
-      note: "Provider fee vs broker spreads/swaps/commissions are different cost layers."
+    scalper: {
+      id: "scalper",
+      name: "AIVOR Scalper",
+      short: "Scalper",
+      monogram: "SC",
+      tradingStyle: "Scalping",
+      instrument: "XAUUSD",
+      icon: "scalper"
     },
-    status: "Live",
-    /* Resolved at runtime from AIVOR_CONFIG.COPY_TRADING_URL */
-    externalCopyUrlKey: "COPY_TRADING_URL",
-    externalCopyUrl: null,
-    details: {
-      summary:
-        "Copy trading of AIVOR HF systematic execution on Vantage Markets. Your copy account mirrors the signal provider’s positions according to your allocation and the broker’s copy rules.",
-      howTo: [
-        "Open or log in to a Vantage Markets account.",
-        "Review Strategy ID 1067466 on the live copy-trading profile (fees, risk, account requirements).",
-        "Fund only capital you can afford to risk.",
-        "Choose allocation and start copying on Vantage.",
-        "Monitor on Vantage; stop or resize if it no longer fits your risk."
-      ],
-      notes: [
-        "Independent AIVOR HF track record (MyFXBook) is separate from Vantage copy metrics.",
-        "Instrument mix beyond XAUUSD — confirm on the live Vantage profile."
-      ]
+    swing: {
+      id: "swing",
+      name: "AIVOR Swing",
+      short: "Swing",
+      monogram: "SW",
+      tradingStyle: "Swing",
+      instrument: "XAUUSD",
+      icon: "swing"
     }
-  },
-  {
-    id: "pending-aivor-scalper",
-    strategyId: null,
-    strategyName: "AIVOR Scalper",
-    broker: "Not assigned",
-    platform: "Setup pending",
-    accountType: "Verify with broker",
-    instruments: ["Verify with broker"],
-    tradingStyle: "Scalping",
-    performance: {
-      value: null,
-      period: null,
-      label: "Not published"
+  };
+
+  const BROKERS = {
+    vantage: {
+      id: "vantage",
+      name: "Vantage",
+      monogram: "V",
+      tone: "vantage",
+      logo: "assets/brokers/vantage.png"
     },
-    riskDrawdown: {
-      value: null,
-      label: "Verify with broker"
+    "ic-markets": {
+      id: "ic-markets",
+      name: "IC Markets",
+      monogram: "IC",
+      tone: "ic",
+      logo: "assets/brokers/ic-markets.png"
     },
-    performanceInsight:
-      "Copy setup is not live. No performance figures are published for this directory row.",
-    fees: {
-      provider: "Not published — verify with broker when a copy setup goes live.",
-      broker: "Broker spreads, swaps, and commissions will depend on the assigned broker — verify before copying.",
-      note: "Provider fee vs broker costs will be listed when a real setup is configured."
+    exness: {
+      id: "exness",
+      name: "Exness",
+      monogram: "EX",
+      tone: "exness",
+      logo: "assets/brokers/exness.png"
     },
-    status: "Coming Soon",
-    externalCopyUrlKey: null,
-    externalCopyUrl: null,
-    details: {
-      summary:
-        "AIVOR Scalper copy trading is planned. No broker link, strategy ID, or verified metrics are available yet.",
-      howTo: [
-        "Watch this directory for a Live or Setup Pending row with a real broker.",
-        "Do not use invented third-party links — only copy URLs published here when configured."
-      ],
-      notes: ["Same strategy may appear in multiple rows for different brokers later."]
+    octafx: {
+      id: "octafx",
+      name: "OctaFX",
+      monogram: "OX",
+      tone: "octafx",
+      logo: "assets/brokers/octa.png"
     }
-  },
-  {
-    id: "pending-aivor-swing",
-    strategyId: null,
-    strategyName: "AIVOR Swing",
-    broker: "Not assigned",
-    platform: "Setup pending",
-    accountType: "Verify with broker",
-    instruments: ["Verify with broker"],
-    tradingStyle: "Swing",
-    performance: {
-      value: null,
-      period: null,
-      label: "Not published"
-    },
-    riskDrawdown: {
-      value: null,
-      label: "Verify with broker"
-    },
-    performanceInsight:
-      "Copy setup is not live. No performance figures are published for this directory row.",
-    fees: {
-      provider: "Not published — verify with broker when a copy setup goes live.",
-      broker: "Broker spreads, swaps, and commissions will depend on the assigned broker — verify before copying.",
-      note: "Provider fee vs broker costs will be listed when a real setup is configured."
-    },
-    status: "Coming Soon",
-    externalCopyUrlKey: null,
-    externalCopyUrl: null,
-    details: {
-      summary:
-        "AIVOR Swing copy trading is planned. No broker link, strategy ID, or verified metrics are available yet.",
-      howTo: [
-        "Watch this directory for a Live or Setup Pending row with a real broker.",
-        "Do not use invented third-party links — only copy URLs published here when configured."
-      ],
-      notes: ["Same strategy may appear in multiple rows for different brokers later."]
+  };
+
+  /**
+   * Performance / status rules (no invented metrics):
+   * - HF + Vantage: Live; performance = Live results available
+   * - HF + other brokers: Pending; performance not available
+   * - Scalper & Swing: Backtest status; Backtest only performance
+   */
+  function rowSpec(productKey, brokerKey) {
+    const product = PRODUCTS[productKey];
+    const broker = BROKERS[brokerKey];
+    const isHfVantage = productKey === "hf" && brokerKey === "vantage";
+    const isHf = productKey === "hf";
+    const styleLine = `${product.tradingStyle} · ${product.instrument}`;
+
+    let status;
+    let performance;
+    let risk;
+
+    if (isHfVantage) {
+      status = "Live";
+      performance = { label: "Live results available", kind: "live" };
+      risk = {
+        label: "View risk details",
+        kind: "live",
+        href: "performance.html?product=hf&type=live"
+      };
+    } else if (isHf) {
+      status = "Pending";
+      performance = { label: "Not available", kind: "unavailable" };
+      risk = {
+        label: "View risk details",
+        kind: "live",
+        href: "performance.html?product=hf&type=live"
+      };
+    } else {
+      status = "Backtest";
+      performance = { label: "Backtest only", kind: "backtest" };
+      risk = {
+        label: "View backtest risk",
+        kind: "backtest",
+        href: `performance.html?product=${productKey}&type=backtest`
+      };
     }
-  },
-  {
-    id: "pending-aivor-hf-extra",
-    strategyId: null,
-    strategyName: "AIVOR HF",
-    broker: "Not assigned",
-    platform: "Setup pending",
-    accountType: "Verify with broker",
-    instruments: ["XAUUSD"],
-    tradingStyle: "High-frequency systematic",
-    performance: {
-      value: null,
-      period: null,
-      label: "Not published"
-    },
-    riskDrawdown: {
-      value: null,
-      label: "Verify with broker"
-    },
-    performanceInsight:
-      "Additional broker setups for AIVOR HF are not configured. The live Vantage setup is listed separately (Strategy ID 1067466).",
-    fees: {
-      provider: "Not published — verify with broker when a copy setup goes live.",
-      broker: "Broker costs depend on the assigned broker — verify before copying.",
-      note: "Provider fee vs broker costs will be listed when a real setup is configured."
-    },
-    status: "Setup Pending",
-    externalCopyUrlKey: null,
-    externalCopyUrl: null,
-    details: {
-      summary:
-        "Placeholder row for a future AIVOR HF copy setup on another broker. No URL or verified metrics yet.",
-      howTo: [
-        "Use the Live Vantage AIVOR HF row when you want to copy today.",
-        "Additional brokers will appear here only when a real setup ID and copy URL are supplied."
-      ],
-      notes: ["Never invent broker links or performance for pending rows."]
-    }
+
+    return {
+      id: `${brokerKey}-${productKey}`,
+      productKey: product.id,
+      brokerKey: broker.id,
+      strategyId: isHfVantage ? "1067466" : null,
+      strategyName: product.name,
+      productName: product.name,
+      productIcon: product.icon,
+      productMonogram: product.monogram,
+      productSubline: styleLine,
+      broker: broker.name,
+      brokerMonogram: broker.monogram,
+      brokerTone: broker.tone,
+      brokerLogo: broker.logo,
+      tradingStyle: product.tradingStyle,
+      instrument: product.instrument,
+      performance: performance,
+      riskDrawdown: risk,
+      status: status,
+      /* Resolve via META + config; brokerCopyUrls reserved for future per-broker URLs */
+      externalCopyUrlKey: META.defaultCopyUrlKey,
+      externalCopyUrl: null,
+      brokerCopyUrlSlot: brokerKey,
+      fees: {
+        provider: META.commissionLabel,
+        broker:
+          "Broker spreads, swaps, and commissions are separate — verify with the broker.",
+        note: META.commissionNote
+      },
+      performanceInsight: isHfVantage
+        ? "Live copy setup on Vantage. No return or drawdown figures are published in this directory — review the live profile for provider-published metrics."
+        : isHf
+          ? "AIVOR HF live copy is configured on Vantage only. This broker row has no verified live copy metrics yet."
+          : "Backtest-only product. No live copy metrics are published for this directory row.",
+      details: {
+        summary: isHfVantage
+          ? "Copy trading of AIVOR HF on Vantage Markets. Your copy account mirrors the signal provider according to your allocation and the broker’s copy rules."
+          : `Directory row for ${product.name} × ${broker.name}. Broker-specific copy destination pending configuration.`,
+        howTo: isHfVantage
+          ? [
+              "Open or log in to a Vantage Markets account.",
+              "Review the live copy-trading profile (fees, risk, account requirements).",
+              "Fund only capital you can afford to risk.",
+              "Choose allocation and start copying.",
+              "Monitor on the broker; stop or resize if it no longer fits your risk."
+            ]
+          : [
+              "Use this directory to compare product × broker setups.",
+              "Broker-specific Copy Strategy links will appear when configured.",
+              "Do not invent third-party links — only use URLs published here."
+            ],
+        notes: [
+          META.urlDisclosure,
+          "Past performance is not indicative of future results."
+        ]
+      }
+    };
   }
-];
+
+  const ORDER = [
+    ["hf", "vantage"],
+    ["hf", "ic-markets"],
+    ["hf", "exness"],
+    ["hf", "octafx"],
+    ["scalper", "vantage"],
+    ["scalper", "ic-markets"],
+    ["scalper", "exness"],
+    ["scalper", "octafx"],
+    ["swing", "vantage"],
+    ["swing", "ic-markets"],
+    ["swing", "exness"],
+    ["swing", "octafx"]
+  ];
+
+  window.AIVOR_COPY_TRADING_META = META;
+  window.AIVOR_COPY_TRADING_PRODUCTS = PRODUCTS;
+  window.AIVOR_COPY_TRADING_BROKERS = BROKERS;
+  window.AIVOR_COPY_TRADING = ORDER.map(([p, b]) => rowSpec(p, b));
+})();

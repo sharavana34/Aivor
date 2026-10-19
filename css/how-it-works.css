@@ -1,0 +1,614 @@
+/* How It Works — page-scoped layout adapted from sample; uses site.css tokens */
+
+.page-how main#main {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+.page-how .hiw-wrap {
+  width: min(1120px, calc(100% - 36px));
+  margin: 0 auto;
+  padding-bottom: 24px;
+}
+
+/* —— Hero —— */
+.page-how .hiw-hero {
+  padding: 76px 0 48px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: none;
+}
+
+.page-how .hiw-hero::before {
+  display: none;
+}
+
+.page-how .hiw-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(0, 194, 255, 0.35);
+  background: rgba(11, 30, 40, 0.85);
+  color: var(--electric);
+  border-radius: 22px;
+  padding: 6px 11px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.page-how .hiw-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--electric);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--electric);
+}
+
+.page-how .hiw-hero h1 {
+  font-family: var(--display);
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -1.7px;
+  margin: 18px 0 16px;
+  font-weight: 900;
+  max-width: 780px;
+  color: #fff;
+  text-align: start;
+}
+
+.page-how .hiw-hero h1 span {
+  color: var(--electric);
+}
+
+.page-how .hiw-hero-lead {
+  color: var(--muted);
+  font-size: 15px;
+  max-width: 650px;
+  margin: 0;
+  line-height: var(--lh-body);
+}
+
+.page-how .hiw-hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 27px;
+}
+
+.page-how .hiw-hero-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.page-how .hiw-hero-meta span::before {
+  content: "✓";
+  color: var(--profit);
+  margin-right: 7px;
+}
+
+/* Workflow visual */
+.page-how .hiw-visual {
+  margin-top: 42px;
+  border: 1px solid rgba(37, 55, 70, 0.95);
+  border-radius: 20px;
+  background: linear-gradient(135deg, #101a25, #080d13);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+}
+
+.page-how .hiw-visual-left {
+  padding: 12px;
+  min-width: 0;
+}
+
+.page-how .hiw-visual-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #7e91a4;
+}
+
+.page-how .hiw-visual-title {
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: 800;
+  margin: 8px 0;
+  color: #fff;
+  line-height: var(--lh-tight);
+}
+
+.page-how .hiw-visual-copy {
+  font-size: 12px;
+  color: var(--muted);
+  max-width: 380px;
+  line-height: 1.55;
+}
+
+.page-how .hiw-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.page-how .hiw-flow-node {
+  border: 1px solid #294456;
+  background: #0c1c28;
+  border-radius: 9px;
+  padding: 9px 11px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--silver);
+}
+
+.page-how .hiw-flow-arrow {
+  color: var(--electric);
+}
+
+.page-how .hiw-terminal {
+  border: 1px solid #243747;
+  border-radius: 14px;
+  padding: 16px;
+  background: #080e14;
+  min-height: 210px;
+  min-width: 0;
+}
+
+.page-how .hiw-terminal-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  color: #91a0b1;
+  border-bottom: 1px solid #1d2a36;
+  padding-bottom: 11px;
+}
+
+.page-how .hiw-live-dot {
+  color: var(--profit);
+  white-space: nowrap;
+}
+
+.page-how .hiw-chart {
+  width: 100%;
+  height: 120px;
+  margin-top: 14px;
+}
+
+.page-how .hiw-chart svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.page-how .hiw-terminal-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 10px;
+  color: #91a0b1;
+  margin-top: 8px;
+}
+
+.page-how .hiw-terminal-bottom strong {
+  color: var(--profit);
+}
+
+/* —— Sections —— */
+.page-how .hiw-section {
+  padding: 48px 0;
+}
+
+.page-how .hiw-section-head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 28px;
+}
+
+.page-how .hiw-kicker {
+  font-size: 10px;
+  color: var(--electric);
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.page-how .hiw-section-head h2 {
+  font-family: var(--display);
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.2;
+  margin: 8px 0 10px;
+  letter-spacing: -0.7px;
+  color: #fff;
+  font-weight: 800;
+}
+
+.page-how .hiw-section-head p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+  line-height: var(--lh-body);
+}
+
+/* Four steps */
+.page-how .hiw-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+}
+
+.page-how .hiw-step {
+  position: relative;
+  border: 1px solid rgba(34, 49, 63, 0.95);
+  background: linear-gradient(160deg, #101a24, #0a1016);
+  border-radius: 15px;
+  padding: 19px;
+  min-height: 210px;
+  border-top: 1px solid rgba(34, 49, 63, 0.95);
+}
+
+.page-how .hiw-step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--electric);
+  border: 1px solid #1a5064;
+  background: #0b202b;
+  font-size: 12px;
+  font-weight: 900;
+  font-family: var(--display);
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+
+.page-how .hiw-step h3 {
+  font-family: var(--display);
+  font-size: 15px;
+  margin: 17px 0 7px;
+  color: #fff;
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+.page-how .hiw-step p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+  max-width: none;
+  line-height: 1.55;
+}
+
+.page-how .hiw-step-tag {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 9px;
+  color: #b8c6d4;
+  border: 1px solid #293a49;
+  border-radius: 20px;
+  padding: 4px 8px;
+}
+
+/* Strategy cards */
+.page-how .hiw-strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.page-how .hiw-strategy {
+  border: 1px solid #253542;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #111c27, #0b1117);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.page-how .hiw-strategy::after {
+  content: "";
+  position: absolute;
+  right: -35px;
+  top: -40px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(0, 194, 255, 0.05);
+  pointer-events: none;
+}
+
+.page-how .hiw-strategy-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.page-how .hiw-strategy-logo {
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--electric);
+  background: #0d2530;
+  border: 1px solid #22566a;
+  flex-shrink: 0;
+}
+
+.page-how .hiw-strategy--scalper .hiw-strategy-logo {
+  color: var(--gold-bright);
+  background: #28220f;
+  border-color: #625125;
+}
+
+.page-how .hiw-strategy--swing .hiw-strategy-logo {
+  color: #78e2b4;
+  background: #10271f;
+  border-color: #285d48;
+}
+
+.page-how .hiw-strategy h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  line-height: var(--lh-tight);
+}
+
+.page-how .hiw-strategy small {
+  color: var(--muted);
+  font-size: 10px;
+  display: block;
+  margin-top: 2px;
+}
+
+.page-how .hiw-strategy > p {
+  font-size: 12px;
+  color: #a0adbb;
+  margin: 17px 0;
+  line-height: 1.55;
+  position: relative;
+  z-index: 1;
+}
+
+.page-how .hiw-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.page-how .hiw-tag {
+  font-size: 9px;
+  border: 1px solid #293947;
+  border-radius: 20px;
+  padding: 5px 8px;
+  color: #b5c1cd;
+}
+
+.page-how .hiw-strategy-actions {
+  text-align: center;
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Risk */
+.page-how .hiw-risk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.page-how .hiw-risk-card {
+  border: 1px solid rgba(34, 49, 63, 0.95);
+  border-radius: 15px;
+  background: #0c131a;
+  padding: 21px;
+  min-width: 0;
+}
+
+.page-how .hiw-risk-card .hiw-icon {
+  color: var(--gold-bright);
+  font-size: 18px;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.page-how .hiw-risk-card h3 {
+  font-family: var(--display);
+  font-size: 15px;
+  margin: 0 0 9px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.page-how .hiw-risk-card > p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.page-how .hiw-risk-list {
+  list-style: none;
+  margin: 15px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+}
+
+.page-how .hiw-risk-list li {
+  font-size: 11px;
+  color: #b2bfcb;
+  padding-left: 0;
+}
+
+.page-how .hiw-risk-list li::before {
+  content: "•";
+  color: var(--electric);
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+/* Final CTA */
+.page-how .hiw-cta {
+  border: 1px solid #285064;
+  border-radius: 20px;
+  padding: 31px;
+  background:
+    radial-gradient(ellipse at right, #123344 0, transparent 55%),
+    linear-gradient(135deg, #101c27, #0a1016);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.page-how .hiw-cta h2 {
+  font-family: var(--display);
+  font-size: 25px;
+  margin: 0 0 8px;
+  color: #fff;
+  font-weight: 800;
+  line-height: var(--lh-heading);
+}
+
+.page-how .hiw-cta p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+  max-width: 560px;
+  line-height: 1.55;
+}
+
+.page-how .hiw-cta-actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+/* Gold primary accent for key CTAs (sample look; site tokens) */
+.page-how .btn-hiw-gold {
+  background: linear-gradient(145deg, var(--gold-bright) 0%, var(--gold) 100%);
+  border-color: var(--gold-bright);
+  color: #151719;
+  box-shadow: 0 2px 10px var(--gold-glow);
+}
+
+.page-how .btn-hiw-gold:hover {
+  filter: brightness(1.06);
+  color: #151719;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .page-how .hiw-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .page-how .hiw-visual {
+    grid-template-columns: 1fr;
+  }
+
+  .page-how .hiw-strategy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-how .hiw-strategy {
+    padding: 17px;
+  }
+
+  .page-how .hiw-cta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-how .hiw-wrap {
+    width: min(1120px, calc(100% - 28px));
+  }
+
+  .page-how .hiw-hero {
+    padding: 54px 0 28px;
+  }
+
+  .page-how .hiw-hero-lead {
+    font-size: 13px;
+  }
+
+  .page-how .hiw-visual {
+    padding: 12px;
+  }
+
+  .page-how .hiw-visual-left {
+    padding: 5px;
+  }
+
+  .page-how .hiw-flow {
+    gap: 5px;
+  }
+
+  .page-how .hiw-flow-node {
+    padding: 9px;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .page-how .hiw-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .page-how .hiw-step {
+    min-height: 0;
+  }
+
+  .page-how .hiw-risk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-how .hiw-section {
+    padding: 34px 0;
+  }
+
+  .page-how .hiw-cta {
+    padding: 22px;
+  }
+
+  .page-how .hiw-cta h2 {
+    font-size: 22px;
+  }
+
+  .page-how .hiw-hero-meta {
+    gap: 10px;
+  }
+}

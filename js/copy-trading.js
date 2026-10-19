@@ -1,9 +1,16 @@
 /**
  * Copy Trading directory + detail view.
- * Loads setups by unique id (not strategy name alone).
+ * Directory: 7-column table, 12 product×broker rows, compact filters.
  */
 (function () {
   const cfg = window.AIVOR_CONFIG || {};
+  const meta = window.AIVOR_COPY_TRADING_META || {
+    commissionLabel: "5%",
+    commissionNote: "",
+    defaultCopyUrlKey: "COPY_TRADING_URL",
+    brokerCopyUrls: {},
+    urlDisclosure: ""
+  };
   const raw = Array.isArray(window.AIVOR_COPY_TRADING)
     ? window.AIVOR_COPY_TRADING
     : [];
@@ -11,15 +18,22 @@
   function resolveCopyUrl(entry) {
     if (!entry) return null;
     if (entry.externalCopyUrl) return entry.externalCopyUrl;
+    const slot = entry.brokerCopyUrlSlot;
+    const brokerMap = meta.brokerCopyUrls || {};
+    if (slot && brokerMap[slot]) return brokerMap[slot];
     if (entry.externalCopyUrlKey && cfg[entry.externalCopyUrlKey]) {
       return cfg[entry.externalCopyUrlKey];
+    }
+    if (meta.defaultCopyUrlKey && cfg[meta.defaultCopyUrlKey]) {
+      return cfg[meta.defaultCopyUrlKey];
     }
     return null;
   }
 
   function hydrate(entry) {
     return Object.assign({}, entry, {
-      externalCopyUrl: resolveCopyUrl(entry)
+      externalCopyUrl: resolveCopyUrl(entry),
+      commissionLabel: meta.commissionLabel || "5%"
     });
   }
 
@@ -33,33 +47,50 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** Human-readable status — never render raw keys like live_LABEL. */
+  function formatStatus(status) {
+    const rawStatus = String(status == null ? "" : status).trim();
+    if (!rawStatus) return "Not available";
+    const cleaned = rawStatus
+      .replace(/_LABEL$/i, "")
+      .replace(/_/g, " ")
+      .trim();
+    const key = cleaned.toLowerCase();
+    if (key === "live") return "Live";
+    if (key === "pending" || key === "setup pending") return "Pending";
+    if (key === "backtest" || key === "coming soon") return "Backtest";
+    return cleaned.replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
   function formatPerformance(p) {
-    if (!p) return "Not published";
+    if (!p) return "Not available";
     if (p.value != null && p.period) {
       return `${p.value} (${p.period})`;
     }
     if (p.value != null) return String(p.value);
-    return p.label || "Not published";
+    return p.label || "Not available";
   }
 
   function formatRisk(r) {
-    if (!r) return "Verify with broker";
+    if (!r) return "Not available";
     if (r.value != null) {
       return r.period ? `${r.value} (${r.period})` : String(r.value);
     }
-    return r.label || "Verify with broker";
+    return r.label || "Not available";
   }
 
-  function formatInstruments(list) {
-    if (!Array.isArray(list) || !list.length) return "Verify with broker";
-    return list.join(", ");
+  function perfKindClass(p) {
+    const kind = (p && p.kind) || "";
+    if (kind === "live") return "ctd-perf--live";
+    if (kind === "backtest") return "ctd-perf--backtest";
+    return "ctd-perf--muted";
   }
 
   function statusClass(status) {
-    const s = String(status || "").toLowerCase();
+    const s = formatStatus(status).toLowerCase();
     if (s === "live") return "ctd-status--live";
-    if (s.indexOf("coming") >= 0) return "ctd-status--soon";
-    if (s.indexOf("pending") >= 0) return "ctd-status--pending";
+    if (s === "backtest") return "ctd-status--backtest";
+    if (s === "pending") return "ctd-status--pending";
     return "ctd-status--muted";
   }
 
@@ -67,20 +98,68 @@
     return `copy-trading-detail.html?id=${encodeURIComponent(id)}`;
   }
 
-  function uniqueValues(key, mapFn) {
+  function productCell(entry) {
+    const name = entry.productName || entry.strategyName || "";
+    const iconKey = entry.productIcon || entry.productKey || "";
+    const mono =
+      entry.productMonogram ||
+      (iconKey === "scalper" ? "SC" : iconKey === "swing" ? "SW" : "HF");
+    const sub =
+      entry.productSubline ||
+      [entry.tradingStyle, entry.instrument].filter(Boolean).join(" · ");
+    return `<div class="ctd-entity ctd-entity--product ctd-entity--${escapeHtml(iconKey)}">
+      <span class="ctd-product-mono ctd-product-mono--${escapeHtml(iconKey)}" aria-hidden="true">${escapeHtml(mono)}</span>
+      <span class="ctd-entity__text">
+        <span class="ctd-entity__name">${escapeHtml(name)}</span>
+        ${sub ? `<span class="ctd-entity__sub">${escapeHtml(sub)}</span>` : ""}
+      </span>
+    </div>`;
+  }
+
+  function brokerMonoHtml(tone, mono) {
+    return `<span class="ctd-broker-mono ctd-broker-mono--${escapeHtml(tone)}" aria-hidden="true">${escapeHtml(mono)}</span>`;
+  }
+
+  function brokerCell(entry) {
+    const tone = entry.brokerTone || "default";
+    const mono = entry.brokerMonogram || (entry.broker || "?").slice(0, 2);
+    const name = entry.broker || "";
+    const logo = entry.brokerLogo;
+    const mark = logo
+      ? `<span class="ctd-broker-logo-wrap">
+      <img class="ctd-broker-logo" src="${escapeHtml(logo)}" alt="" width="96" height="24" loading="lazy" decoding="async" data-broker-tone="${escapeHtml(tone)}" data-broker-mono="${escapeHtml(mono)}" onerror="this.onerror=null;var w=this.closest('.ctd-broker-logo-wrap');if(!w)return;var s=document.createElement('span');s.className='ctd-broker-mono ctd-broker-mono--'+(this.getAttribute('data-broker-tone')||'default');s.setAttribute('aria-hidden','true');s.textContent=this.getAttribute('data-broker-mono')||'';w.replaceWith(s);">
+    </span>`
+      : brokerMonoHtml(tone, mono);
+    return `<div class="ctd-entity ctd-entity--broker">
+      ${mark}
+      <span class="ctd-entity__name">${escapeHtml(name)}</span>
+    </div>`;
+  }
+
+  function commissionBadge(entry) {
+    const label = entry.commissionLabel || meta.commissionLabel || "5%";
+    return `<span class="ctd-commission" title="${escapeHtml(meta.commissionNote || "")}">${escapeHtml(label)}</span>`;
+  }
+
+  function riskCell(entry) {
+    const r = entry.riskDrawdown;
+    if (!r) {
+      return `<span class="ctd-risk ctd-risk--muted">Not available</span>`;
+    }
+    if (r.href) {
+      const kind = r.kind === "backtest" ? "backtest" : "live";
+      return `<a class="ctd-risk ctd-risk--link ctd-risk--${kind}" href="${escapeHtml(r.href)}">${escapeHtml(formatRisk(r))}</a>`;
+    }
+    return `<span class="ctd-risk ctd-risk--muted">${escapeHtml(formatRisk(r))}</span>`;
+  }
+
+  function uniqueValues(mapFn) {
     const set = new Set();
     DATA.forEach((e) => {
-      if (key === "instruments") {
-        (e.instruments || []).forEach((i) => set.add(i));
-      } else if (mapFn) {
-        set.add(mapFn(e));
-      } else {
-        set.add(e[key]);
-      }
+      const v = mapFn(e);
+      if (v) set.add(v);
     });
-    return Array.from(set).filter(Boolean).sort((a, b) =>
-      String(a).localeCompare(String(b))
-    );
+    return Array.from(set).sort((a, b) => String(a).localeCompare(String(b)));
   }
 
   function fillSelect(el, values, allLabel) {
@@ -100,36 +179,33 @@
 
   function getFilters() {
     return {
-      strategy: (document.getElementById("ctd-filter-strategy") || {}).value || "",
+      product:
+        (document.getElementById("ctd-filter-product") || {}).value || "",
       broker: (document.getElementById("ctd-filter-broker") || {}).value || "",
-      accountType: (document.getElementById("ctd-filter-account") || {}).value || "",
-      instrument: (document.getElementById("ctd-filter-instrument") || {}).value || "",
       status: (document.getElementById("ctd-filter-status") || {}).value || "",
-      search: ((document.getElementById("ctd-search") || {}).value || "").trim().toLowerCase(),
-      sort: (document.getElementById("ctd-sort") || {}).value || "status"
+      search: (
+        (document.getElementById("ctd-search") || {}).value || ""
+      ).trim().toLowerCase()
     };
   }
 
   function matches(entry, f) {
-    if (f.strategy && entry.strategyName !== f.strategy) return false;
+    const productName = entry.productName || entry.strategyName;
+    const statusLabel = formatStatus(entry.status);
+    if (f.product && productName !== f.product) return false;
     if (f.broker && entry.broker !== f.broker) return false;
-    if (f.accountType && entry.accountType !== f.accountType) return false;
-    if (f.status && entry.status !== f.status) return false;
-    if (f.instrument) {
-      const list = entry.instruments || [];
-      if (!list.includes(f.instrument)) return false;
-    }
+    if (f.status && statusLabel !== f.status) return false;
     if (f.search) {
       const blob = [
-        entry.strategyName,
+        productName,
         entry.broker,
-        entry.platform,
-        entry.accountType,
         entry.tradingStyle,
-        entry.status,
+        entry.instrument,
         entry.strategyId,
-        formatInstruments(entry.instruments),
-        formatPerformance(entry.performance)
+        statusLabel,
+        formatPerformance(entry.performance),
+        formatRisk(entry.riskDrawdown),
+        entry.commissionLabel
       ]
         .join(" ")
         .toLowerCase();
@@ -139,41 +215,37 @@
   }
 
   function statusRank(s) {
-    if (s === "Live") return 0;
-    if (s === "Setup Pending") return 1;
-    if (s === "Coming Soon") return 2;
+    const label = formatStatus(s);
+    if (label === "Live") return 0;
+    if (label === "Pending") return 1;
+    if (label === "Backtest") return 2;
     return 3;
   }
 
-  function sortEntries(list, sortKey) {
-    const out = list.slice();
-    out.sort((a, b) => {
-      if (sortKey === "strategy") {
-        return a.strategyName.localeCompare(b.strategyName) || a.broker.localeCompare(b.broker);
-      }
-      if (sortKey === "broker") {
-        return a.broker.localeCompare(b.broker) || a.strategyName.localeCompare(b.strategyName);
-      }
-      if (sortKey === "name") {
-        return a.strategyName.localeCompare(b.strategyName);
-      }
-      /* default: status then strategy */
-      const sr = statusRank(a.status) - statusRank(b.status);
-      if (sr !== 0) return sr;
-      return a.strategyName.localeCompare(b.strategyName) || a.broker.localeCompare(b.broker);
+  function sortEntries(list) {
+    const productOrder = { "AIVOR HF": 0, "AIVOR Scalper": 1, "AIVOR Swing": 2 };
+    const brokerOrder = {
+      Vantage: 0,
+      "IC Markets": 1,
+      Exness: 2,
+      OctaFX: 3
+    };
+    return list.slice().sort((a, b) => {
+      const pa = productOrder[a.productName || a.strategyName] ?? 9;
+      const pb = productOrder[b.productName || b.strategyName] ?? 9;
+      if (pa !== pb) return pa - pb;
+      const ba = brokerOrder[a.broker] ?? 9;
+      const bb = brokerOrder[b.broker] ?? 9;
+      if (ba !== bb) return ba - bb;
+      return statusRank(a.status) - statusRank(b.status);
     });
-    return out;
   }
 
-  function actionButtons(entry, sizeClass) {
-    const detail = `<a class="btn btn-secondary ${sizeClass}" href="${escapeHtml(detailHref(entry.id))}">View Details</a>`;
-    let copyBtn;
+  function actionButton(entry) {
     if (entry.externalCopyUrl) {
-      copyBtn = `<a class="btn btn-primary ${sizeClass}" href="${escapeHtml(entry.externalCopyUrl)}" target="_blank" rel="noopener noreferrer">Copy Strategy</a>`;
-    } else {
-      copyBtn = `<span class="btn btn-ghost ${sizeClass} is-coming-soon" aria-disabled="true">Copy Strategy</span>`;
+      return `<a class="ctd-action-btn" href="${escapeHtml(entry.externalCopyUrl)}" target="_blank" rel="noopener noreferrer">Copy strategy</a>`;
     }
-    return `<div class="ctd-actions">${detail}${copyBtn}</div>`;
+    return `<span class="ctd-action-btn is-coming-soon" aria-disabled="true">Copy strategy</span>`;
   }
 
   function renderTable(list) {
@@ -181,115 +253,94 @@
     if (!tbody) return;
     if (!list.length) {
       tbody.innerHTML =
-        '<tr><td colspan="9" class="ctd-empty">No setups match these filters.</td></tr>';
+        '<tr><td colspan="7" class="ctd-empty">No setups match these filters.</td></tr>';
       return;
     }
     tbody.innerHTML = list
-      .map(
-        (e) => `<tr>
-      <td data-label="Strategy"><strong>${escapeHtml(e.strategyName)}</strong>${
-          e.strategyId
-            ? `<br><code class="ctd-id">${escapeHtml(e.strategyId)}</code>`
-            : ""
-        }</td>
-      <td data-label="Broker">${escapeHtml(e.broker)}</td>
-      <td data-label="Platform">${escapeHtml(e.platform)}</td>
-      <td data-label="Account">${escapeHtml(e.accountType)}</td>
-      <td data-label="Instruments">${escapeHtml(formatInstruments(e.instruments))}</td>
-      <td data-label="Performance">${escapeHtml(formatPerformance(e.performance))}</td>
-      <td data-label="Risk">${escapeHtml(formatRisk(e.riskDrawdown))}</td>
-      <td data-label="Status"><span class="ctd-status ${statusClass(e.status)}">${escapeHtml(e.status)}</span></td>
-      <td data-label="Actions">${actionButtons(e, "btn-sm")}</td>
-    </tr>`
-      )
+      .map((e) => {
+        const statusLabel = formatStatus(e.status);
+        return `<tr data-product="${escapeHtml(e.productKey || "")}" data-broker="${escapeHtml(e.brokerKey || "")}">
+      <td data-label="Product / Strategy">${productCell(e)}</td>
+      <td data-label="Broker">${brokerCell(e)}</td>
+      <td data-label="Commission">${commissionBadge(e)}</td>
+      <td data-label="Performance"><span class="ctd-perf ${perfKindClass(e.performance)}">${escapeHtml(formatPerformance(e.performance))}</span></td>
+      <td data-label="Risk">${riskCell(e)}</td>
+      <td data-label="Status"><span class="ctd-status ${statusClass(e.status)}">${escapeHtml(statusLabel)}</span></td>
+      <td data-label="Action" class="ctd-td-action">${actionButton(e)}</td>
+    </tr>`;
+      })
       .join("");
   }
 
   function renderCards(list) {
-    const wrap = document.getElementById("ctd-cards");
-    if (!wrap) return;
+    const root = document.getElementById("ctd-cards");
+    if (!root) return;
     if (!list.length) {
-      wrap.innerHTML = '<p class="ctd-empty">No setups match these filters.</p>';
+      root.innerHTML =
+        '<p class="ctd-empty glass-panel ctd-card">No setups match these filters.</p>';
       return;
     }
-    wrap.innerHTML = list
-      .map(
-        (e) => `<article class="ctd-card glass-panel" data-id="${escapeHtml(e.id)}">
-      <header class="ctd-card-head">
-        <div>
-          <h3>${escapeHtml(e.strategyName)}</h3>
-          ${
-            e.strategyId
-              ? `<code class="ctd-id">${escapeHtml(e.strategyId)}</code>`
-              : ""
-          }
-        </div>
-        <span class="ctd-status ${statusClass(e.status)}">${escapeHtml(e.status)}</span>
-      </header>
-      <dl class="ctd-card-meta">
-        <div><dt>Broker</dt><dd>${escapeHtml(e.broker)}</dd></div>
-        <div><dt>Platform</dt><dd>${escapeHtml(e.platform)}</dd></div>
-        <div><dt>Account</dt><dd>${escapeHtml(e.accountType)}</dd></div>
-        <div><dt>Instruments</dt><dd>${escapeHtml(formatInstruments(e.instruments))}</dd></div>
-        <div><dt>Style</dt><dd>${escapeHtml(e.tradingStyle)}</dd></div>
-        <div><dt>Performance</dt><dd>${escapeHtml(formatPerformance(e.performance))}</dd></div>
-        <div><dt>Risk / drawdown</dt><dd>${escapeHtml(formatRisk(e.riskDrawdown))}</dd></div>
-      </dl>
-      ${actionButtons(e, "btn-sm")}
-    </article>`
-      )
+    root.innerHTML = list
+      .map((e) => {
+        const statusLabel = formatStatus(e.status);
+        return `<article class="ctd-card glass-panel" role="listitem" data-product="${escapeHtml(e.productKey || "")}" data-broker="${escapeHtml(e.brokerKey || "")}">
+  <div class="ctd-card-head">
+    ${productCell(e)}
+    <span class="ctd-status ${statusClass(e.status)}">${escapeHtml(statusLabel)}</span>
+  </div>
+  <dl class="ctd-card-meta">
+    <div><dt>Broker</dt><dd>${brokerCell(e)}</dd></div>
+    <div><dt>Commission</dt><dd>${commissionBadge(e)}</dd></div>
+    <div><dt>Performance</dt><dd><span class="ctd-perf ${perfKindClass(e.performance)}">${escapeHtml(formatPerformance(e.performance))}</span></dd></div>
+    <div><dt>Risk</dt><dd>${riskCell(e)}</dd></div>
+  </dl>
+  <div class="ctd-actions">${actionButton(e)}</div>
+</article>`;
+      })
       .join("");
   }
 
-  function updateCount(n) {
+  function updateCount(n, total) {
     const el = document.getElementById("ctd-count");
     if (!el) return;
-    el.textContent = n === 1 ? "1 setup" : `${n} setups`;
+    const t = typeof total === "number" ? total : DATA.length;
+    if (n === t) {
+      el.textContent = n === 1 ? "1 setup" : `${n} setups`;
+    } else {
+      el.textContent = `${n} of ${t} setups`;
+    }
   }
 
   function applyDirectory() {
     const f = getFilters();
-    const filtered = sortEntries(DATA.filter((e) => matches(e, f)), f.sort);
+    const filtered = sortEntries(DATA.filter((e) => matches(e, f)));
     renderTable(filtered);
     renderCards(filtered);
-    updateCount(filtered.length);
+    updateCount(filtered.length, DATA.length);
   }
 
   function initDirectoryFilters() {
     fillSelect(
-      document.getElementById("ctd-filter-strategy"),
-      uniqueValues("strategyName"),
+      document.getElementById("ctd-filter-product"),
+      uniqueValues((e) => e.productName || e.strategyName),
       "All strategies"
     );
     fillSelect(
       document.getElementById("ctd-filter-broker"),
-      uniqueValues("broker"),
+      uniqueValues((e) => e.broker),
       "All brokers"
     );
     fillSelect(
-      document.getElementById("ctd-filter-account"),
-      uniqueValues("accountType"),
-      "All account types"
-    );
-    fillSelect(
-      document.getElementById("ctd-filter-instrument"),
-      uniqueValues("instruments"),
-      "All instruments"
-    );
-    fillSelect(
       document.getElementById("ctd-filter-status"),
-      uniqueValues("status"),
+      uniqueValues((e) => formatStatus(e.status)),
       "All statuses"
     );
 
     const ids = [
-      "ctd-filter-strategy",
+      "ctd-filter-product",
       "ctd-filter-broker",
-      "ctd-filter-account",
-      "ctd-filter-instrument",
       "ctd-filter-status",
-      "ctd-search",
-      "ctd-sort"
+      "ctd-search"
     ];
     ids.forEach((id) => {
       const el = document.getElementById(id);
@@ -307,10 +358,18 @@
           if (el.tagName === "SELECT") el.selectedIndex = 0;
           else el.value = "";
         });
-        const sort = document.getElementById("ctd-sort");
-        if (sort) sort.value = "status";
         applyDirectory();
       });
+    }
+
+    const note = document.getElementById("ctd-url-note");
+    if (note && meta.urlDisclosure) {
+      note.textContent = meta.urlDisclosure;
+    }
+
+    const feeNote = document.getElementById("ctd-fee-sample-note");
+    if (feeNote && meta.commissionNote) {
+      feeNote.textContent = meta.commissionNote;
     }
   }
 
@@ -346,27 +405,37 @@
       if (el) el.textContent = text;
     };
 
-    setText("ctd-d-title", entry.strategyName);
-    setText("ctd-d-status", entry.status);
+    setText("ctd-d-title", entry.productName || entry.strategyName);
+    setText("ctd-d-status", formatStatus(entry.status));
     const statusEl = document.getElementById("ctd-d-status");
     if (statusEl) {
       statusEl.className = `ctd-status ${statusClass(entry.status)}`;
     }
     setText(
       "ctd-d-strategy-id",
-      entry.strategyId ? `Strategy ID ${entry.strategyId}` : "Strategy ID not assigned"
+      entry.strategyId
+        ? `Strategy ID ${entry.strategyId}`
+        : "Strategy ID not assigned"
     );
     setText("ctd-d-broker", entry.broker);
-    setText("ctd-d-platform", entry.platform);
-    setText("ctd-d-account", entry.accountType);
-    setText("ctd-d-instruments", formatInstruments(entry.instruments));
+    setText("ctd-d-platform", entry.platform || "Verify with broker");
+    setText("ctd-d-account", entry.accountType || "Verify with broker");
+    setText(
+      "ctd-d-instruments",
+      Array.isArray(entry.instruments) && entry.instruments.length
+        ? entry.instruments.join(", ")
+        : entry.instrument || "Verify with broker"
+    );
     setText("ctd-d-style", entry.tradingStyle);
     setText("ctd-d-perf", formatPerformance(entry.performance));
     setText("ctd-d-risk", formatRisk(entry.riskDrawdown));
-    setText("ctd-d-insight", entry.performanceInsight || "Not published");
+    setText("ctd-d-insight", entry.performanceInsight || "Not available");
     setText(
       "ctd-d-fee-provider",
-      (entry.fees && entry.fees.provider) || "Not published"
+      (entry.fees && entry.fees.provider) ||
+        entry.commissionLabel ||
+        meta.commissionLabel ||
+        "Not available"
     );
     setText(
       "ctd-d-fee-broker",
@@ -375,12 +444,10 @@
     setText(
       "ctd-d-fee-note",
       (entry.fees && entry.fees.note) ||
+        meta.commissionNote ||
         "Distinguish provider fees from broker spreads, swaps, and commissions."
     );
-    setText(
-      "ctd-d-summary",
-      (entry.details && entry.details.summary) || ""
-    );
+    setText("ctd-d-summary", (entry.details && entry.details.summary) || "");
 
     const how = document.getElementById("ctd-d-howto");
     if (how) {
@@ -403,19 +470,19 @@
         cta.rel = "noopener noreferrer";
         cta.classList.remove("is-coming-soon", "is-disabled");
         cta.removeAttribute("aria-disabled");
-        cta.textContent = "Copy Strategy";
+        cta.textContent = "Copy strategy";
       } else {
         cta.href = "#";
         cta.removeAttribute("target");
         cta.removeAttribute("rel");
         cta.classList.add("is-coming-soon");
         cta.setAttribute("aria-disabled", "true");
-        cta.textContent = "Copy Strategy — not available yet";
+        cta.textContent = "Copy strategy — not available yet";
         cta.onclick = (ev) => ev.preventDefault();
       }
     }
 
-    document.title = `${entry.strategyName} · Copy Trading · AIVOR`;
+    document.title = `${entry.productName || entry.strategyName} · Copy Trading · AIVOR`;
   }
 
   function initDirectory() {
@@ -423,7 +490,6 @@
     initDirectoryFilters();
     applyDirectory();
 
-    /* Optional deep-link: ?id= or #id= opens detail page */
     const id = readSetupId();
     if (id && findById(id)) {
       window.location.replace(detailHref(id));
@@ -442,7 +508,9 @@
   window.AIVOR_COPY_TRADING_API = {
     getAll: () => DATA.slice(),
     getById: findById,
-    resolveCopyUrl
+    resolveCopyUrl,
+    formatStatus,
+    meta: meta
   };
 
   initDirectory();
