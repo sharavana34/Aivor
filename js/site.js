@@ -13,8 +13,9 @@
         }
         el.classList.remove("is-disabled", "is-coming-soon");
         el.removeAttribute("aria-disabled");
-        if (el.classList.contains("header-social__link")) {
+        if (el.classList.contains("float-social__link") || el.classList.contains("header-social__link")) {
           el.removeAttribute("title");
+          el.removeAttribute("tabindex");
         }
       } else {
         el.setAttribute("href", "#");
@@ -25,10 +26,12 @@
         el.addEventListener("click", (e) => e.preventDefault());
         const label = el.querySelector("[data-coming-soon-label]");
         if (label) label.textContent = "Coming soon";
-        /* Header icons stay visible when URL is null; no invented href */
-        if (el.classList.contains("header-social__link")) {
-          const name = el.getAttribute("aria-label") || "Social";
-          el.setAttribute("title", `${name} — coming soon`);
+        /* Floating / legacy header icons stay visible when URL is null; no invented href */
+        if (el.classList.contains("float-social__link") || el.classList.contains("header-social__link")) {
+          const name = (el.getAttribute("aria-label") || "Social").replace(/\s*[—-]\s*Coming soon$/i, "");
+          el.setAttribute("aria-label", `${name} — Coming soon`);
+          el.setAttribute("title", `${name} — Coming soon`);
+          el.setAttribute("tabindex", "-1");
         }
       }
     });

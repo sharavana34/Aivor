@@ -1,69 +1,41 @@
 /**
- * AIVOR design tokens — shared colour, type, space, and component scale.
- * Imported by site.css. Do not invent page-local colour hexes when a token exists.
+ * AIVOR design tokens — dual theme (light | dark).
+ * Semantic names stay stable; values switch via html[data-theme].
+ * Product accents (HF gold, Scalper cyan, Swing violet) are theme-stable.
+ * Imported by site.css. Prefer tokens over page-local hex.
  */
+
+/* —— Shared (non-theme) —— */
 :root {
-  /* —— Surfaces —— */
-  --bg: #0B0F14;
-  --bg-deep: #070a0e;
-  --bg-elev: #121821;
-  --bg-panel: #151c27;
-  --bg-navy: #0e141c;
-
-  /* —— Text —— */
-  --ink: #FFFFFF;
-  --ink-soft: #E8EEF6;
-  --muted: #8B96A8;
-  --muted-blue: #7A8799;
-  --silver: #D8DEE9;
-
-  /* —— Brand / action —— */
-  --electric: #00C2FF;
-  --deep: #1E88E5;
-  --primary: #00C2FF;
-  --primary-deep: #1E88E5;
-  --primary-bright: #4DD4FF;
-  --primary-glow: rgba(0, 194, 255, .28);
-  --blue: #1E88E5;
-  --blue-2: #00C2FF;
-  --blue-glow: rgba(0, 194, 255, .28);
+  /* Product identity — same in both themes */
   --cyan: #00C2FF;
-
-  /* —— Accents —— */
+  --cyan-bright: #4DD4FF;
   --gold: #C9A227;
   --gold-bright: #E8C547;
   --gold-glow: rgba(201, 162, 39, .38);
   --yellow: #E8C547;
+  --violet: #8B5CF6;
+  --violet-soft: #7eb8f0;
+  --blue: #1E88E5;
 
-  /* —— Financial (+/− also use signs in copy, not colour alone) —— */
+  --product-hf: var(--gold);
+  --product-hf-bright: var(--gold-bright);
+  --product-scalper: var(--cyan);
+  --product-swing: var(--violet);
+  --product-swing-soft: var(--violet-soft);
+
+  /* Financial (sign + colour) */
   --profit: #10b981;
   --loss: #ef4444;
   --green: var(--profit);
-  --green-bg: rgba(16, 185, 129, .14);
   --red: var(--loss);
-  --red-bg: rgba(239, 68, 68, .14);
 
-  /* —— Lines / glass —— */
-  --line: rgba(0, 194, 255, .18);
-  --line-soft: rgba(216, 222, 233, .1);
-  --glass: rgba(18, 24, 33, .55);
-  --glass-border: rgba(216, 222, 233, .12);
-  --card: rgba(18, 24, 33, .92);
-  --card-solid: #151c27;
-  --shadow: 0 16px 48px rgba(0, 0, 0, .55);
-
-  /* —— Product identity (distinct from site logo) —— */
-  --product-hf: var(--gold);
-  --product-hf-bright: var(--gold-bright);
-  --product-scalper: var(--electric);
-  --product-swing: var(--deep);
-
-  /* —— Typefaces: Inter body/UI · Syne brand wordmark only —— */
+  /* Typefaces: Inter body/UI · Syne brand wordmark only */
   --font: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   --display: "Inter", "Segoe UI", system-ui, sans-serif;
   --brand-font: "Syne", "Segoe UI", sans-serif;
 
-  /* —— Type scale —— */
+  /* Type scale */
   --lh-body: 1.65;
   --lh-heading: 1.2;
   --lh-tight: 1.3;
@@ -82,7 +54,7 @@
   --text-sub: 0.75rem;
   --text-nav: clamp(0.875rem, 0.12vw + 0.84rem, 0.9375rem);
 
-  /* —— Space / layout —— */
+  /* Space / layout */
   --radius: 16px;
   --radius-sm: 10px;
   --radius-xs: 8px;
@@ -97,4 +69,187 @@
   --touch-min: 44px;
   --focus-ring: 2px solid var(--gold);
   --focus-offset: 3px;
+}
+
+/* —— Dark (Reference A) —— default before bootstrap runs —— */
+:root,
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0B0F14;
+  --bg-deep: #070A0E;
+  --bg-elev: #121821;
+  --bg-panel: #151C27;
+  --bg-navy: #0E141C;
+  --bg-secondary: #0B0F14;
+  --surface: #121821;
+  --surface-2: #151C27;
+  --mint: rgba(0, 194, 255, .06);
+  --mint-solid: #0E1A22;
+
+  --ink: #FFFFFF;
+  --ink-soft: #E8EEF6;
+  --muted: #A5B0C0;
+  --muted-blue: #8B96A8;
+  --silver: #D8DEE9;
+
+  /* Theme action = electric cyan */
+  --primary: #00C2FF;
+  --primary-deep: #1E88E5;
+  --primary-bright: #4DD4FF;
+  --primary-glow: rgba(0, 194, 255, .28);
+  --action: #00C2FF;
+  --action-deep: #1E88E5;
+  --action-text: #041018;
+  --action-glow: rgba(0, 194, 255, .28);
+
+  /* Legacy aliases used across site.css */
+  --electric: #00C2FF;
+  --deep: #1E88E5;
+  --blue-2: #00C2FF;
+  --blue-glow: rgba(0, 194, 255, .28);
+
+  --green-bg: rgba(16, 185, 129, .14);
+  --red-bg: rgba(239, 68, 68, .14);
+
+  --line: rgba(0, 194, 255, .18);
+  --line-soft: rgba(216, 222, 233, .12);
+  --glass: rgba(18, 24, 33, .55);
+  --glass-border: rgba(216, 222, 233, .12);
+  --card: rgba(18, 24, 33, .92);
+  --card-solid: #151C27;
+  --shadow: 0 16px 48px rgba(0, 0, 0, .55);
+  --shadow-soft: 0 8px 28px rgba(0, 0, 0, .28);
+
+  --header-bg: rgba(11, 15, 20, .82);
+  --header-bg-scrolled: rgba(11, 15, 20, .88);
+  --header-bg-transparent: rgba(11, 15, 20, .35);
+  --header-border: rgba(216, 222, 233, .1);
+  --nav-drawer-bg: rgba(8, 11, 16, 0.98);
+
+  --body-glow-a: rgba(0, 194, 255, .12);
+  --body-glow-b: rgba(30, 136, 229, .1);
+  --body-base: linear-gradient(165deg, var(--bg-navy) 0%, var(--bg) 45%, var(--bg-deep) 100%);
+
+  --btn-secondary-bg: rgba(255, 255, 255, .04);
+  --btn-secondary-border: rgba(0, 194, 255, .35);
+  --btn-ghost-hover-border: rgba(0, 194, 255, .4);
+
+  --code-bg: rgba(255, 255, 255, .06);
+  --skip-fg: #041018;
+  --theme-meta: #0B0F14;
+
+  --chart-axis: #8b9aab;
+  --chart-grid: rgba(216, 222, 233, .12);
+  --chart-line: #00C2FF;
+  --chart-area: rgba(0, 194, 255, .14);
+  --chart-bar-pos: #10b981;
+  --chart-bar-neg: #ef4444;
+
+  /* Alias used by some page CSS */
+  --text: var(--ink);
+
+  /* Forms / tables / overlays */
+  --input-bg: #121821;
+  --input-fg: #E8EEF6;
+  --table-header-bg: #151C27;
+  --table-row-bg: #121821;
+  --table-row-hover: rgba(0, 194, 255, .06);
+  --overlay: rgba(11, 15, 20, .72);
+  --panel-tint: rgba(18, 24, 33, .85);
+  --panel-tint-2: rgba(11, 15, 20, .55);
+}
+
+/* —— Light (Reference B) —— */
+html[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #F7FAFC;
+  --bg-deep: #F0F6F5;
+  --bg-elev: #FFFFFF;
+  --bg-panel: #FFFFFF;
+  --bg-navy: #F7FAFC;
+  --bg-secondary: #F0F6F5;
+  --surface: #FFFFFF;
+  --surface-2: #F0F6F5;
+  --mint: #E8F7EF;
+  --mint-solid: #E8F7EF;
+
+  --ink: #142640;
+  --ink-soft: #142640;
+  --muted: #687D95;
+  --muted-blue: #526780;
+  --silver: #526780;
+  /* Alias used by some page CSS */
+  --text: var(--ink);
+
+  /* Theme action = emerald */
+  --primary: #078A43;
+  --primary-deep: #056F36;
+  --primary-bright: #079447;
+  --primary-glow: rgba(7, 138, 67, .22);
+  --action: #078A43;
+  --action-deep: #056F36;
+  --action-text: #FFFFFF;
+  --action-glow: rgba(7, 138, 67, .22);
+
+  /*
+   * Legacy --electric/--deep: many components used these as “primary action”.
+   * In light they map to emerald so CTAs/links follow Reference B.
+   * Product Scalper keeps true cyan via --product-scalper / --cyan.
+   */
+  --electric: #078A43;
+  --deep: #056F36;
+  --blue-2: #079447;
+  --blue-glow: rgba(7, 138, 67, .22);
+
+  --green-bg: rgba(7, 138, 67, .12);
+  --red-bg: rgba(239, 68, 68, .1);
+
+  --line: #D8E3E8;
+  --line-soft: #D8E3E8;
+  --glass: rgba(255, 255, 255, .92);
+  --glass-border: #D8E3E8;
+  --card: #FFFFFF;
+  --card-solid: #FFFFFF;
+  --shadow: 0 12px 36px rgba(20, 38, 64, .08);
+  --shadow-soft: 0 6px 20px rgba(20, 38, 64, .06);
+
+  --header-bg: rgba(255, 255, 255, .92);
+  --header-bg-scrolled: rgba(255, 255, 255, .97);
+  --header-bg-transparent: rgba(247, 250, 252, .78);
+  --header-border: #D8E3E8;
+  --nav-drawer-bg: rgba(247, 250, 252, 0.98);
+
+  --body-glow-a: rgba(7, 138, 67, .07);
+  --body-glow-b: rgba(20, 38, 64, .04);
+  --body-base: linear-gradient(165deg, #F7FAFC 0%, #F0F6F5 48%, #F7FAFC 100%);
+
+  --btn-secondary-bg: #FFFFFF;
+  --btn-secondary-border: #D8E3E8;
+  --btn-ghost-hover-border: #B8E5CC;
+
+  --code-bg: rgba(20, 38, 64, .04);
+  --skip-fg: #FFFFFF;
+  --theme-meta: #F7FAFC;
+
+  --chart-axis: #687D95;
+  --chart-grid: #D8E3E8;
+  --chart-line: #078A43;
+  --chart-area: rgba(7, 138, 67, .12);
+  --chart-bar-pos: #078A43;
+  --chart-bar-neg: #ef4444;
+
+  /* Forms / tables */
+  --input-bg: #FFFFFF;
+  --input-fg: #142640;
+  --table-header-bg: #EDF3F6;
+  --table-row-bg: #FFFFFF;
+  --table-row-hover: #F0F8F5;
+  --overlay: rgba(247, 250, 252, .78);
+  --panel-tint: var(--surface);
+  --panel-tint-2: var(--bg-secondary);
+
+  /* Softer gold glow on light surfaces */
+  --gold-glow: rgba(201, 162, 39, .22);
 }

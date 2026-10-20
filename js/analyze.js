@@ -8,6 +8,15 @@
 
   const $ = (id) => document.getElementById(id);
 
+  function chartToken(name, fallback) {
+    try {
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return v || fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
   let DATA = null;
   let DAYS = [];
   let BASE = 0;
@@ -653,17 +662,24 @@
       .map((t) => {
         const v = box.max - t * (box.max - box.min);
         const y = T + t * innerH;
-        return `<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="rgba(148,163,184,.12)" stroke-width="1"></line>
-      <text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="#94a3b8">${Math.round(v).toLocaleString("en-US")}</text>`;
+        const axis = chartToken("--chart-axis", "#94a3b8");
+        const grid = chartToken("--chart-grid", "rgba(148,163,184,.12)");
+        return `<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="${grid}" stroke-width="1"></line>
+      <text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="${axis}">${Math.round(v).toLocaleString("en-US")}</text>`;
       })
       .join("");
+    const axis = chartToken("--chart-axis", "#94a3b8");
+    const lineA = chartToken("--chart-line", "#00C2FF");
+    const lineB = chartToken("--primary-deep", "#1E88E5");
+    const lineC = chartToken("--primary-bright", "#4DD4FF");
+    const areaFill = chartToken("--chart-area", "rgba(0,194,255,.14)");
     const xLabels = [0, Math.floor((days.length - 1) / 2), days.length - 1]
       .map((i) => {
         const x = L + i * step;
-        return `<text x="${x}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#94a3b8">${pretty(days[i].d).slice(0, 5)}</text>`;
+        return `<text x="${x}" y="${H - 8}" text-anchor="middle" font-size="11" fill="${axis}">${pretty(days[i].d).slice(0, 5)}</text>`;
       })
       .join("");
-    svg.innerHTML = `${grids}<defs><linearGradient id="balStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00C2FF"/><stop offset="55%" stop-color="#1E88E5"/><stop offset="100%" stop-color="#4DD4FF"/></linearGradient></defs><polygon points="${area}" fill="rgba(0,194,255,.14)"></polygon>
+    svg.innerHTML = `${grids}<defs><linearGradient id="balStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${lineA}"/><stop offset="55%" stop-color="${lineB}"/><stop offset="100%" stop-color="${lineC}"/></linearGradient></defs><polygon points="${area}" fill="${areaFill}"></polygon>
     <polyline points="${line}" fill="none" stroke="url(#balStroke)" stroke-width="2.4" stroke-linejoin="round"></polyline>${xLabels}`;
     $("balCaption").textContent =
       withCur(money(days[0].bal, 0) + " → " + money(days[days.length - 1].bal, 0)) + " · end-of-day balance";
@@ -717,13 +733,19 @@
         const y0 = zero;
         const top = Math.min(y, y0),
           h = Math.max(1, Math.abs(y - y0));
-        const fill = m.pl >= 0 ? "#10b981" : "#ef4444";
-        const on = state.month === m.key ? ' stroke="#00C2FF" stroke-width="1.5"' : "";
+        const fill =
+          m.pl >= 0
+            ? chartToken("--chart-bar-pos", "#10b981")
+            : chartToken("--chart-bar-neg", "#ef4444");
+        const accent = chartToken("--chart-line", "#00C2FF");
+        const on = state.month === m.key ? ` stroke="${accent}" stroke-width="1.5"` : "";
+        const axis = chartToken("--chart-axis", "#94a3b8");
         return `<rect data-m="${m.key}" x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${fill}"${on} style="cursor:pointer"></rect>
-      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 10}" text-anchor="middle" font-size="10" fill="#94a3b8">${m.label.slice(0, 3)}</text>`;
+      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 10}" text-anchor="middle" font-size="10" fill="${axis}">${m.label.slice(0, 3)}</text>`;
       })
       .join("");
-    svg.innerHTML = `<line x1="${L}" y1="${zero}" x2="${W - R}" y2="${zero}" stroke="rgba(255,255,255,.2)"></line>` + bars;
+    const zeroStroke = chartToken("--line-soft", "rgba(255,255,255,.2)");
+    svg.innerHTML = `<line x1="${L}" y1="${zero}" x2="${W - R}" y2="${zero}" stroke="${zeroStroke}"></line>` + bars;
     svg.querySelectorAll("rect").forEach((r) =>
       r.addEventListener("click", () => {
         state.month = state.month === r.dataset.m ? "all" : r.dataset.m;
@@ -1247,6 +1269,10 @@
     weekPl: (from, to) => round2(DAYS.filter((d) => d.d >= from && d.d <= to).reduce((s, d) => s + d.pl, 0)),
     core: Core,
   };
+
+  window.addEventListener("aivor:themechange", () => {
+    if (DATA && DAYS && DAYS.length) render();
+  });
 
   wire();
 })();

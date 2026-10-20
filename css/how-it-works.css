@@ -28,8 +28,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(0, 194, 255, 0.35);
-  background: rgba(11, 30, 40, 0.85);
+  border: 1px solid var(--line);
+  background: var(--mint);
   color: var(--electric);
   border-radius: 22px;
   padding: 6px 11px;
@@ -57,7 +57,7 @@
   margin: 18px 0 16px;
   font-weight: 900;
   max-width: 780px;
-  color: #fff;
+  color: var(--ink);
   text-align: start;
 }
 
@@ -98,14 +98,14 @@
 /* Workflow visual */
 .page-how .hiw-visual {
   margin-top: 42px;
-  border: 1px solid rgba(37, 55, 70, 0.95);
+  border: 1px solid var(--line-soft);
   border-radius: 20px;
-  background: linear-gradient(135deg, #101a25, #080d13);
+  background: var(--card-solid);
   padding: 20px;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 20px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow);
 }
 
 .page-how .hiw-visual-left {
@@ -117,7 +117,7 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #7e91a4;
+  color: var(--muted);
 }
 
 .page-how .hiw-visual-title {
@@ -125,7 +125,7 @@
   font-size: 21px;
   font-weight: 800;
   margin: 8px 0;
-  color: #fff;
+  color: var(--ink);
   line-height: var(--lh-tight);
 }
 
@@ -145,8 +145,8 @@
 }
 
 .page-how .hiw-flow-node {
-  border: 1px solid #294456;
-  background: #0c1c28;
+  border: 1px solid var(--line);
+  background: var(--mint-solid);
   border-radius: 9px;
   padding: 9px 11px;
   font-size: 10px;
@@ -159,10 +159,10 @@
 }
 
 .page-how .hiw-terminal {
-  border: 1px solid #243747;
+  border: 1px solid var(--line-soft);
   border-radius: 14px;
   padding: 16px;
-  background: #080e14;
+  background: var(--bg-elev);
   min-height: 210px;
   min-width: 0;
 }
@@ -172,8 +172,8 @@
   justify-content: space-between;
   gap: 8px;
   font-size: 10px;
-  color: #91a0b1;
-  border-bottom: 1px solid #1d2a36;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line-soft);
   padding-bottom: 11px;
 }
 
@@ -200,7 +200,7 @@
   gap: 8px;
   flex-wrap: wrap;
   font-size: 10px;
-  color: #91a0b1;
+  color: var(--muted);
   margin-top: 8px;
 }
 
@@ -233,7 +233,7 @@
   line-height: 1.2;
   margin: 8px 0 10px;
   letter-spacing: -0.7px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 800;
 }
 
@@ -256,12 +256,12 @@
 
 .page-how .hiw-step {
   position: relative;
-  border: 1px solid rgba(34, 49, 63, 0.95);
-  background: linear-gradient(160deg, #101a24, #0a1016);
+  border: 1px solid var(--line-soft);
+  background: var(--card);
   border-radius: 15px;
   padding: 19px;
   min-height: 210px;
-  border-top: 1px solid rgba(34, 49, 63, 0.95);
+  border-top: 1px solid var(--line-soft);
 }
 
 .page-how .hiw-step-num {
@@ -271,8 +271,8 @@
   display: grid;
   place-items: center;
   color: var(--electric);
-  border: 1px solid #1a5064;
-  background: #0b202b;
+  border: 1px solid var(--line);
+  background: var(--mint);
   font-size: 12px;
   font-weight: 900;
   font-family: var(--display);
@@ -284,7 +284,7 @@
   font-family: var(--display);
   font-size: 15px;
   margin: 17px 0 7px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 700;
   line-height: var(--lh-tight);
 }
@@ -301,8 +301,8 @@
   display: inline-block;
   margin-top: 15px;
   font-size: 9px;
-  color: #b8c6d4;
-  border: 1px solid #293a49;
+  color: var(--silver);
+  border: 1px solid var(--line-soft);
   border-radius: 20px;
   padding: 4px 8px;
 }
@@ -315,9 +315,9 @@
 }
 
 .page-how .hiw-strategy {
-  border: 1px solid #253542;
+  border: 1px solid var(--line-soft);
   border-radius: 16px;
-  background: linear-gradient(150deg, #111c27, #0b1117);
+  background: var(--card-solid);
   padding: 20px;
   position: relative;
   overflow: hidden;
@@ -332,7 +332,7 @@
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background: rgba(0, 194, 255, 0.05);
+  background: var(--mint);
   pointer-events: none;
 }
 
@@ -353,21 +353,21 @@
   font-size: 12px;
   font-weight: 900;
   color: var(--electric);
-  background: #0d2530;
-  border: 1px solid #22566a;
+  background: var(--mint-solid);
+  border: 1px solid var(--line);
   flex-shrink: 0;
 }
 
 .page-how .hiw-strategy--scalper .hiw-strategy-logo {
   color: var(--gold-bright);
-  background: #28220f;
-  border-color: #625125;
+  background: var(--surface);
+  border-color: var(--gold);
 }
 
 .page-how .hiw-strategy--swing .hiw-strategy-logo {
-  color: #78e2b4;
-  background: #10271f;
-  border-color: #285d48;
+  color: var(--profit);
+  background: var(--green-bg);
+  border-color: var(--profit);
 }
 
 .page-how .hiw-strategy h3 {
@@ -375,7 +375,7 @@
   font-family: var(--display);
   font-size: 16px;
   font-weight: 800;
-  color: #fff;
+  color: var(--ink);
   line-height: var(--lh-tight);
 }
 
@@ -388,7 +388,7 @@
 
 .page-how .hiw-strategy > p {
   font-size: 12px;
-  color: #a0adbb;
+  color: var(--muted-blue);
   margin: 17px 0;
   line-height: 1.55;
   position: relative;
@@ -405,10 +405,10 @@
 
 .page-how .hiw-tag {
   font-size: 9px;
-  border: 1px solid #293947;
+  border: 1px solid var(--line-soft);
   border-radius: 20px;
   padding: 5px 8px;
-  color: #b5c1cd;
+  color: var(--silver);
 }
 
 .page-how .hiw-strategy-actions {
@@ -428,9 +428,9 @@
 }
 
 .page-how .hiw-risk-card {
-  border: 1px solid rgba(34, 49, 63, 0.95);
+  border: 1px solid var(--line-soft);
   border-radius: 15px;
-  background: #0c131a;
+  background: var(--surface);
   padding: 21px;
   min-width: 0;
 }
@@ -446,7 +446,7 @@
   font-family: var(--display);
   font-size: 15px;
   margin: 0 0 9px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 700;
 }
 
@@ -467,7 +467,7 @@
 
 .page-how .hiw-risk-list li {
   font-size: 11px;
-  color: #b2bfcb;
+  color: var(--silver);
   padding-left: 0;
 }
 
@@ -480,12 +480,12 @@
 
 /* Final CTA */
 .page-how .hiw-cta {
-  border: 1px solid #285064;
+  border: 1px solid var(--line);
   border-radius: 20px;
   padding: 31px;
   background:
-    radial-gradient(ellipse at right, #123344 0, transparent 55%),
-    linear-gradient(135deg, #101c27, #0a1016);
+    radial-gradient(ellipse at right, var(--primary-glow) 0, transparent 55%),
+    var(--bg-panel);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -496,7 +496,7 @@
   font-family: var(--display);
   font-size: 25px;
   margin: 0 0 8px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 800;
   line-height: var(--lh-heading);
 }

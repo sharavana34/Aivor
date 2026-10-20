@@ -219,13 +219,24 @@
     let copied = false;
     let popupOpened = false;
 
+    /* Open the tab synchronously inside the user gesture before awaiting clipboard.
+       Otherwise mobile browsers may treat window.open as a popup and block it. */
+    let win = null;
+    try {
+      /* Do not pass noopener in the feature string: browsers may then return
+         null even when the tab opened. Sever opener immediately instead. */
+      win = window.open(TELEGRAM_URL, "_blank");
+      if (win) {
+        try { win.opener = null; } catch (_) {}
+        popupOpened = true;
+      }
+    } catch (_) {
+      popupOpened = false;
+    }
     try {
       copied = await copyText(formatted);
-      const win = window.open(TELEGRAM_URL, "_blank", "noopener,noreferrer");
-      popupOpened = !!(win && !win.closed);
     } catch (_) {
       copied = false;
-      popupOpened = false;
     }
 
     const prefix =
@@ -338,17 +349,9 @@
       const apiUrl = getContactApiUrl();
 
       if (!apiUrl) {
-        showStatus(
-          statusEl,
-          "Contact API is not configured yet. Set CONTACT_API_URL in js/config.js to your Cloudflare Worker HTTPS URL after deploy. Until then, messages are not delivered automatically.",
-          "is-error",
-          false
-        );
-        /* Optional labeled manual path — never claims delivery */
-        const manualBtn = document.getElementById("contactManualTelegram");
-        if (manualBtn) {
-          /* already visible via markup when needed — keep status clear */
-        }
+        /* Current production mode is manual Telegram. Prepare the message and
+           open Telegram; never imply that this static site sent it automatically. */
+        await runManualTelegramFallback(statusEl, data);
         return;
       }
 

@@ -28,7 +28,7 @@ window.AIVOR_CONFIG = {
   SWING_URL: null, // TODO
 
   /*
-   * Social profile URLs (Contact page + header icons).
+   * Social profile URLs (Contact page + floating left social rail + footer).
    * Only set a string when the official AIVOR profile is confirmed.
    * Leave null/empty for Coming soon — never invent handles.
    * Telegram is the active support channel today.

@@ -28,8 +28,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(0, 194, 255, 0.35);
-  background: rgba(11, 30, 40, 0.85);
+  border: 1px solid var(--line);
+  background: var(--mint);
   color: var(--electric);
   border-radius: 22px;
   padding: 6px 11px;
@@ -56,7 +56,7 @@
   letter-spacing: -1.6px;
   margin: 18px 0 13px;
   font-weight: 900;
-  color: #fff;
+  color: var(--ink);
 }
 
 .page-faq .faq-hero h1 span {
@@ -77,11 +77,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid #2a3b4b;
-  background: #0c141d;
+  border: 1px solid var(--line-soft);
+  background: var(--surface);
   border-radius: 13px;
   padding: 6px 8px 6px 14px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-soft);
 }
 
 .page-faq .faq-search-icon {
@@ -97,14 +97,14 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--text);
+  color: var(--ink);
   padding: 9px 0;
   font-size: 13px;
   font-family: inherit;
 }
 
 .page-faq .faq-search input::placeholder {
-  color: #68798a;
+  color: var(--muted);
 }
 
 .page-faq .faq-search input:focus-visible {
@@ -112,8 +112,8 @@
 }
 
 .page-faq .faq-search:focus-within {
-  border-color: rgba(0, 194, 255, 0.55);
-  box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.2), 0 12px 35px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-glow), var(--shadow-soft);
 }
 
 .page-faq .faq-search-clear {
@@ -150,8 +150,8 @@
   align-self: start;
   position: sticky;
   top: 90px;
-  border: 1px solid var(--line-soft, #22313f);
-  background: linear-gradient(160deg, #101923, #0b1117);
+  border: 1px solid var(--line-soft);
+  background: var(--card-solid);
   border-radius: 15px;
   padding: 12px;
 }
@@ -160,7 +160,7 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1.3px;
-  color: #7f91a3;
+  color: var(--muted);
   margin: 7px 10px 10px;
   font-weight: 700;
 }
@@ -173,7 +173,7 @@
   text-align: left;
   border: 1px solid transparent;
   background: transparent;
-  color: #aab6c4;
+  color: var(--silver);
   padding: 10px;
   border-radius: 9px;
   font-size: 12px;
@@ -184,15 +184,15 @@
 .page-faq .faq-cat .faq-cat-ico {
   width: 22px;
   text-align: center;
-  color: #7d91a4;
+  color: var(--muted);
   font-size: 14px;
   flex-shrink: 0;
 }
 
 .page-faq .faq-cat.is-active {
   color: var(--electric);
-  border-color: #19485b;
-  background: #0b202a;
+  border-color: var(--line);
+  background: var(--mint);
 }
 
 .page-faq .faq-cat.is-active .faq-cat-ico {
@@ -200,7 +200,7 @@
 }
 
 .page-faq .faq-cat:hover {
-  background: #121f2b;
+  background: var(--surface-2);
 }
 
 .page-faq .faq-cat:focus-visible {
@@ -210,7 +210,7 @@
 
 .page-faq .faq-cat-count {
   margin-left: auto;
-  color: #647487;
+  color: var(--muted);
   font-size: 10px;
 }
 
@@ -224,12 +224,12 @@
   justify-content: space-between;
   gap: 12px;
   margin: 2px 0 14px;
-  color: #91a0b0;
+  color: var(--muted);
   font-size: 11px;
 }
 
 .page-faq .faq-result-line strong {
-  color: #e5edf5;
+  color: var(--ink-soft);
 }
 
 .page-faq .faq-group {
@@ -243,7 +243,7 @@
   font-size: 14px;
   font-weight: 800;
   margin: 0 0 10px;
-  color: #eaf0f6;
+  color: var(--ink);
 }
 
 .page-faq .faq-group-title::before {
@@ -260,15 +260,15 @@
 }
 
 .page-faq .faq-acc-item {
-  border: 1px solid #22313e;
-  background: linear-gradient(145deg, #0e161f, #0a1016);
+  border: 1px solid var(--line-soft);
+  background: var(--card);
   border-radius: 12px;
   overflow: hidden;
   transition: border-color 0.2s ease;
 }
 
 .page-faq .faq-acc-item.is-open {
-  border-color: #28536a;
+  border-color: var(--line);
 }
 
 .page-faq .faq-acc-q {
@@ -279,7 +279,7 @@
   text-align: left;
   border: 0;
   background: transparent;
-  color: var(--text);
+  color: var(--ink);
   padding: 16px 17px;
   cursor: pointer;
   font-size: 12px;
@@ -303,7 +303,7 @@
   flex: 0 0 22px;
   width: 22px;
   height: 22px;
-  border: 1px solid #2b3b49;
+  border: 1px solid var(--line-soft);
   border-radius: 7px;
   display: grid;
   place-items: center;
@@ -316,11 +316,11 @@
 .page-faq .faq-acc-item.is-open .faq-acc-q::after {
   content: "−";
   color: var(--gold-bright);
-  border-color: #65552a;
+  border-color: var(--gold);
 }
 
 .page-faq .faq-qmark {
-  color: #6f8498;
+  color: var(--muted);
   font-size: 10px;
   font-weight: 900;
   flex-shrink: 0;
@@ -328,7 +328,7 @@
 
 .page-faq .faq-acc-a {
   padding: 0 17px 16px 40px;
-  color: #9eacba;
+  color: var(--muted-blue);
   font-size: 12px;
   max-width: 750px;
   line-height: 1.55;
@@ -350,7 +350,7 @@
 
 .page-faq .faq-empty {
   display: none;
-  border: 1px dashed #2a3a48;
+  border: 1px dashed var(--line-soft);
   border-radius: 13px;
   padding: 35px 20px;
   text-align: center;
@@ -364,7 +364,7 @@
 
 .page-faq .faq-empty strong {
   display: block;
-  color: var(--text);
+  color: var(--ink);
   font-size: 15px;
   margin-bottom: 6px;
 }
@@ -372,12 +372,12 @@
 /* —— Support CTA —— */
 .page-faq .faq-support {
   margin: 12px 0 55px;
-  border: 1px solid #285064;
+  border: 1px solid var(--line);
   border-radius: 18px;
   padding: 27px;
   background:
-    radial-gradient(ellipse at right, #123344 0, transparent 55%),
-    linear-gradient(135deg, #101c27, #0a1016);
+    radial-gradient(ellipse at right, var(--primary-glow) 0, transparent 55%),
+    var(--bg-panel);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -388,7 +388,7 @@
   font-family: var(--display);
   font-size: 23px;
   margin: 0 0 7px;
-  color: #fff;
+  color: var(--ink);
 }
 
 .page-faq .faq-support p {
@@ -414,7 +414,7 @@
   padding: 11px 15px;
   font-weight: 850;
   font-size: 11px;
-  border: 1px solid #314252;
+  border: 1px solid var(--line-soft);
   text-decoration: none;
   font-family: inherit;
 }
@@ -435,8 +435,8 @@
 }
 
 .page-faq .faq-btn--secondary {
-  background: #101923;
-  color: #e6edf4;
+  background: var(--surface);
+  color: var(--ink-soft);
 }
 
 .page-faq .faq-btn--secondary:hover {
@@ -454,8 +454,8 @@
   padding: 14px 16px;
   border: 1px solid rgba(201, 162, 39, 0.28);
   border-radius: 12px;
-  background: rgba(12, 16, 22, 0.85);
-  color: #8d9bab;
+  background: var(--surface);
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.55;
   max-width: 900px;

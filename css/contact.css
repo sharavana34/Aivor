@@ -50,7 +50,7 @@
   letter-spacing: -1.7px;
   margin: 17px 0;
   font-weight: 900;
-  color: #fff;
+  color: var(--ink);
 }
 
 .page-contact .contact-hero h1 span {
@@ -66,7 +66,7 @@
 }
 
 .page-contact .contact-hero-lead strong {
-  color: #dfeaff;
+  color: var(--ink-soft);
   font-weight: 650;
 }
 
@@ -81,10 +81,10 @@
 
 .page-contact .contact-panel {
   border: 1px solid var(--line);
-  background: linear-gradient(155deg, rgba(18, 24, 33, 0.95), rgba(11, 15, 20, 0.98));
+  background: var(--card);
   border-radius: 20px;
   padding: 27px;
-  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.17);
+  box-shadow: var(--shadow-soft);
 }
 
 .page-contact .contact-panel h2 {
@@ -92,7 +92,7 @@
   font-family: var(--display);
   font-size: 22px;
   letter-spacing: -0.4px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 800;
 }
 
@@ -114,7 +114,7 @@
   padding: 15px;
   border: 1px solid var(--line);
   border-radius: 13px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--mint);
 }
 
 .page-contact .contact-ic {
@@ -122,8 +122,8 @@
   width: 39px;
   height: 39px;
   border-radius: 12px;
-  background: rgba(0, 194, 255, 0.1);
-  border: 1px solid rgba(0, 194, 255, 0.28);
+  background: var(--mint);
+  border: 1px solid var(--line);
   display: grid;
   place-items: center;
   color: var(--primary-bright);
@@ -138,7 +138,7 @@
   display: block;
   font-size: 13px;
   margin: 1px 0 3px;
-  color: #edf3ff;
+  color: var(--ink);
 }
 
 .page-contact .contact-item p {
@@ -148,14 +148,14 @@
 }
 
 .page-contact .contact-item a {
-  color: #a9caff;
+  color: var(--primary-bright);
   overflow-wrap: anywhere;
   text-decoration: none;
   font-size: 13px;
 }
 
 .page-contact .contact-item a:hover {
-  color: #fff;
+  color: var(--ink);
   text-decoration: underline;
 }
 
@@ -173,7 +173,7 @@
   border-radius: 12px;
   display: flex;
   gap: 10px;
-  color: #d9c59d;
+  color: var(--gold-bright);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -209,7 +209,7 @@
 
 .page-contact .contact-field label {
   font-size: 12px;
-  color: #c7d4e8;
+  color: var(--silver);
   font-weight: 650;
 }
 
@@ -221,10 +221,10 @@
 .page-contact .contact-field select,
 .page-contact .contact-field textarea {
   width: 100%;
-  background: #07101f;
-  border: 1px solid #263955;
+  background: var(--input-bg);
+  border: 1px solid var(--line-soft);
   border-radius: 10px;
-  color: var(--ink);
+  color: var(--input-fg);
   padding: 12px 13px;
   font: inherit;
   font-size: 13px;
@@ -242,24 +242,24 @@
 .page-contact .contact-field select:focus,
 .page-contact .contact-field textarea:focus {
   border-color: var(--electric);
-  box-shadow: 0 0 0 3px rgba(0, 194, 255, 0.12);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .page-contact .contact-field input::placeholder,
 .page-contact .contact-field textarea::placeholder {
-  color: #62738d;
+  color: var(--muted);
 }
 
 .page-contact .contact-field.is-invalid input,
 .page-contact .contact-field.is-invalid select,
 .page-contact .contact-field.is-invalid textarea {
-  border-color: rgba(239, 68, 68, 0.65);
+  border-color: var(--loss);
 }
 
 .page-contact .contact-error {
   display: none;
   font-size: 11px;
-  color: #ffb2b2;
+  color: var(--loss);
   margin: 0;
 }
 
@@ -269,7 +269,7 @@
 
 .page-contact .contact-hint {
   font-size: 11px;
-  color: #8293ad;
+  color: var(--muted);
   margin: -7px 0 0;
 }
 
@@ -287,10 +287,10 @@
   width: 100%;
   padding: 13px 16px;
   min-height: var(--touch-min);
-  border: 1px solid rgba(0, 194, 255, 0.45);
-  background: linear-gradient(135deg, var(--deep), #163b7b);
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, var(--deep), var(--primary-deep));
   border-radius: 10px;
-  color: #fff;
+  color: var(--action-text);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -305,7 +305,7 @@
 .page-contact .contact-submit:hover:not(:disabled) {
   filter: brightness(1.08);
   text-decoration: none;
-  color: #fff;
+  color: var(--action-text);
 }
 
 .page-contact .contact-submit:focus-visible {
@@ -334,8 +334,8 @@
 }
 
 .page-contact .contact-manual:hover:not(:disabled) {
-  color: #dfeaff;
-  border-color: rgba(0, 194, 255, 0.35);
+  color: var(--ink-soft);
+  border-color: var(--line);
 }
 
 .page-contact .contact-manual:focus-visible {
@@ -351,10 +351,10 @@
 .page-contact .contact-status {
   display: none;
   padding: 12px;
-  border: 1px solid rgba(0, 194, 255, 0.35);
-  background: rgba(0, 194, 255, 0.08);
+  border: 1px solid var(--line);
+  background: var(--mint);
   border-radius: 10px;
-  color: #a8dfff;
+  color: var(--primary-bright);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -364,21 +364,21 @@
 }
 
 .page-contact .contact-status.is-ok {
-  border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.08);
-  color: #a5f1d1;
+  border-color: var(--profit);
+  background: var(--green-bg);
+  color: var(--profit);
 }
 
 .page-contact .contact-status.is-warn {
-  border-color: rgba(232, 197, 71, 0.45);
+  border-color: var(--gold);
   background: rgba(201, 162, 39, 0.08);
-  color: #e8bd68;
+  color: var(--gold-bright);
 }
 
 .page-contact .contact-status.is-error {
-  border-color: rgba(239, 68, 68, 0.4);
-  background: rgba(239, 68, 68, 0.08);
-  color: #ffb2b2;
+  border-color: var(--loss);
+  background: var(--red-bg);
+  color: var(--loss);
 }
 
 .page-contact .contact-status a {
@@ -394,7 +394,7 @@
 
 .page-contact .contact-privacy {
   font-size: 11px;
-  color: #7e90aa;
+  color: var(--muted);
   text-align: center;
   margin: 0;
 }
@@ -402,7 +402,7 @@
 /* —— Social —— */
 .page-contact .contact-social {
   border: 1px solid var(--line);
-  background: linear-gradient(145deg, rgba(18, 24, 33, 0.95), rgba(11, 15, 20, 0.98));
+  background: var(--card);
   border-radius: 18px;
   padding: 24px 26px;
   margin: 0 0 22px;
@@ -416,7 +416,7 @@
   font-family: var(--display);
   font-size: 18px;
   margin: 0;
-  color: #fff;
+  color: var(--ink);
   font-weight: 800;
 }
 
@@ -442,8 +442,8 @@
   padding: 12px 8px;
   border: 1px solid var(--line);
   border-radius: 13px;
-  background: rgba(255, 255, 255, 0.02);
-  color: #dce7f9;
+  background: var(--surface);
+  color: var(--ink-soft);
   font-size: 12px;
   font-weight: 650;
   text-decoration: none;
@@ -452,13 +452,13 @@
 
 .page-contact .contact-social-link:hover {
   text-decoration: none;
-  color: #dce7f9;
+  color: var(--ink-soft);
 }
 
 .page-contact .contact-social-link:not(.is-coming-soon):hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 194, 255, 0.45);
-  background: rgba(0, 194, 255, 0.06);
+  border-color: var(--line);
+  background: var(--mint);
 }
 
 .page-contact .contact-social-link:focus-visible {
@@ -476,7 +476,7 @@
   display: none;
   font-size: 10px;
   font-weight: 600;
-  color: #7588a5;
+  color: var(--muted);
   letter-spacing: 0.02em;
 }
 
@@ -491,7 +491,7 @@
 }
 
 .page-contact .contact-social-note {
-  color: #7588a5;
+  color: var(--muted);
   font-size: 10px;
   margin: 12px 0 0;
 }
@@ -505,7 +505,7 @@
   font-family: var(--display);
   font-size: 18px;
   margin: 0 0 6px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 800;
 }
 
@@ -529,8 +529,8 @@
   padding: 12px 10px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  color: #dce7f9;
+  background: var(--surface);
+  color: var(--ink-soft);
   font-size: 13px;
   font-weight: 650;
   text-align: center;
@@ -540,9 +540,9 @@
 
 .page-contact .contact-quick-link:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 194, 255, 0.45);
-  background: rgba(0, 194, 255, 0.06);
-  color: #fff;
+  border-color: var(--line);
+  background: var(--mint);
+  color: var(--ink);
   text-decoration: none;
 }
 
@@ -555,7 +555,7 @@
 .page-contact .contact-faq-strip {
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: linear-gradient(100deg, #102344, #0b1729);
+  background: var(--bg-panel);
   padding: 23px 26px;
   display: flex;
   align-items: center;
@@ -568,7 +568,7 @@
   font-family: var(--display);
   font-size: 17px;
   margin: 0 0 3px;
-  color: #fff;
+  color: var(--ink);
   font-weight: 800;
 }
 
@@ -581,8 +581,8 @@
 .page-contact .contact-faq-btn {
   white-space: nowrap;
   background: transparent;
-  border: 1px solid #344966;
-  color: #dce8fb;
+  border: 1px solid var(--line-soft);
+  color: var(--ink-soft);
   border-radius: 10px;
   padding: 10px 16px;
   font-size: 13px;
@@ -596,7 +596,7 @@
 
 .page-contact .contact-faq-btn:hover {
   border-color: var(--electric);
-  color: #fff;
+  color: var(--ink);
   text-decoration: none;
 }
 
@@ -610,7 +610,7 @@
   text-align: center;
   max-width: 800px;
   margin: 0 auto 40px;
-  color: #63738c;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.55;
 }

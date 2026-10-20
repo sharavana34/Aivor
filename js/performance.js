@@ -27,9 +27,20 @@
   var tradesExpanded = false;
   var tradesRenderedKey = "";
   var tradesRenderToken = 0;
+  var tradesRowsCache = Object.create(null);
+  var tradesRowsPromises = Object.create(null);
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+  function chartToken(name, fallback) {
+    try {
+      var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return v || fallback;
+    } catch (e) {
+      return fallback;
+    }
   }
 
   function setText(id, text) {
@@ -101,6 +112,73 @@
     );
   }
 
+  function loadTradesViaScript(key) {
+    return new Promise(function (resolve, reject) {
+      window.AIVOR_PERF_TRADES = window.AIVOR_PERF_TRADES || {};
+      if (window.AIVOR_PERF_TRADES[key]) {
+        resolve(window.AIVOR_PERF_TRADES[key].rows || []);
+        return;
+      }
+      var existing = document.querySelector('script[data-aivor-trades="' + key + '"]');
+      if (existing) {
+        existing.addEventListener("load", function () {
+          var payload = window.AIVOR_PERF_TRADES && window.AIVOR_PERF_TRADES[key];
+          if (payload) resolve(payload.rows || []);
+          else reject(new Error("Trade rows missing after script load: " + key));
+        }, { once: true });
+        existing.addEventListener("error", function () {
+          reject(new Error("Failed to load trade rows: " + key));
+        }, { once: true });
+        return;
+      }
+      var script = document.createElement("script");
+      script.src = assetBase() + "js/performance-data/" + key + "-trades.js";
+      script.async = true;
+      script.setAttribute("data-aivor-trades", key);
+      script.onload = function () {
+        var payload = window.AIVOR_PERF_TRADES && window.AIVOR_PERF_TRADES[key];
+        if (payload) resolve(payload.rows || []);
+        else reject(new Error("Trade rows missing after script load: " + key));
+      };
+      script.onerror = function () {
+        if (script.parentNode) script.parentNode.removeChild(script);
+        reject(new Error("Failed to load trade rows: " + key));
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  function loadTradeRows(key) {
+    if (tradesRowsCache[key]) return Promise.resolve(tradesRowsCache[key]);
+    if (tradesRowsPromises[key]) return tradesRowsPromises[key];
+    var request;
+    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+      request = fetch(assetBase() + "data/" + key + "-trades.json", { cache: "no-cache" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(function (payload) {
+          if (!payload || payload.key !== key || !Array.isArray(payload.rows)) {
+            throw new Error("Invalid trade rows payload: " + key);
+          }
+          return payload.rows;
+        })
+        .catch(function () { return loadTradesViaScript(key); });
+    } else {
+      request = loadTradesViaScript(key);
+    }
+    tradesRowsPromises[key] = request.then(function (rows) {
+      tradesRowsCache[key] = rows;
+      delete tradesRowsPromises[key];
+      return rows;
+    }).catch(function (error) {
+      delete tradesRowsPromises[key];
+      throw error;
+    });
+    return tradesRowsPromises[key];
+  }
+
   function ensureTradesRendered(data) {
     if (!data) return;
     var key = tradesCacheKey(data);
@@ -108,26 +186,40 @@
     var loading = $("trades-loading");
     var err = $("trades-error");
     var token = ++tradesRenderToken;
+    var reportKey = dataKey();
     if (err) {
       err.hidden = true;
       err.textContent = "";
     }
     if (loading) loading.hidden = false;
-    // Defer heavy DOM work until after paint (data already in memory).
-    window.setTimeout(function () {
-      if (token !== tradesRenderToken) return;
-      try {
-        renderTrades(data);
-        tradesRenderedKey = key;
-      } catch (e) {
-        console.error(e);
-        if (err) {
-          err.hidden = false;
-          err.textContent = "Could not render trade history. Try collapsing and expanding again.";
+    loadTradeRows(reportKey).then(function (rows) {
+      if (token !== tradesRenderToken || reportKey !== dataKey()) return;
+      data.trades = data.trades || {};
+      data.trades.rows = rows;
+      // Defer heavy DOM work until after the browser paints the expanded panel.
+      window.setTimeout(function () {
+        if (token !== tradesRenderToken || reportKey !== dataKey()) return;
+        try {
+          renderTrades(data);
+          tradesRenderedKey = key;
+        } catch (e) {
+          console.error(e);
+          if (err) {
+            err.hidden = false;
+            err.textContent = "Could not render trade history. Try collapsing and expanding again.";
+          }
         }
+        if (loading) loading.hidden = true;
+      }, 0);
+    }).catch(function (e) {
+      if (token !== tradesRenderToken || reportKey !== dataKey()) return;
+      console.error(e);
+      if (err) {
+        err.hidden = false;
+        err.textContent = "Could not load trade history. Check your connection and try again.";
       }
       if (loading) loading.hidden = true;
-    }, 0);
+    });
   }
 
   function parseParams() {
@@ -652,7 +744,9 @@
         W / 2 +
         '" y="' +
         H / 2 +
-        '" text-anchor="middle" fill="#8b9aab" font-size="13">No chart points</text>';
+        '" text-anchor="middle" fill="' +
+        chartToken("--chart-axis", "#8b9aab") +
+        '" font-size="13">No chart points</text>';
       return;
     }
 
@@ -986,4 +1080,8 @@
   parseParams();
   bind();
   render();
+
+  window.addEventListener("aivor:themechange", function () {
+    if (reportData && reportData.available) renderChart(reportData);
+  });
 })();
